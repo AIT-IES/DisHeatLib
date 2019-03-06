@@ -1,0 +1,5 @@
+removePlots();
+simulateModel("DisHeatLib.Controls.Examples.dp_control", startTime=0, tolerance=1e-6, stopTime=1000, outputInterval=100, method="dassl", resultFile="dp_control");
+createPlot(id = 1,
+ y = {"control.dp", "control.y"},
+ grid = true);

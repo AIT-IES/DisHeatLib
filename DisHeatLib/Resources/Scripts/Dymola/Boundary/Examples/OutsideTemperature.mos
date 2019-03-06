@@ -1,0 +1,5 @@
+removePlots();
+simulateModel("DisHeatLib.Boundary.Examples.OutsideTemperature", startTime=0, tolerance=1e-6, stopTime=31536000, outputInterval=900, method="dassl", resultFile="OutsideTemperature");
+createPlot(id = 1,
+ y = {"outsideTemperature_const.port.T", "outsideTemperature_file.port.T", "outsideTemperature_input.port.T"},
+ grid = true);

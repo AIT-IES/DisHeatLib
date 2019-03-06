@@ -1,0 +1,5 @@
+removePlots();
+simulateModel("DisHeatLib.Controls.Examples.TemSup_control", startTime=0, tolerance=1e-6, stopTime=86400, outputInterval=900, method="dassl", resultFile="TemSup_control");
+createPlot(id = 1,
+ y = {"control.TemOut", "control.y"},
+ grid = true);

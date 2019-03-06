@@ -1,0 +1,18 @@
+removePlots();
+simulateModel("DisHeatLib.Controls.Examples.flow_control", startTime=0, tolerance=1e-6, stopTime=86400, outputInterval=900, method="dassl", resultFile="dp_control");
+createPlot(id = 1,
+ y = {"control.y", "control.T_measurement", "control.TSetConst.y"},
+ axes={2, 1, 1},
+ grid = true);
+createPlot(id = 2,
+ y = {"control_m.y", "control_m.m_flow_measurement", "control_m.T_measurement"},
+ axes={1, 1, 2},
+ grid = true);
+createPlot(id = 3,
+ y = {"control_T.y", "control_T.T_measurement", "control_T.T_set"},
+ axes={1, 2, 2},
+ grid = true);
+createPlot(id = 4,
+ y = {"control_mT.y", "control_mT.m_flow_measurement", "control_mT.T_measurement", "control_mT.T_set"},
+ axes={1, 1, 2, 2},
+ grid = true);

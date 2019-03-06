@@ -1,0 +1,6 @@
+removePlots();
+simulateModel("DisHeatLib.Controls.Examples.bypass_control", startTime=0, tolerance=1e-6, stopTime=86400, outputInterval=900, method="dassl", resultFile="bypass_control");
+createPlot(id = 1,
+ y = {"control.T_min", "control.T_measurement", "control.y"},
+ axes={1, 1, 2},
+ grid = true);

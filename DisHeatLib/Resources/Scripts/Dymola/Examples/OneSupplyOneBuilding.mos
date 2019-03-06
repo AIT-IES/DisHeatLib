@@ -1,0 +1,8 @@
+removePlots();
+simulateModel("DisHeatLib.Examples.OneSupplyOneBuilding", startTime=0, tolerance=1e-6, stopTime=604800, outputInterval=900, method="dassl", resultFile="OneSupplyOneBuilding");
+createPlot(id = 1,
+ y = {"substation.senTemSL.T", "substation.senTemRL.T", "substation.TemSup_nominal"},
+ grid = true);
+createPlot(id = 2,
+ y = {"demandDHW.Q_flow", "demandDHW.Q_flow_demand", "demandSH.Q_flow", "demandSH.Q_flow_demand"},
+ grid = true);
