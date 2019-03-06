@@ -54,15 +54,6 @@ model OneSupplyOneBuilding
     dp_min(displayUnit="bar") = 500000,
     dp_max(displayUnit="bar") = 1000000)
     annotation (Placement(transformation(extent={{10,-54},{-10,-74}})));
-  DisHeatLib.Boundary.OutsideTemperature outsideTemperature(
-    inputType=DisHeatLib.Boundary.BaseClasses.InputTypeTemp.File,
-    tableName="TempOut",
-    fileName=Modelica.Utilities.Files.loadResource(
-        "modelica://DisHeatLib/Resources/Data/TempOut.txt"))
-    annotation (Placement(transformation(
-        extent={{-10,-10},{10,10}},
-        rotation=-90,
-        origin={-76,82})));
   DisHeatLib.Demand.Demand demandDHW(
     redeclare package Medium = Medium,
     dp_nominal=100000,
@@ -104,14 +95,12 @@ equation
           {-6,20},{-16,20},{-16,31.4545},{-10,31.4545}},     color={0,127,255}));
   connect(pipe.port_rl_a, substation.port_rl_p) annotation (Line(points={{6,-4},{
           6,20},{16,20},{16,31.4545},{10,31.4545}},  color={0,127,255}));
-  connect(outsideTemperature.port, substation.port_ht)
-    annotation (Line(points={{-66,82},{0,82},{0,46}}, color={191,0,0}));
-  connect(substation.port_rl_DHW, demandDHW.port_b) annotation (Line(points={{
-          -10,38.7273},{-16,38.7273},{-16,62},{-20,62}}, color={0,127,255}));
+  connect(substation.port_rl_DHW, demandDHW.port_b) annotation (Line(points={{-10,
+          38.7273},{-16,38.7273},{-16,62},{-20,62}},     color={0,127,255}));
   connect(substation.port_sl_SH, demandSH.port_a) annotation (Line(points={{10,
           42.3636},{14,42.3636},{14,60},{20,60}}, color={0,127,255}));
-  connect(demandSH.port_b, substation.port_rl_SH) annotation (Line(points={{40,
-          60},{42,60},{42,38.7273},{10,38.7273}}, color={0,127,255}));
+  connect(demandSH.port_b, substation.port_rl_SH) annotation (Line(points={{40,60},
+          {42,60},{42,38.7273},{10,38.7273}},     color={0,127,255}));
   annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Examples/OneSupplyOneBuilding.mos"
         "Simulate and plot"), experiment(
       StopTime=604800,
