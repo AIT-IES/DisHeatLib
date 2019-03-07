@@ -28,12 +28,12 @@ model Supply_pT
     duration(displayUnit="h") = 21600)
     annotation (Placement(transformation(extent={{48,54},{28,74}})));
 equation
-  connect(supply_pT.port_a, coo.port_b) annotation (Line(points={{-10,0},{-20,0},
-          {-20,40},{-8,40}}, color={0,127,255}));
-  connect(supply_pT.ports_b[1], coo.port_a) annotation (Line(points={{10,0},{20,
-          0},{20,40},{12,40}}, color={0,127,255}));
   connect(T.y, coo.TSet)
     annotation (Line(points={{27,64},{14,64},{14,48}}, color={0,0,127}));
+  connect(supply_pT.ports_b[1], coo.port_a) annotation (Line(points={{10,0},{20,
+          0},{20,40},{12,40}}, color={0,127,255}));
+  connect(coo.port_b, supply_pT.port_a) annotation (Line(points={{-8,40},{-20,
+          40},{-20,0},{-10,0}}, color={0,127,255}));
   annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Supply/Examples/Supply_pT.mos"
         "Simulate and plot"),
         Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(

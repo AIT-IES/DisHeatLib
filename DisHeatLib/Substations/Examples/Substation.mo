@@ -24,7 +24,7 @@ model Substation
     dp_nominal(displayUnit="bar") = 300000,
     T_start=303.15)
     annotation (Placement(transformation(extent={{-64,22},{-44,42}})));
-  Modelica.Blocks.Sources.RealExpression TConst(y=30.0 + 273.15)                      annotation (Placement(
+  Modelica.Blocks.Sources.RealExpression TConst(y=10.0 + 273.15)                      annotation (Placement(
         transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
@@ -36,13 +36,26 @@ model Substation
     duration(displayUnit="h") = 21600)
     annotation (Placement(transformation(extent={{-90,-26},{-70,-6}})));
   DisHeatLib.Substations.Substation substation(
-    redeclare package Medium = Medium,
-    FlowType=DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Valve,
+    dp_nominal=100000,
+    show_T=true,
+    TemSup_nominal=363.15,
+    use_bypass=false,
     redeclare DisHeatLib.Substations.BaseClasses.IndirectBaseStation
-      BaseStationDHW(Q_flow_nominal(displayUnit="kW") = 10000,
-        OutsideDependent=false),
-    redeclare DisHeatLib.Substations.BaseClasses.DirectBaseStation
-      BaseStationSH(Q_flow_nominal(displayUnit="kW") = 10000))
+      baseStationSH(
+      Q_flow_nominal(displayUnit="kW") = 10000,
+      TemRet1_nominal=308.15,
+      TemSup2_nominal=323.15,
+      TemRet2_nominal=303.15,
+      OutsideDependent=false),
+    redeclare DisHeatLib.Substations.BaseClasses.IndirectBaseStation
+      baseStationDHW(
+      Q_flow_nominal(displayUnit="kW") = 10000,
+      TemRet1_nominal=288.15,
+      TemSup2_nominal=333.15,
+      TemRet2_nominal=283.15,
+      OutsideDependent=false),
+    redeclare package Medium = Medium,
+    FlowType=DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Valve)
     annotation (Placement(transformation(extent={{-10,-12},{10,8}})));
   IBPSA.Fluid.HeatExchangers.SensibleCooler_T cooler1(
     redeclare package Medium = Medium,
@@ -84,28 +97,24 @@ equation
   connect(bou_SL_p.T_in, T.y)
     annotation (Line(points={{-62,-16},{-69,-16}}, color={0,0,127}));
 
-  connect(substation.port_sl_SH, cooler1.port_a) annotation (Line(points={{10,
-          4.36364},{40,4.36364},{40,32},{44,32}},
-                                   color={0,127,255}));
   connect(TConst1.y, cooler1.TSet)
     annotation (Line(points={{35,40},{42,40}}, color={0,0,127}));
-  connect(bou_RL_p.ports[1], substation.port_rl_p) annotation (Line(points={{40,-20},
-          {20,-20},{20,-6.54545},{10,-6.54545}},
-                                          color={0,127,255}));
-  connect(bou_SL_p.ports[1], substation.port_sl_p) annotation (Line(points={{-40,-20},
-          {-20,-20},{-20,-6.54545},{-10,-6.54545}},
-                                             color={0,127,255}));
-  connect(substation.port_sl_DHW, cooler.port_a) annotation (Line(points={{-10,
-          4.36364},{-68,4.36364},{-68,32},{-64,32}},
-                                      color={0,127,255}));
   connect(cooler.port_b, pump.port_a)
     annotation (Line(points={{-44,32},{-40,32}}, color={0,127,255}));
-  connect(pump.port_b, substation.port_rl_DHW) annotation (Line(points={{-20,
-          32},{-18,32},{-18,0.727273},{-10,0.727273}}, color={0,127,255}));
   connect(cooler1.port_b, pump1.port_a)
     annotation (Line(points={{64,32},{68,32}}, color={0,127,255}));
-  connect(pump1.port_b, substation.port_rl_SH) annotation (Line(points={{88,
-          32},{92,32},{92,0.727273},{10,0.727273}}, color={0,127,255}));
+  connect(bou_RL_p.ports[1], substation.port_b) annotation (Line(points={{40,
+          -20},{20,-20},{20,-6.54545},{10,-6.54545}}, color={0,127,255}));
+  connect(bou_SL_p.ports[1], substation.port_a) annotation (Line(points={{-40,
+          -20},{-20,-20},{-20,-6.54545},{-10,-6.54545}}, color={0,127,255}));
+  connect(substation.port_b_DHW, cooler.port_a) annotation (Line(points={{-10,
+          4.36364},{-76,4.36364},{-76,32},{-64,32}}, color={0,127,255}));
+  connect(pump.port_b, substation.port_a_DHW) annotation (Line(points={{-20,32},
+          {-16,32},{-16,0.727273},{-10,0.727273}}, color={0,127,255}));
+  connect(substation.port_b_SH, cooler1.port_a) annotation (Line(points={{10,
+          4.36364},{30,4.36364},{30,32},{44,32}}, color={0,127,255}));
+  connect(pump1.port_b, substation.port_a_SH) annotation (Line(points={{88,32},
+          {92,32},{92,0.727273},{10,0.727273}}, color={0,127,255}));
   annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Substations/Examples/Substation.mos"
         "Simulate and plot"),
         Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(

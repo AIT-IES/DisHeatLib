@@ -1,5 +1,5 @@
 removePlots();
 simulateModel("DisHeatLib.Substations.Examples.Substation", startTime=0, tolerance=1e-6, stopTime=86400, outputInterval=900, method="dassl", resultFile="Substation");
 createPlot(id = 1,
- y = {"substation.senTemSL.T", "substation.senTemRL.T", "bou_SL_p.T_in"},
+ y = {"substation.sta_a.T", "substation.sta_b.T", "substation.sta_a_DHW.T", "substation.sta_b_DHW.T", "substation.sta_a_SH.T", "substation.sta_b_SH.T"},
  grid = true);

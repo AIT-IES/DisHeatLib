@@ -2,7 +2,9 @@ within DisHeatLib.Substations.Examples;
 model DirectBaseStation
   extends Modelica.Icons.Example;
   BaseClasses.DirectBaseStation   directBaseStation(
-    redeclare package Medium = Medium)
+    redeclare package Medium = Medium,
+    Q_flow_nominal(displayUnit="kW") = 10000,
+    dp1_nominal(displayUnit="bar") = 100000)
     annotation (Placement(transformation(extent={{-10,10},{10,-10}})));
   package Medium = IBPSA.Media.Water;
 
@@ -57,10 +59,10 @@ equation
   connect(pump.port_a,cooler. port_b)
     annotation (Line(points={{10,-40},{-10,-40}},
                                                 color={0,127,255}));
-  connect(bou_RL_p.ports[1], directBaseStation.port_a2) annotation (Line(points
-        ={{34,34},{20,34},{20,6},{10,6}}, color={0,127,255}));
-  connect(directBaseStation.port_b2, bou_SL_p.ports[1]) annotation (Line(points
-        ={{-10,6},{-20,6},{-20,34},{-36,34}}, color={0,127,255}));
+  connect(bou_RL_p.ports[1], directBaseStation.port_a2) annotation (Line(points=
+         {{34,34},{20,34},{20,6},{10,6}}, color={0,127,255}));
+  connect(directBaseStation.port_b2, bou_SL_p.ports[1]) annotation (Line(points=
+         {{-10,6},{-20,6},{-20,34},{-36,34}}, color={0,127,255}));
   connect(cooler.port_a, directBaseStation.port_a1) annotation (Line(points={{
           -30,-40},{-38,-40},{-38,-6},{-10,-6}}, color={0,127,255}));
   connect(directBaseStation.port_b1, pump.port_b) annotation (Line(points={{10,
