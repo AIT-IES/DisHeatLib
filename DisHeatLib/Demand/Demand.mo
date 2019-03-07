@@ -200,7 +200,7 @@ equation
           rotation=180),
         Rectangle(
           extent={{-38,56},{80,-60}},
-          lineColor={0,0,0},
+          lineColor={244,125,35},
           fillColor={255,255,255},
           fillPattern=FillPattern.Solid,
           lineThickness=0.5),
