@@ -1,7 +1,8 @@
 within DisHeatLib.Substations;
 model Substation
   extends BaseClasses.SubstationInterface(
-    final m_flow_nominal=baseStationDHW.m1_flow_nominal+baseStationSH.m1_flow_nominal);
+    final m_flow_nominal=baseStationDHW.m1_flow_nominal+baseStationSH.m1_flow_nominal,
+      total_power(y=baseStationSH.P + baseStationDHW.P));
 
   // General
   parameter Modelica.SIunits.Temperature TemSup_nominal(displayUnit="degC")

@@ -61,6 +61,20 @@ public
     OutsideDependent
     "Outside temperature port"
     annotation (Placement(transformation(extent={{-10,-90},{10,-110}})));
+public
+  Modelica.Blocks.Interfaces.RealOutput P(
+    final quantity="Power",
+    final unit="W",
+    displayUnit="W") "Electric power" annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=0,
+        origin={110,0})));
+  Modelica.Blocks.Sources.RealExpression total_power
+    "sum of all power consumption/generation in component"
+    annotation (Placement(transformation(extent={{66,-10},{86,10}})));
+equation
+  connect(total_power.y, P)
+    annotation (Line(points={{87,0},{110,0}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
           lineColor={200,200,200},
