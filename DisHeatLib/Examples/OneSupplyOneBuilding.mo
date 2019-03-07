@@ -22,8 +22,8 @@ model OneSupplyOneBuilding
     redeclare package Medium = Medium,
     L=100,
     redeclare DisHeatLib.Pipes.Library.Isoplus.Isoplus_Std_DN25 pipeType,
-    nPorts_rl=1,
-    nPorts_sl=1)
+    nPorts1=1,
+    nPorts2=1)
     annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
@@ -52,7 +52,8 @@ model OneSupplyOneBuilding
     TemSup_min=343.15,
     TemSup_max=333.15,
     dp_min(displayUnit="bar") = 500000,
-    dp_max(displayUnit="bar") = 1000000)
+    dp_max(displayUnit="bar") = 1000000,
+    nPorts=1)
     annotation (Placement(transformation(extent={{10,-54},{-10,-74}})));
   DisHeatLib.Demand.Demand demandDHW(
     redeclare package Medium = Medium,
@@ -68,39 +69,40 @@ model OneSupplyOneBuilding
     annotation (Placement(transformation(extent={{-40,52},{-20,72}})));
 
   DisHeatLib.Substations.Substation substation(
+    show_T=true,
+    use_bypass=false,
+    redeclare DisHeatLib.Substations.BaseClasses.DirectBaseStation
+      baseStationSH(Q_flow_nominal(displayUnit="kW") = 10000),
+    redeclare DisHeatLib.Substations.BaseClasses.IndirectBaseStation
+      baseStationDHW(Q_flow_nominal(displayUnit="kW") = 10000, OutsideDependent
+        =false),
     redeclare package Medium = Medium,
     FlowType=DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Valve,
     TemSup_nominal=343.15,
-    dp_nominal=100000,
-    redeclare DisHeatLib.Substations.BaseClasses.IndirectBaseStation
-      BaseStationDHW(
-      Q_flow_nominal(displayUnit="kW") = 10000,
-      OutsideDependent=false,
-      Ti=120),
-    redeclare DisHeatLib.Substations.BaseClasses.DirectBaseStation
-      BaseStationSH(Q_flow_nominal(displayUnit="kW") = 10000))
+    dp_nominal=100000)
     annotation (Placement(transformation(extent={{-10,26},{10,46}})));
 equation
   connect(pipe.port_ht,soil. port)
     annotation (Line(points={{-10,-14},{-68,-14}}, color={191,0,0}));
-  connect(baseSupply.port_sl,pipe. port_sl_a) annotation (Line(points={{-10,-64},
-          {-20,-64},{-20,-42},{-6,-42},{-6,-24}},   color={0,127,255}));
-  connect(pipe.port_rl_b[1], baseSupply.port_rl) annotation (Line(points={{6,-24},
-          {6,-42},{20,-42},{20,-64},{10,-64}},           color={0,127,255}));
-  connect(substation.dp, baseSupply.dp_measure) annotation (Line(points={{11,36.9091},
-          {36,36.9091},{36,-82},{6,-82},{6,-76}},     color={0,0,127}));
-  connect(substation.port_sl_DHW,demandDHW. port_a) annotation (Line(points={{-10,
-          42.3636},{-42,42.3636},{-42,62},{-40,62}},     color={0,127,255}));
-  connect(pipe.port_sl_b[1], substation.port_sl_p) annotation (Line(points={{-6,-4},
-          {-6,20},{-16,20},{-16,31.4545},{-10,31.4545}},     color={0,127,255}));
-  connect(pipe.port_rl_a, substation.port_rl_p) annotation (Line(points={{6,-4},{
-          6,20},{16,20},{16,31.4545},{10,31.4545}},  color={0,127,255}));
-  connect(substation.port_rl_DHW, demandDHW.port_b) annotation (Line(points={{-10,
-          38.7273},{-16,38.7273},{-16,62},{-20,62}},     color={0,127,255}));
-  connect(substation.port_sl_SH, demandSH.port_a) annotation (Line(points={{10,
-          42.3636},{14,42.3636},{14,60},{20,60}}, color={0,127,255}));
-  connect(demandSH.port_b, substation.port_rl_SH) annotation (Line(points={{40,60},
-          {42,60},{42,38.7273},{10,38.7273}},     color={0,127,255}));
+  connect(substation.dp, baseSupply.dp_measure) annotation (Line(points={{0,
+          26.9091},{36,26.9091},{36,-82},{6,-82},{6,-76}},
+                                                      color={0,0,127}));
+  connect(substation.port_b_SH, demandSH.port_a) annotation (Line(points={{10,
+          42.3636},{12,42.3636},{12,60},{20,60}}, color={0,127,255}));
+  connect(substation.port_a_SH, demandSH.port_b) annotation (Line(points={{10,
+          38.7273},{46,38.7273},{46,60},{40,60}}, color={0,127,255}));
+  connect(substation.port_b_DHW, demandDHW.port_a) annotation (Line(points={{
+          -10,42.3636},{-44,42.3636},{-44,62},{-40,62}}, color={0,127,255}));
+  connect(demandDHW.port_b, substation.port_a_DHW) annotation (Line(points={{
+          -20,62},{-14,62},{-14,38.7273},{-10,38.7273}}, color={0,127,255}));
+  connect(pipe.ports_b1[1], substation.port_a) annotation (Line(points={{-6,-4},
+          {-6,16},{-10,16},{-10,31.4545}}, color={0,127,255}));
+  connect(pipe.port_a2, substation.port_b) annotation (Line(points={{6,-4},{6,
+          16},{10,16},{10,31.4545}}, color={0,127,255}));
+  connect(pipe.ports_b2[1], baseSupply.port_a) annotation (Line(points={{6,-24},
+          {6,-40},{16,-40},{16,-64},{10,-64}}, color={0,127,255}));
+  connect(baseSupply.ports_b[1], pipe.port_a1) annotation (Line(points={{-10,
+          -64},{-16,-64},{-16,-40},{-6,-40},{-6,-24}}, color={0,127,255}));
   annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Examples/OneSupplyOneBuilding.mos"
         "Simulate and plot"), experiment(
       StopTime=604800,
