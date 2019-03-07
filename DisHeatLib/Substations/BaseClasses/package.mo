@@ -1,6 +1,6 @@
 within DisHeatLib.Substations;
 package BaseClasses
-
+  extends Modelica.Icons.BasesPackage;
 
 
 
