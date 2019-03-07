@@ -8,7 +8,7 @@ model Bypass
   parameter BaseClasses.BaseStationFlowType FlowType = DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Pump "Flow type at primary side";
 
   // Control
-  parameter Boolean use_thermostat = true "Use a thermostat to control the bypass valve, otherwise always opened"
+  parameter Boolean use_thermostat = false "Use a thermostat to control the bypass valve, otherwise always opened"
     annotation(Dialog(group = "Control"), HideResult=true, choices(checkBox=true));
   parameter Modelica.SIunits.Temperature TemSupMinBypass(displayUnit="degC")=50.0+273.15
     "Minimum supply temperature before bypass valve is opened"
