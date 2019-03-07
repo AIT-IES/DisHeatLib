@@ -3,6 +3,7 @@ model Bypass
   extends Modelica.Icons.Example;
   BaseClasses.Bypass      bypass(
     redeclare package Medium = Medium,
+    dp_nominal(displayUnit="bar") = 100000,
     FlowType=DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Valve,
     m_flow_nominal=1)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));

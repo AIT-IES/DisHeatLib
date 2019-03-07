@@ -1,0 +1,11 @@
+removePlots();
+simulateModel("DisHeatLib.Demand.Examples.Demand", startTime=0, tolerance=1e-6, stopTime=864000, outputInterval=900, method="dassl", resultFile="BaseDemand");
+createPlot(id = 1,
+ y = {"demand.Q_flow", "demand.Q_flow_demand"},
+ grid = true);
+createPlot(id = 2,
+ y = {"demand1.Q_flow", "demand1.Q_flow_demand"},
+ grid = true);
+createPlot(id = 3,
+ y = {"demand2.Q_flow", "demand2.Q_flow_demand"},
+ grid = true);

@@ -1,5 +1,6 @@
 removePlots();
-simulateModel("DisHeatLib.Supply.Examples.Supply_pT", startTime=0, tolerance=1e-6, stopTime=86400, outputInterval=900, method="dassl", resultFile="Supply_pT");
+simulateModel("DisHeatLib.Supply.Examples.Supply_pT", startTime=0, tolerance=1e-6, stopTime=36000, outputInterval=900, method="dassl", resultFile="Supply_pT");
 createPlot(id = 1,
- y = {"supply_pT.Q_flow", "supply_pT.P"},
+ y = {"supply_pT.Q_flow", "supply_pT.sta_a.T", "supply_pT.sta_b[1].T", "supply_pT.TemSup_nominal"},
+ axes = {1, 2, 2, 2},
  grid = true);

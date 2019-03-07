@@ -1,42 +1,59 @@
 within DisHeatLib.Pipes;
 model DualPipe
+  extends DisHeatLib.BaseClasses.PartialFourPortVectorInterface(
+    redeclare package Medium1 = Medium,
+    redeclare package Medium2 = Medium,
+    final m1_flow_nominal = pipeType.m_flow_nominal,
+    final m2_flow_nominal = pipeType.m_flow_nominal,
+    final m1_flow_small = m_flow_small,
+    final m2_flow_small = m_flow_small,
+    final allowFlowReversal1 = allowFlowReversal,
+    final allowFlowReversal2 = allowFlowReversal);
+
   replaceable package Medium =
-      Modelica.Media.Water.ConstantPropertyLiquidWater
-       annotation (choicesAllMatching=true);
+    Modelica.Media.Interfaces.PartialMedium "Medium in the component"
+      annotation (choices(
+        choice(redeclare package Medium = IBPSA.Media.Water "Water")));
+
+  parameter Boolean allowFlowReversal = true
+    "= false to simplify equations, assuming, but not enforcing, no flow reversal"
+    annotation(Dialog(tab="Assumptions"), Evaluate=true);
+  parameter Medium.MassFlowRate m_flow_small(min=0) = 1E-4*abs(pipeType.m_flow_nominal)
+    "Small mass flow rate for regularization of zero flow"
+    annotation(Dialog(tab = "Advanced"));
+  parameter Boolean from_dp = false
+    "= true, use m_flow = f(dp) else dp = f(m_flow)"
+    annotation (Evaluate=true, Dialog(tab="Flow resistance"));
+  parameter Boolean linearizeFlowResistance = false
+    "= true, use linear relation between m_flow and dp for any flow rate"
+    annotation(Dialog(tab="Flow resistance"));
 
   // Parameters
   replaceable parameter DisHeatLib.Pipes.BaseClasses.BasePipe pipeType "Pipe type"
   annotation (choicesAllMatching=true);
   parameter Modelica.SIunits.Length L "Length of the pipes";
-  parameter Real cf = 1.0 "Correction factor of heat losses (needed for aggregation)";
-  parameter Modelica.SIunits.Temperature T_sl_init = Medium.T_default "Initial temperature of supply line"
-    annotation(Dialog(group = "Initialization"));
-  parameter Modelica.SIunits.Temperature T_rl_init = Medium.T_default "Initial temperature of return line"
-    annotation(Dialog(group = "Initialization"));
+  parameter Real ReC=4000
+    "Reynolds number where transition to turbulent starts"
+    annotation (Evaluate=true, Dialog(group="Additional parameters"));
+  parameter Real fac=1
+    "Factor to take into account flow resistance of bends etc., fac=dp_nominal/dpStraightPipe_nominal"
+    annotation (Evaluate=true, Dialog(group="Additional parameters"));
+  parameter Real cf = 1.0 "Correction factor of heat losses (needed for aggregation)"
+    annotation (Evaluate=true, Dialog(group="Additional parameters"));
 
- // Assumptions
-  parameter Boolean allowFlowReversal = true
-    "= false to simplify equations, assuming, but not enforcing, no flow reversal"
-    annotation(Dialog(tab="Assumptions"), Evaluate=true);
-
-  // Advanced
-  parameter Boolean linearized = false
-    "= true, use linear relation between m_flow and dp for any flow rate"
-    annotation(Evaluate=true, Dialog(tab="Advanced"));
-  parameter Boolean from_dp = false
-    "= true, use m_flow = f(dp) else dp = f(m_flow)"
-    annotation(Evaluate=true, Dialog(tab = "Advanced"));
-
-  // Parameter for vectorized inputs
-  parameter Integer nPorts_sl "Number of ports"
-    annotation(Evaluate=true, Dialog(connectorSizing=true, tab="General",group="Ports"));
-  parameter Integer nPorts_rl "Number of ports"
-    annotation(Evaluate=true, Dialog(connectorSizing=true, tab="General",group="Ports"));
+  // Initialization
+  parameter Modelica.SIunits.Temperature T_sl_init = Medium.T_default "Initial temperature of supply pipe"
+    annotation(Dialog(tab = "Initialization"));
+  parameter Modelica.SIunits.Temperature T_rl_init = Medium.T_default "Initial temperature of return pipe"
+    annotation(Dialog(tab = "Initialization"));
 
   Modelica.SIunits.Power Q_flow "Heat flow to soil (i.e., losses)";
   IBPSA.Fluid.FixedResistances.PlugFlowPipe pipe_sl(
     redeclare package Medium = Medium,
+    from_dp=from_dp,
+    ReC=ReC,
     roughness=pipeType.pipeMaterial.roughness,
+    m_flow_small=m_flow_small,
     dIns=pipeType.dIns,
     length=L,
     m_flow_nominal=pipeType.m_flow_nominal,
@@ -47,15 +64,18 @@ model DualPipe
     v_nominal=pipeType.v_nominal,
     dh=pipeType.dh,
     thickness=pipeType.dWall,
-    linearized=linearized,
-    nPorts=nPorts_sl,
+    fac=fac,
+    linearized=linearizeFlowResistance,
+    nPorts=nPorts1,
     allowFlowReversal=allowFlowReversal,
-    from_dp=from_dp,
     kIns=cf*pipeType.kIns)
     annotation (Placement(transformation(extent={{-10,50},{10,70}})));
   IBPSA.Fluid.FixedResistances.PlugFlowPipe pipe_rl(
     redeclare package Medium = Medium,
+    from_dp=from_dp,
+    ReC=ReC,
     roughness=pipeType.pipeMaterial.roughness,
+    m_flow_small=m_flow_small,
     dIns=pipeType.dIns,
     length=L,
     m_flow_nominal=pipeType.m_flow_nominal,
@@ -66,41 +86,23 @@ model DualPipe
     dh=pipeType.dh,
     v_nominal=pipeType.v_nominal,
     thickness=pipeType.dWall,
-    linearized=linearized,
-    nPorts=nPorts_rl,
+    fac=fac,
+    linearized=linearizeFlowResistance,
+    nPorts=nPorts2,
     allowFlowReversal=allowFlowReversal,
-    from_dp=from_dp,
     kIns=cf*pipeType.kIns)
     annotation (Placement(transformation(extent={{10,-70},{-10,-50}})));
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a port_ht
     annotation (Placement(transformation(extent={{-10,90},{10,110}})));
-public
-  Modelica.Fluid.Interfaces.FluidPort_a port_sl_a(redeclare package Medium =
-        Medium)
-    "Supply fluid port (positive design direction is from port port_sl_a to port port_sl_b)"
-    annotation (Placement(transformation(extent={{-110,50},{-90,70}})));
-  Modelica.Fluid.Interfaces.FluidPorts_b port_sl_b[nPorts_sl](redeclare package
-      Medium = Medium)
-    "Supply fluid port Supply fluid port (positive design direction is from port port_sl_a to port port_sl_b)"
-    annotation (Placement(transformation(extent={{90,20},{110,100}})));
-public
-  Modelica.Fluid.Interfaces.FluidPort_a port_rl_a(redeclare package Medium =
-        Medium)
-    "Return fluid port (positive design direction is from port port_sl_a to port port_sl_b)"
-    annotation (Placement(transformation(extent={{90,-70},{110,-50}})));
-  Modelica.Fluid.Interfaces.FluidPorts_b port_rl_b[nPorts_rl](redeclare package
-      Medium = Medium)
-    "Return fluid port Supply fluid port (positive design direction is from port port_sl_a to port port_sl_b)"
-    annotation (Placement(transformation(extent={{-110,-100},{-90,-20}})));
 equation
   Q_flow = port_ht.Q_flow;
-  connect(pipe_rl.ports_b, port_rl_b)
+  connect(pipe_rl.ports_b, ports_b2)
     annotation (Line(points={{-10,-60},{-100,-60}}, color={0,127,255}));
-  connect(pipe_sl.ports_b, port_sl_b) annotation (Line(points={{10,60},{54,60},
+  connect(pipe_sl.ports_b, ports_b1) annotation (Line(points={{10,60},{54,60},
           {54,60},{100,60}}, color={0,127,255}));
-  connect(port_sl_a, pipe_sl.port_a)
+  connect(port_a1, pipe_sl.port_a)
     annotation (Line(points={{-100,60},{-10,60}}, color={0,127,255}));
-  connect(pipe_rl.port_a, port_rl_a)
+  connect(pipe_rl.port_a, port_a2)
     annotation (Line(points={{10,-60},{100,-60}}, color={0,127,255}));
   connect(pipe_sl.heatPort, port_ht)
     annotation (Line(points={{0,70},{0,70},{0,100}}, color={191,0,0}));

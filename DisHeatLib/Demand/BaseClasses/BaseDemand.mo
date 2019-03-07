@@ -1,18 +1,16 @@
 within DisHeatLib.Demand.BaseClasses;
 partial model BaseDemand
-  extends IBPSA.Fluid.Interfaces.PartialTwoPort;
+  extends IBPSA.Fluid.Interfaces.PartialTwoPortInterface(
+  m_flow_nominal=Q_flow_nominal/((TemSup_nominal-TemRet_nominal)*cp_default));
 
   // Nominal parameters
-  parameter Modelica.SIunits.Power Q_flow_nominal=m_flow_nominal*((TemSup_nominal-TemRet_nominal)*cp_default)
+  parameter Modelica.SIunits.Power Q_flow_nominal
     "Nominal heat flow rate"
-    annotation(Evaluate = true, Dialog(group="Nominal parameters"));
-  parameter Modelica.SIunits.MassFlowRate m_flow_nominal=Q_flow_nominal/((TemSup_nominal-TemRet_nominal)*cp_default)
-    "Nominal mass flow rate"
-    annotation(Evaluate = true, Dialog(group="Nominal parameters"));
+    annotation(Evaluate = true, Dialog(group="Nominal condition"));
   parameter Modelica.SIunits.Temperature TemSup_nominal(displayUnit="degC")=60.0+273.15 "Nominal supply temperature"
-    annotation(Evaluate = true, Dialog(group="Nominal parameters"));
+    annotation(Evaluate = true, Dialog(group="Nominal condition"));
   parameter Modelica.SIunits.Temperature TemRet_nominal(displayUnit="degC")=35.0+273.15 "Nominal return temperature"
-    annotation(Evaluate = true, Dialog(group="Nominal parameters"));
+    annotation(Evaluate = true, Dialog(group="Nominal condition"));
 
   // only for visualization
   parameter Boolean show_radiator = false;

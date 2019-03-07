@@ -1,6 +1,6 @@
 removePlots();
 simulateModel("DisHeatLib.Pipes.Examples.DualPipe", startTime=0, tolerance=1e-6, stopTime=36000, outputInterval=900, method="dassl", resultFile="DualPipe");
 createPlot(id = 1,
- y = {"senTem.T", "senTem1.T", "senTem2.T", "dualPipe.port_ht.Q_flow"},
- axes={1, 1, 1, 2},
+ y = {"dualPipe.sta_a1.T", "dualPipe.sta_b2[1].T", "dualPipe.port_ht.Q_flow"},
+ axes={1, 1, 2},
  grid = true);

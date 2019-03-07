@@ -1,44 +1,42 @@
 within DisHeatLib.Supply.BaseClasses;
 partial model BaseSupply
-  replaceable package Medium =
-    Modelica.Media.Water.ConstantPropertyLiquidWater;
-    Modelica.SIunits.Power Q_flow
-    "Heat flow through supply";
+  extends IBPSA.Fluid.Interfaces.PartialTwoPortVector;
+
+
 
   // Nominal parameters
+  parameter Modelica.SIunits.MassFlowRate m_flow_nominal(min=0) = Q_flow_nominal/((TemSup_nominal-TemRet_nominal)*cp_default)
+    "Nominal mass flow rate"
+    annotation(Dialog(group = "Nominal condition"));
   parameter Modelica.SIunits.Power Q_flow_nominal
     "Nominal heat flow rate"
-    annotation(Dialog(group = "Nominal parameters"));
+    annotation(Dialog(group = "Nominal condition"));
   parameter Modelica.SIunits.Temperature TemSup_nominal(displayUnit="degC")
     "Nominal supply temperature"
-    annotation(Dialog(group = "Nominal parameters"));
+    annotation(Dialog(group = "Nominal condition"));
   parameter Modelica.SIunits.Temperature TemRet_nominal(displayUnit="degC")
     "Nominal return temperature"
-    annotation(Dialog(group = "Nominal parameters"));
-  parameter Modelica.SIunits.PressureDifference dp_nominal "Nominal pressure drop"
-    annotation(Dialog(group = "Nominal parameters"));
-  parameter Modelica.SIunits.MassFlowRate m_flow_nominal=Q_flow_nominal/((TemSup_nominal-TemRet_nominal)*cp_default)
-    "Nominal mass flow rate"
-     annotation(Dialog(group = "Nominal parameters"));
+    annotation(Dialog(group = "Nominal condition"));
 
   // Electric interface
-  parameter DisHeatLib.Supply.BaseClasses.BasePowerCharacteristic powerCha "Characteristic for heat and power units";
+  parameter DisHeatLib.Supply.BaseClasses.BasePowerCharacteristic powerCha "Characteristic for heat and power units"
+    annotation(Dialog(tab = "Electric power"));
 
-  // Advanced
-  parameter Boolean linearized = false
-    "= true, use linear relation between m_flow and dp for any flow rate"
-    annotation(Evaluate=true, Dialog(tab = "Advanced"));
-  parameter Boolean from_dp = false
-    "= true, use linear relation between m_flow and dp for any flow rate"
-    annotation(Evaluate=true, Dialog(tab = "Advanced"));
+  parameter Modelica.SIunits.MassFlowRate m_flow_small(min=0) = 1E-4*abs(m_flow_nominal)
+    "Small mass flow rate for regularization of zero flow"
+    annotation(Dialog(tab = "Advanced"));
 
- // Assumptions
-  parameter Boolean allowFlowReversal = true
-    "= false to simplify equations, assuming, but not enforcing, no flow reversal"
-    annotation(Dialog(tab="Assumptions"), Evaluate=true);
+  Modelica.SIunits.Power Q_flow
+    "Heat flow through supply";
+
+protected
+      final parameter Modelica.SIunits.SpecificHeatCapacity cp_default=
+        Medium.cp_const
+        "Specific heat capacity of the fluid"
+        annotation(Evaluate=true);
 
 public
-  Modelica.Blocks.Interfaces.RealOutput P
+  Modelica.Blocks.Interfaces.RealOutput P(unit="W")
     "Active power consumption (positive)/generation(negative)"
     annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
@@ -70,10 +68,7 @@ public
         extent={{10,-10},{-10,10}},
         rotation=0,
         origin={26,-58})));
-protected
-      final parameter Modelica.SIunits.SpecificHeatCapacity cp_default=
-        Medium.cp_const
-        "Specific heat capacity of the fluid";
+
 equation
   connect(powerCharacteristic.u, Q_flow1.y)
     annotation (Line(points={{-56,-58},{-63,-58}}, color={0,0,127}));
@@ -89,12 +84,7 @@ equation
           fillColor={248,248,248},
           fillPattern=FillPattern.HorizontalCylinder,
           extent={{-100.0,-100.0},{100.0,100.0}},
-          radius=25.0),          Text(
-          extent={{-141,-99},{159,-139}},
-          lineColor={0,0,255},
-          fillPattern=FillPattern.HorizontalCylinder,
-          fillColor={0,127,255},
-          textString="%name"),
+          radius=25.0),
         Line(
           points={{-70,-62}},
           color={28,108,200},

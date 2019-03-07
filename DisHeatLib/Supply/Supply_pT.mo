@@ -1,8 +1,13 @@
 within DisHeatLib.Supply;
 model Supply_pT "Differential pressure and temperature supply"
-  extends DisHeatLib.Supply.BaseClasses.BaseSupply(otherPowerUnits(y=pump.P));
+  extends DisHeatLib.Supply.BaseClasses.BaseSupply(otherPowerUnits(y=pump.P), nPorts=
+        1);
 
-  // General
+
+  parameter Modelica.SIunits.PressureDifference dp_nominal
+    "Nominal pressure difference of pump"
+    annotation(Dialog(group = "Nominal condition"));
+
   parameter Modelica.SIunits.Efficiency pump_eff = 0.4 "Total efficiency of the pump"
     annotation(Dialog(group="Nominal parameters"), Evaluate=true);
 
@@ -81,6 +86,8 @@ public
     redeclare package Medium = Medium,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     T_start=TemSup_nominal,
+    m_flow_small=m_flow_small,
+    addPowerToMedium=true,
     nominalValuesDefineDefaultPressureCurve=true,
     m_flow_nominal=m_flow_nominal,
     inputType=if dp_controller then IBPSA.Fluid.Types.InputType.Continuous
@@ -94,9 +101,8 @@ public
 public
   IBPSA.Fluid.HeatExchangers.Heater_T heater(redeclare package Medium = Medium,
       m_flow_nominal=m_flow_nominal,
+    m_flow_small=m_flow_small,
     dp_nominal=0,
-    linearizeFlowResistance=linearized,
-    from_dp=from_dp,
     allowFlowReversal=allowFlowReversal,
     QMax_flow=Q_flow_nominal)
     annotation (Placement(transformation(extent={{-14,-10},{6,10}})));
@@ -110,14 +116,6 @@ public
         extent={{-10,-10},{10,10}},
         rotation=-90,
         origin={0,-110})));
-public
-  Modelica.Fluid.Interfaces.FluidPort_b port_sl(redeclare package Medium =
-        Medium) "Supply fluid port"
-    annotation (Placement(transformation(extent={{90,-10},{110,10}})));
-public
-  Modelica.Fluid.Interfaces.FluidPort_a port_rl(redeclare package Medium =
-        Medium) "Return fluid port"
-    annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
 equation
   Q_flow = heater.Q_flow;
 
@@ -131,16 +129,16 @@ equation
     annotation (Line(points={{6,0},{20,0}},  color={0,127,255}));
   connect(TsupController.y, heater.TSet) annotation (Line(points={{-1,80},{-20,80},
           {-20,8},{-16,8}}, color={0,0,127}));
-  connect(exp.port_a, heater.port_a)
-    annotation (Line(points={{-36,14},{-36,0},{-14,0}}, color={0,127,255}));
-  connect(pump.port_b, port_sl)
-    annotation (Line(points={{40,0},{100,0}}, color={0,127,255}));
-  connect(port_rl, heater.port_a)
-    annotation (Line(points={{-100,0},{-14,0}}, color={0,127,255}));
   connect(dp_control.y, pump.dp_in)
     annotation (Line(points={{21,50},{30,50},{30,12}}, color={0,0,127}));
   connect(TSetConst.y, heater.TSet) annotation (Line(points={{-35,48},{-20,48},{
           -20,8},{-16,8}}, color={0,0,127}));
+  connect(port_a, heater.port_a)
+    annotation (Line(points={{-100,0},{-14,0}}, color={0,127,255}));
+  connect(port_a, exp.port_a)
+    annotation (Line(points={{-100,0},{-36,0},{-36,14}}, color={0,127,255}));
+  connect(pump.port_b, ports_b[1])
+    annotation (Line(points={{40,0},{100,0}}, color={0,127,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false),
         graphics={      Polygon(
     points={{-28,52},{-50,42},{-36,66},{-20,78},{-6,92},{16,84},{34,86},{58,68},

@@ -14,6 +14,7 @@ model Radiator
 public
   IBPSA.Fluid.HeatExchangers.Radiators.RadiatorEN442_2 rad(
     redeclare package Medium = Medium,
+    m_flow_small=m_flow_small,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     T_start=TemSup_nominal,
     nEle=nEle,

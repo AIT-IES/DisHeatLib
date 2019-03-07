@@ -1,22 +1,19 @@
 within DisHeatLib.Demand;
 model Demand
+  extends IBPSA.Fluid.Interfaces.PartialTwoPortInterface(
+    m_flow_nominal=Q_flow_nominal/((TemSup_nominal-TemRet_nominal)*cp_default));
+  extends IBPSA.Fluid.Interfaces.TwoPortFlowResistanceParameters(
+    final computeFlowResistance=(abs(dp_nominal) > Modelica.Constants.eps));
   // Basic parameters
-  extends IBPSA.Fluid.Interfaces.PartialTwoPort;
   parameter DisHeatLib.Substations.BaseClasses.BaseStationFlowType FlowType = DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Pump "Flow type";
   // Nominal parameters
-  parameter Modelica.SIunits.Power Q_flow_nominal=m_flow_nominal*((TemSup_nominal-TemRet_nominal)*cp_default)
+  parameter Modelica.SIunits.Power Q_flow_nominal
     "Nominal heat flow rate"
-    annotation(Evaluate = true, Dialog(group="Nominal parameters"));
-  parameter Modelica.SIunits.MassFlowRate m_flow_nominal=Q_flow_nominal/((TemSup_nominal-TemRet_nominal)*cp_default)
-    "Nominal mass flow rate"
-    annotation(Evaluate = true, Dialog(group="Nominal parameters"));
-  parameter Modelica.SIunits.PressureDifference dp_nominal
-    "Nominal pressure difference"
-    annotation(Evaluate = true, Dialog(group="Nominal parameters"));
+    annotation(Evaluate = true, Dialog(group="Nominal condition"));
   parameter Modelica.SIunits.Temperature TemSup_nominal(displayUnit="degC")=60.0+273.15 "Nominal supply temperature"
-    annotation(Evaluate = true, Dialog(group="Nominal parameters"));
+    annotation(Evaluate = true, Dialog(group="Nominal condition"));
   parameter Modelica.SIunits.Temperature TemRet_nominal(displayUnit="degC")=35.0+273.15 "Nominal return temperature"
-    annotation(Evaluate = true, Dialog(group="Nominal parameters"));
+    annotation(Evaluate = true, Dialog(group="Nominal condition"));
 
   // Heat load
   parameter DisHeatLib.Demand.BaseClasses.InputTypeQ heatLoad = DisHeatLib.Demand.BaseClasses.InputTypeQ.Constant "Calculation of heat load"
@@ -83,6 +80,8 @@ public
         origin={0,120})));
   replaceable BaseClasses.BaseDemand demandType(
     redeclare final package Medium = Medium,
+    allowFlowReversal=allowFlowReversal,
+    m_flow_small=m_flow_small,
     final Q_flow_nominal=Q_flow_nominal,
     final m_flow_nominal=m_flow_nominal,
     final TemSup_nominal=TemSup_nominal,
@@ -92,6 +91,8 @@ public
   IBPSA.Fluid.Movers.FlowControlled_m_flow pump(
     redeclare package Medium = Medium,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
+    allowFlowReversal=allowFlowReversal,
+    m_flow_small=m_flow_small,
     riseTime(displayUnit="min"),
     nominalValuesDefineDefaultPressureCurve=true,
     m_flow_nominal=m_flow_nominal,
@@ -118,6 +119,9 @@ protected
 protected
   IBPSA.Fluid.Actuators.Valves.TwoWayEqualPercentage     valve(
     redeclare package Medium = Medium,
+    allowFlowReversal=allowFlowReversal,
+    from_dp=from_dp,
+    linearized=linearizeFlowResistance,
     dpValve_nominal(displayUnit="bar") = dp_nominal,
     m_flow_nominal=m_flow_nominal) if
                         FlowType == DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Valve

@@ -1,5 +1,5 @@
 within DisHeatLib.Demand.Examples;
-model BaseDemand
+model Demand
   extends Modelica.Icons.Example;
   package Medium = IBPSA.Media.Water;
   Modelica.Fluid.Sources.FixedBoundary boundaryRL(          redeclare package
@@ -63,21 +63,21 @@ model BaseDemand
     duration(displayUnit="d") = 864000,
     startTime(displayUnit="d") = 86400)
     annotation (Placement(transformation(extent={{-74,-74},{-54,-54}})));
-  DisHeatLib.Demand.Demand baseDemand(
+  DisHeatLib.Demand.Demand demand(
     redeclare package Medium = Medium,
     Q_flow_nominal=1000,
-    dp_nominal=100000,
+    dp_nominal(displayUnit="bar") = 100000,
     heatLoad=DisHeatLib.Demand.BaseClasses.InputTypeQ.Input,
     redeclare BaseClasses.FixedReturn demandType)
     annotation (Placement(transformation(extent={{-10,38},{10,58}})));
-  DisHeatLib.Demand.Demand baseDemand1(
+  DisHeatLib.Demand.Demand demand1(
     redeclare package Medium = Medium,
     Q_flow_nominal=1000,
     dp_nominal=100000,
     Q_constant=1000,
     redeclare BaseClasses.FixedReturn demandType)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-  DisHeatLib.Demand.Demand baseDemand2(
+  DisHeatLib.Demand.Demand demand2(
     redeclare package Medium = Medium,
     Q_flow_nominal=10000,
     dp_nominal=100000,
@@ -91,23 +91,23 @@ equation
     annotation (Line(points={{-53,-64},{-42,-64}}, color={0,0,127}));
   connect(T1.y, boundarySL1.T_in)
     annotation (Line(points={{-53,4},{-42,4}}, color={0,0,127}));
-  connect(Q.y, baseDemand.Qin)
+  connect(Q.y, demand.Qin)
     annotation (Line(points={{-9,84},{0,84},{0,60}}, color={0,0,127}));
-  connect(boundarySL1.ports[1], baseDemand1.port_a)
+  connect(boundarySL1.ports[1], demand1.port_a)
     annotation (Line(points={{-20,0},{-10,0}}, color={0,127,255}));
-  connect(baseDemand1.port_b, boundaryRL1.ports[1])
+  connect(demand1.port_b, boundaryRL1.ports[1])
     annotation (Line(points={{10,0},{20,0}}, color={0,127,255}));
-  connect(boundarySL2.ports[1], baseDemand2.port_a)
+  connect(boundarySL2.ports[1], demand2.port_a)
     annotation (Line(points={{-20,-68},{-10,-68}}, color={0,127,255}));
-  connect(baseDemand2.port_b, boundaryRL2.ports[1])
+  connect(demand2.port_b, boundaryRL2.ports[1])
     annotation (Line(points={{10,-68},{20,-68}}, color={0,127,255}));
   connect(T.y, boundarySL.T_in)
     annotation (Line(points={{-53,52},{-42,52}}, color={0,0,127}));
-  connect(boundarySL.ports[1], baseDemand.port_a)
+  connect(boundarySL.ports[1], demand.port_a)
     annotation (Line(points={{-20,48},{-10,48}}, color={0,127,255}));
-  connect(baseDemand.port_b, boundaryRL.ports[1])
+  connect(demand.port_b, boundaryRL.ports[1])
     annotation (Line(points={{10,48},{20,48}}, color={0,127,255}));
-  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Demand/Examples/BaseDemand.mos"
+  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Demand/Examples/Demand.mos"
         "Simulate and plot"),
         Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),
@@ -116,4 +116,4 @@ equation
 <li>Feburary 27, 2019, by Benedikt Leitner:<br>Implementation and added User&apos;s guide. </li>
 </ul>
 </html>"));
-end BaseDemand;
+end Demand;

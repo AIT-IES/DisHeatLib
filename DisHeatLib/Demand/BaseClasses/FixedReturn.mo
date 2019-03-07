@@ -24,8 +24,10 @@ public
   IBPSA.Fluid.HeatExchangers.SensibleCooler_T cooler(
     redeclare package Medium = Medium,
     m_flow_nominal=m_flow_nominal,
+    m_flow_small=m_flow_small,
     dp_nominal(displayUnit="Pa") = 0,
-    allowFlowReversal=allowFlowReversal)
+    allowFlowReversal=allowFlowReversal,
+    T_start=TemSup_nominal)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
 protected
   Modelica.Blocks.Sources.RealExpression TSet(y=TemRet_nominal) if returnTemperature==DisHeatLib.Demand.BaseClasses.InputTypeTret.Constant    annotation (

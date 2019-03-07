@@ -235,10 +235,12 @@ equation
     annotation (Line(points={{10,-60},{30,-60}}, color={0,127,255}));
   connect(senTemSL.T, bypass.T_measurement) annotation (Line(points={{-80,-49},{
           -80,-44},{0,-44},{0,-48}},  color={0,0,127}));
-  connect(port_ht, BaseStationSH.port_ht) annotation (Line(points={{0,100},{0,74},
-          {70,74},{70,40},{60,40}}, color={191,0,0}));
-  connect(port_ht, BaseStationDHW.port_ht) annotation (Line(points={{0,100},{0,74},
-          {-76,74},{-76,42},{-62,42}}, color={191,0,0}));
+  connect(port_ht, BaseStationSH.port_ht) annotation (Line(points={{0,100},{0,
+          74},{70,74},{70,40},{40,40}},
+                                    color={191,0,0}));
+  connect(port_ht, BaseStationDHW.port_ht) annotation (Line(points={{0,100},{0,
+          74},{-76,74},{-76,42},{-42,42}},
+                                       color={191,0,0}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-120},
             {100,100}}),                                        graphics={
         Rectangle(

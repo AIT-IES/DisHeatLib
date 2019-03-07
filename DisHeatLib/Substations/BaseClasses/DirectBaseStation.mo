@@ -1,24 +1,22 @@
 within DisHeatLib.Substations.BaseClasses;
 model DirectBaseStation
   extends BaseStation(
-    Q_flow_nominal=m_flow_nominal_sec*(TemSup_nominal-TemRet_nominal)*cp_default,
-    m_flow_nominal=Q_flow_nominal/((TemSup_nominal-TemRet_nominal)*cp_default),
-    final TemSup_nominal_sec=Medium.T_default,
-    final TemRet_nominal_sec=Medium.T_default,
-    final m_flow_nominal_sec=m_flow_nominal,
+    final FlowType=DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Pump,
+    final dp1_nominal=0,
+    final TemSup2_nominal=Medium.T_default,
+    final TemRet2_nominal=Medium.T_default,
+    final allowFlowReversal2=allowFlowReversal1,
+    final m2_flow_small=m1_flow_small,
+    final m2_flow_nominal=m1_flow_nominal,
     final OutsideDependent=false);
 
-protected
-      final parameter Modelica.SIunits.SpecificHeatCapacity cp_default=
-        Medium.cp_const
-        "Specific heat capacity of the fluid"
-        annotation(Evaluate=true);
+
 
 equation
-  connect(port_sl_p, port_sl_s) annotation (Line(points={{-100,-60},{-62,-60},{-62,
-          62},{-100,62},{-100,60}}, color={0,127,255}));
-  connect(port_rl_s, port_rl_p) annotation (Line(points={{100,60},{64,60},{64,-60},
-          {100,-60}}, color={0,127,255}));
+  connect(port_b2, port_a1) annotation (Line(points={{-100,-60},{-80,-60},{-80,60},
+          {-100,60}}, color={0,127,255}));
+  connect(port_b1, port_a2) annotation (Line(points={{100,60},{80,60},{80,-60},{
+          100,-60}}, color={0,127,255}));
   annotation (Icon(graphics={            Rectangle(
           extent={{-70,80},{70,-80}},
           lineColor={0,0,255},

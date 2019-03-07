@@ -46,7 +46,8 @@ equation
           fillColor={248,248,248},
           fillPattern=FillPattern.HorizontalCylinder,
           extent={{-100.0,-100.0},{100.0,100.0}},
-          radius=25.0),          Text(
+          radius=25.0),
+                                 Text(
           extent={{-149,-99},{151,-139}},
           lineColor={0,0,255},
           fillPattern=FillPattern.HorizontalCylinder,

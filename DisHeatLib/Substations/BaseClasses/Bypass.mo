@@ -1,12 +1,12 @@
 within DisHeatLib.Substations.BaseClasses;
 model Bypass
-  replaceable package Medium =
-    Modelica.Media.Water.ConstantPropertyLiquidWater;
+  extends IBPSA.Fluid.Interfaces.PartialTwoPortInterface;
+  extends IBPSA.Fluid.Interfaces.TwoPortFlowResistanceParameters(
+    final computeFlowResistance=(abs(dp_nominal) > Modelica.Constants.eps),
+    final deltaM=0.1);
+
   parameter BaseClasses.BaseStationFlowType FlowType = DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Pump "Flow type at primary side";
-  parameter Modelica.SIunits.MassFlowRate m_flow_nominal
-    "Nominal mass flow running through bypass when opened";
-  parameter Modelica.SIunits.PressureDifference dp_nominal=500000
-    "Nominal pressure difference";
+
   // Control
   parameter Boolean use_thermostat = true "Use a thermostat to control the bypass valve, otherwise always opened"
     annotation(Dialog(group = "Control"), HideResult=true, choices(checkBox=true));
@@ -17,13 +17,6 @@ model Bypass
     "Temperature bandwidth for bypass activation"
     annotation(Dialog(group = "Control", enable=use_thermostat));
 
-  // Advanced
-  parameter Boolean linearized = false
-    "= true, use linear relation between m_flow and dp for any flow rate"
-    annotation(Evaluate=true, Dialog(tab="Advanced"));
-  parameter Boolean from_dp = false
-    "= true, use linear relation between m_flow and dp for any flow rate"
-    annotation(Evaluate=true, Dialog(tab = "Advanced"));
 public
   Controls.bypass_control bypass_control(
     use_thermostat=use_thermostat,
@@ -33,6 +26,8 @@ public
   IBPSA.Fluid.Movers.FlowControlled_m_flow pump(
     redeclare package Medium = Medium,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
+    allowFlowReversal=allowFlowReversal,
+    m_flow_small=m_flow_small,
     riseTime(displayUnit="min"),
     nominalValuesDefineDefaultPressureCurve=true,
     m_flow_nominal=m_flow_nominal,
@@ -61,9 +56,10 @@ public
 protected
   IBPSA.Fluid.Actuators.Valves.TwoWayEqualPercentage     valve(
     redeclare package Medium = Medium,
+    allowFlowReversal=allowFlowReversal,
     dpValve_nominal(displayUnit="bar") = dp_nominal,
     m_flow_nominal=m_flow_nominal,
-    linearized=linearized,
+    linearized=linearizeFlowResistance,
     from_dp=from_dp) if FlowType == DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Valve
     annotation (Placement(transformation(extent={{-10,30},{10,50}})));
 equation
@@ -105,12 +101,7 @@ equation
         Line(
           points={{-100,0},{100,0}},
           color={244,125,35},
-          thickness=1),          Text(
-          extent={{-141,-99},{159,-139}},
-          lineColor={0,0,255},
-          fillPattern=FillPattern.HorizontalCylinder,
-          fillColor={0,127,255},
-          textString="%name")}),                                 Diagram(
+          thickness=1)}),                                        Diagram(
         coordinateSystem(preserveAspectRatio=false)),
     Documentation(info="<html>
 <p>This is a model for a generic by-pass that can be used, e.g., in a district heating substation. By-passes are used to avoid waiting times in heat supply and to avoid freezing of return lines in the district heating network. However, their use increases the return temperature and, thus, the losses of the network. The by-pass can be controlled by a thermostat or it can allow a constant flow.</p>

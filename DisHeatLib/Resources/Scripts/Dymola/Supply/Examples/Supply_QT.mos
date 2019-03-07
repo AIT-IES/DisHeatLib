@@ -1,6 +1,6 @@
 removePlots();
 simulateModel("DisHeatLib.Supply.Examples.Supply_QT", startTime=0, tolerance=1e-6, stopTime=86400, outputInterval=900, method="dassl", resultFile="Supply_QT");
 createPlot(id = 1,
- y = {"supply_QT.Q_flow", "Q_flow_set.y", "senTem.T"},
+ y = {"supply_QT.Q_flow", "Q_flow_set.y", "supply_QT.sta_b[1].T"},
  axes={1, 1, 2},
  grid = true);
