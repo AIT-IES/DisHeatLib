@@ -42,6 +42,7 @@ public
         extent={{-10,-10},{10,10}},
         rotation=-90,
         origin={0,-110})));
+protected
   Modelica.Blocks.Tables.CombiTable1Ds powerCharacteristic(
     table=[powerCha.Q_flow,powerCha.P],
     columns={2},
@@ -54,6 +55,7 @@ public
         extent={{-10,-10},{10,10}},
         rotation=0,
         origin={-74,-58})));
+protected
   Modelica.Blocks.Math.Add add
     "Sum of all power consumption/generation; enables additional power connections"
     annotation (Placement(transformation(
