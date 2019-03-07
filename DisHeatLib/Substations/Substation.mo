@@ -1,132 +1,81 @@
 within DisHeatLib.Substations;
 model Substation
-  replaceable package Medium =
-    Modelica.Media.Water.ConstantPropertyLiquidWater;
+  extends BaseClasses.SubstationInterface(
+    final m_flow_nominal=baseStationDHW.m1_flow_nominal+baseStationSH.m1_flow_nominal);
 
   // General
-  parameter BaseClasses.BaseStationFlowType FlowType = DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Pump "Flow type at primary side"
-    annotation(Dialog(group = "General"));
   parameter Modelica.SIunits.Temperature TemSup_nominal(displayUnit="degC")
-    "Nominal supply temperature at the primary side"
-    annotation(Dialog(group = "General"));
-  final parameter Modelica.SIunits.Power Q_flow_nominal=BaseStationDHW.Q_flow_nominal
-       + BaseStationSH.Q_flow_nominal
+    "Nominal supply temperature"
+    annotation(Dialog(group = "Nominal condition"));
+
+  final parameter Modelica.SIunits.Power Q_flow_nominal=baseStationDHW.Q_flow_nominal
+       +baseStationSH.Q_flow_nominal
     "Nominal heat flow rate through station at secondary side"
     annotation (Dialog(group="Space heating"));
-  final parameter Modelica.SIunits.MassFlowRate m_flow_nominal=BaseStationDHW.m_flow_nominal
-       + BaseStationSH.m_flow_nominal
-    "Nominal mass flow rate at the primary side"
-    annotation (Evaluate=true, Dialog(group="Primary side"));
 
-  parameter Modelica.SIunits.PressureDifference dp_nominal
-    "Nominal pressure difference at the primary side"
-    annotation(Dialog(group = "General"));
-
-    // Bypass valve - Tab: Advanced
+  // Bypass valve - Tab: Bypass
   parameter Boolean use_bypass = true "Use a bypass valve"
-    annotation(Dialog(tab="Advanced", group = "Bypass"), HideResult=true, choices(checkBox=true));
-  parameter Boolean use_thermostat = true "Use a thermostat to control the bypass valve, otherwise always opened"
-    annotation(Dialog(enable=use_bypass, tab="Advanced", group = "Bypass"), HideResult=true, choices(checkBox=true));
-  parameter Real FracBypass(max=1)=0.05
-    "Fraction of nominal mass flow running through bypass when opened"
-    annotation(Dialog(tab="Advanced", group = "Bypass", use_bypass));
-  parameter Modelica.SIunits.Temperature TemSupMinBypass(displayUnit="degC")=TemSup_nominal-5.0
-    "Minimum supply temperature before bypass valve is opened"
-    annotation(Dialog(tab="Advanced", group = "Bypass", enable=use_thermostat and use_bypass));
-  parameter Modelica.SIunits.TemperatureDifference TemBandwidthBypass(displayUnit="degC")=3.0
-    "Temperature bandwidth for bypass activation"
-    annotation(Dialog(tab="Advanced", group = "Bypass", enable=use_thermostat and use_bypass));
+    annotation(Dialog(tab="Bypass"), HideResult=true, choices(checkBox=true));
 
-  // Advanced
-  parameter Boolean linearized = false
-    "= true, use linear relation between m_flow and dp for any flow rate"
-    annotation(Evaluate=true, Dialog(tab="Advanced"));
-  parameter Boolean from_dp = false
-    "= true, use linear relation between m_flow and dp for any flow rate"
-    annotation(Evaluate=true, Dialog(tab = "Advanced"));
 
 protected
       final parameter Modelica.SIunits.SpecificHeatCapacity cp_default=
         Medium.cp_const
         "Specific heat capacity of the fluid";
 public
-  replaceable BaseClasses.BaseStation         BaseStationDHW(
-    redeclare package Medium = Medium,
-    final dp_nominal=dp_nominal,
-    TemSup_nominal_sec=333.15,
-    TemRet_nominal_sec=283.15,
-    final TemSup_nominal=TemSup_nominal,
-    TemRet_nominal=283.15,
-    final FlowType=FlowType)
+  replaceable BaseClasses.BaseStation         baseStationDHW(
+    final allowFlowReversal1=allowFlowReversal,
+    final m1_flow_small=m_flow_small,
+    redeclare final package Medium = Medium,
+    final from_dp=from_dp,
+    final linearizeFlowResistance=linearizeFlowResistance,
+    final FlowType=FlowType,
+    final TemSup1_nominal=TemSup_nominal,
+    final dp1_nominal=dp_nominal)
                        annotation (Dialog(group="Domestic hot water station"), Placement(transformation(
-        extent={{-10,10},{10,-10}},
-        rotation=-90,
-        origin={-52,42})), __Dymola_choicesAllMatching=true);
-  replaceable BaseClasses.BaseStation         BaseStationSH(
-    redeclare package Medium = Medium,
-    final dp_nominal=dp_nominal,
-    final TemSup_nominal=TemSup_nominal,
-    final FlowType=FlowType)
-                       annotation (Dialog(group="Space heating station"), Placement(transformation(
         extent={{-10,-10},{10,10}},
+        rotation=-90,
+        origin={-50,40})), __Dymola_choicesAllMatching=true);
+  replaceable BaseClasses.BaseStation         baseStationSH(
+    final allowFlowReversal1=allowFlowReversal,
+    final m1_flow_small=m_flow_small,
+    redeclare final package Medium = Medium,
+    final from_dp=from_dp,
+    final linearizeFlowResistance=linearizeFlowResistance,
+    final FlowType=FlowType,
+    final TemSup1_nominal=TemSup_nominal,
+    final dp1_nominal=dp_nominal)
+                       annotation (Dialog(group="Space heating station"), Placement(transformation(
+        extent={{-10,10},{10,-10}},
         rotation=-90,
         origin={50,40})), __Dymola_choicesAllMatching=true);
 public
-  Modelica.Fluid.Interfaces.FluidPort_a port_sl_p(redeclare package Medium =
-        Medium) "Supply fluid port at primary side "
-    annotation (Placement(transformation(extent={{-110,-70},{-90,-50}})));
-  Modelica.Fluid.Interfaces.FluidPort_b port_rl_p(redeclare package Medium =
-        Medium) "Return fluid port at primary side "
-    annotation (Placement(transformation(extent={{90,-70},{110,-50}})));
-public
-  Modelica.Fluid.Interfaces.FluidPort_a port_sl_DHW(redeclare package Medium =
-        Medium) "Supply fluid port at primary side "
-    annotation (Placement(transformation(extent={{-110,50},{-90,70}})));
-  Modelica.Fluid.Interfaces.FluidPort_b port_rl_DHW(redeclare package Medium =
-        Medium) "Return fluid port at primary side "
-    annotation (Placement(transformation(extent={{-110,10},{-90,30}})));
-public
-  Modelica.Fluid.Interfaces.FluidPort_a port_sl_SH(redeclare package Medium =
-        Medium) "Supply fluid port at primary side "
-    annotation (Placement(transformation(extent={{90,50},{110,70}})));
-  Modelica.Fluid.Interfaces.FluidPort_b port_rl_SH(redeclare package Medium =
-        Medium) "Return fluid port at primary side "
-    annotation (Placement(transformation(extent={{90,10},{110,30}})));
-public
   IBPSA.Fluid.Sensors.TemperatureTwoPort senTemSL(redeclare package Medium =
-        Medium, m_flow_nominal=m_flow_nominal,
+        Medium,
+    allowFlowReversal=allowFlowReversal,
+                m_flow_nominal=m_flow_nominal,
     T(displayUnit="degC"),
     initType=Modelica.Blocks.Types.Init.InitialOutput,
     T_start=TemSup_nominal,
-    transferHeat=use_thermostat,
+    transferHeat=true,
     TAmb=293.15)
     annotation (Placement(transformation(extent={{-90,-70},{-70,-50}})));
-  IBPSA.Fluid.Sensors.TemperatureTwoPort senTemRL(redeclare package Medium =
-        Medium, m_flow_nominal=m_flow_nominal,
-    T(displayUnit="degC"))
-    annotation (Placement(transformation(extent={{50,-70},{70,-50}})));
-public
-  IBPSA.Fluid.Sensors.RelativePressure sendp(redeclare package Medium = Medium)
-    "differential pressure sensor"
-    annotation (Placement(transformation(extent={{-10,-112},{10,-92}})));
-public
-  Modelica.Blocks.Interfaces.RealOutput dp "Connector of Real output signal"
-    annotation (Placement(transformation(extent={{100,-10},{120,10}})));
-  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a port_ht if BaseStationSH.OutsideDependent
-     or BaseStationDHW.OutsideDependent
+  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a port_ht if baseStationSH.OutsideDependent
+     or baseStationDHW.OutsideDependent
     "Outside temperature port"
     annotation (Placement(transformation(extent={{-10,90},{10,110}})));
+  replaceable
   BaseClasses.Bypass bypass(
-    redeclare package Medium = Medium,
-    FlowType=FlowType,
-    m_flow_nominal=FracBypass*m_flow_nominal,
-    dp_nominal=dp_nominal,
-    use_thermostat=use_thermostat,
-    TemSupMinBypass=TemSupMinBypass,
-    TemBandwidthBypass=TemBandwidthBypass,
-    linearized=linearized,
-    from_dp=from_dp) if use_bypass
-    annotation (Placement(transformation(extent={{-10,-70},{10,-50}})));
+    redeclare final package Medium = Medium,
+    final allowFlowReversal=allowFlowReversal,
+    m_flow_nominal=0.03*m_flow_nominal,
+    final m_flow_small=m_flow_small,
+    final from_dp=from_dp,
+    final dp_nominal=dp_nominal,
+    final linearizeFlowResistance=linearizeFlowResistance,
+    final FlowType=FlowType) if
+                        use_bypass constrainedby BaseClasses.Bypass
+    annotation (Dialog(tab = "Bypass", enable=use_bypass), Placement(transformation(extent={{-4,-70},{16,-50}})));
 protected
   IBPSA.Fluid.FixedResistances.Junction jun(
     redeclare package Medium = Medium,
@@ -134,27 +83,27 @@ protected
     T_start=TemSup_nominal,
     dp_nominal={0,0,0},
     m_flow_nominal={m_flow_nominal,FracBypass*m_flow_nominal,m_flow_nominal},
-    linearized=linearized,
+    linearized=linearizeFlowResistance,
     from_dp=from_dp) if       use_bypass
-    annotation (Placement(transformation(extent={{-40,-54},{-28,-66}})));
+    annotation (Placement(transformation(extent={{-32,-54},{-20,-66}})));
   IBPSA.Fluid.FixedResistances.Junction jun1(
     redeclare package Medium = Medium,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     T_start=TemSup_nominal,
     dp_nominal={0,0,0},
-    m_flow_nominal={m_flow_nominal,BaseStationDHW.m_flow_nominal,BaseStationSH.m_flow_nominal},
-    linearized=linearized,
+    m_flow_nominal={m_flow_nominal,baseStationDHW.m1_flow_nominal,baseStationSH.m1_flow_nominal},
+    linearized=linearizeFlowResistance,
     from_dp=from_dp)
     annotation (Placement(transformation(
         extent={{6,6},{-6,-6}},
         rotation=-90,
-        origin={-34,48})));
+        origin={-26,46})));
   IBPSA.Fluid.FixedResistances.Junction jun2(
     redeclare package Medium = Medium,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     dp_nominal={0,0,0},
-    m_flow_nominal={BaseStationSH.m_flow_nominal,m_flow_nominal,BaseStationDHW.m_flow_nominal},
-    linearized=linearized,
+    m_flow_nominal={baseStationSH.m1_flow_nominal,m_flow_nominal,baseStationDHW.m1_flow_nominal},
+    linearized=linearizeFlowResistance,
     from_dp=from_dp)
     annotation (Placement(transformation(
         extent={{-6,-6},{6,6}},
@@ -164,83 +113,80 @@ protected
     redeclare package Medium = Medium,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     dp_nominal={0,0,0},
-    m_flow_nominal={FracBypass*m_flow_nominal,m_flow_nominal,m_flow_nominal},
-    linearized=linearized,
+    m_flow_nominal={bypass.m_flow_nominal,m_flow_nominal,m_flow_nominal},
+    linearized=linearizeFlowResistance,
     from_dp=from_dp) if       use_bypass
     annotation (Placement(transformation(
         extent={{-6,6},{6,-6}},
         rotation=0,
         origin={36,-60})));
   IBPSA.Fluid.FixedResistances.LosslessPipe pip(redeclare package Medium =
-        Medium, m_flow_nominal=m_flow_nominal) if not use_bypass
+        Medium,
+    allowFlowReversal=allowFlowReversal,
+                m_flow_nominal=m_flow_nominal) if not use_bypass
     "replaces bypass if disabled"
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},
         rotation=-90,
         origin={-48,-28})));
   IBPSA.Fluid.FixedResistances.LosslessPipe pip1(
                                                 redeclare package Medium =
-        Medium, m_flow_nominal=m_flow_nominal) if not use_bypass
+        Medium,
+    allowFlowReversal=allowFlowReversal,
+                m_flow_nominal=m_flow_nominal) if not use_bypass
     "replaces bypass if disabled"
     annotation (Placement(transformation(extent={{-10,10},{10,-10}},
         rotation=-90,
         origin={50,-32})));
 equation
-  connect(sendp.p_rel,dp)  annotation (Line(points={{0,-111},{0,-116},{90,-116},
-          {90,0},{110,0}},color={0,0,127}));
-  connect(senTemSL.port_a, port_sl_p)
-    annotation (Line(points={{-90,-60},{-100,-60}}, color={0,127,255}));
-  connect(sendp.port_b, port_rl_p) annotation (Line(points={{10,-102},{100,-102},
-          {100,-60}},color={0,127,255}));
-  connect(sendp.port_a, port_sl_p) annotation (Line(points={{-10,-102},{-100,-102},
-          {-100,-60}}, color={0,127,255}));
-  connect(BaseStationDHW.port_sl_s, port_sl_DHW) annotation (Line(points={{-58,52},
-          {-58,52},{-58,60},{-58,60},{-58,60},{-100,60}},     color={0,127,255}));
-  connect(BaseStationSH.port_sl_s, port_sl_SH) annotation (Line(points={{56,50},
-          {56,50},{56,60},{56,60},{56,60},{100,60}}, color={0,127,255}));
-  connect(BaseStationSH.port_rl_s, port_rl_SH)
-    annotation (Line(points={{56,30},{56,20},{100,20}}, color={0,127,255}));
-  connect(BaseStationDHW.port_rl_s, port_rl_DHW)
-    annotation (Line(points={{-58,32},{-58,20},{-100,20}}, color={0,127,255}));
-  connect(jun1.port_2, BaseStationDHW.port_sl_p) annotation (Line(points={{-34,54},
-          {-34,60},{-46,60},{-46,52}},     color={0,127,255}));
-  connect(jun1.port_3, BaseStationSH.port_sl_p) annotation (Line(points={{-28,48},
-          {-20,48},{-20,60},{44,60},{44,50}},     color={0,127,255}));
-  connect(BaseStationSH.port_rl_p, jun2.port_1)
-    annotation (Line(points={{44,30},{44,24},{44,24},{44,18}},
-                                               color={0,127,255}));
-  connect(jun2.port_3, BaseStationDHW.port_rl_p) annotation (Line(points={{38,12},
-          {32,12},{32,20},{-46,20},{-46,32}},     color={0,127,255}));
-  connect(jun3.port_2, senTemRL.port_a)
-    annotation (Line(points={{42,-60},{50,-60}}, color={0,127,255}));
   connect(jun3.port_3, jun2.port_2)
     annotation (Line(points={{36,-54},{36,-10},{44,-10},{44,6}},
                                                color={0,127,255}));
   connect(jun2.port_2, pip1.port_a) annotation (Line(points={{44,6},{44,-10},{50,
           -10},{50,-22}},    color={0,127,255}));
-  connect(pip1.port_b, senTemRL.port_a)
-    annotation (Line(points={{50,-42},{50,-60}},          color={0,127,255}));
-  connect(senTemRL.port_b, port_rl_p)
-    annotation (Line(points={{70,-60},{100,-60}}, color={0,127,255}));
   connect(senTemSL.port_b, jun.port_1)
-    annotation (Line(points={{-70,-60},{-40,-60}}, color={0,127,255}));
+    annotation (Line(points={{-70,-60},{-32,-60}}, color={0,127,255}));
   connect(senTemSL.port_b, pip.port_a) annotation (Line(points={{-70,-60},{-48,-60},
           {-48,-38}},      color={0,127,255}));
   connect(jun.port_3, jun1.port_1)
-    annotation (Line(points={{-34,-54},{-34,42}}, color={0,127,255}));
-  connect(pip.port_b, jun1.port_1) annotation (Line(points={{-48,-18},{-48,2},{
-          -34,2},{-34,42}}, color={0,127,255}));
-  connect(jun.port_2, bypass.port_a)
-    annotation (Line(points={{-28,-60},{-10,-60}}, color={0,127,255}));
-  connect(bypass.port_b, jun3.port_1)
-    annotation (Line(points={{10,-60},{30,-60}}, color={0,127,255}));
+    annotation (Line(points={{-26,-54},{-26,40}}, color={0,127,255}));
+  connect(pip.port_b, jun1.port_1) annotation (Line(points={{-48,-18},{-48,2},{-26,
+          2},{-26,40}},     color={0,127,255}));
   connect(senTemSL.T, bypass.T_measurement) annotation (Line(points={{-80,-49},{
-          -80,-44},{0,-44},{0,-48}},  color={0,0,127}));
-  connect(port_ht, BaseStationSH.port_ht) annotation (Line(points={{0,100},{0,
-          74},{70,74},{70,40},{40,40}},
-                                    color={191,0,0}));
-  connect(port_ht, BaseStationDHW.port_ht) annotation (Line(points={{0,100},{0,
-          74},{-76,74},{-76,42},{-42,42}},
-                                       color={191,0,0}));
+          -80,-42},{6,-42},{6,-48}},  color={0,0,127}));
+  connect(port_ht,baseStationSH. port_ht) annotation (Line(points={{0,100},{0,74},
+          {70,74},{70,40},{60,40}}, color={191,0,0}));
+  connect(port_ht,baseStationDHW. port_ht) annotation (Line(points={{0,100},{0,74},
+          {-76,74},{-76,40},{-60,40}}, color={191,0,0}));
+  connect(baseStationSH.port_b1, jun2.port_1)
+    annotation (Line(points={{44,30},{44,18}}, color={0,127,255}));
+  connect(jun1.port_2, baseStationDHW.port_a1) annotation (Line(points={{-26,52},
+          {-26,60},{-44,60},{-44,50}}, color={0,127,255}));
+  connect(baseStationDHW.port_b1, jun2.port_3)
+    annotation (Line(points={{-44,30},{-44,12},{38,12}}, color={0,127,255}));
+  connect(jun.port_2, bypass.port_a)
+    annotation (Line(points={{-20,-60},{-4,-60}}, color={0,127,255}));
+  connect(bypass.port_b, jun3.port_1)
+    annotation (Line(points={{16,-60},{30,-60}}, color={0,127,255}));
+  connect(port_a, senTemSL.port_a)
+    annotation (Line(points={{-100,-60},{-90,-60}}, color={0,127,255}));
+  connect(sendp.port_b, port_b) annotation (Line(points={{10,-88},{100,-88},{100,
+          -60}}, color={0,127,255}));
+  connect(sendp.port_a, port_a) annotation (Line(points={{-10,-88},{-100,-88},{-100,
+          -60}}, color={0,127,255}));
+  connect(jun1.port_3, baseStationSH.port_a1) annotation (Line(points={{-20,46},
+          {20,46},{20,60},{44,60},{44,50}}, color={0,127,255}));
+  connect(jun3.port_2, port_b)
+    annotation (Line(points={{42,-60},{100,-60}}, color={0,127,255}));
+  connect(pip1.port_b, port_b)
+    annotation (Line(points={{50,-42},{50,-60},{100,-60}}, color={0,127,255}));
+  connect(port_a_DHW, baseStationDHW.port_a2)
+    annotation (Line(points={{-100,20},{-56,20},{-56,30}}, color={0,127,255}));
+  connect(baseStationDHW.port_b2, port_b_DHW)
+    annotation (Line(points={{-56,50},{-56,60},{-100,60}}, color={0,127,255}));
+  connect(baseStationSH.port_b2, port_b_SH)
+    annotation (Line(points={{56,50},{56,60},{100,60}}, color={0,127,255}));
+  connect(baseStationSH.port_a2, port_a_SH)
+    annotation (Line(points={{56,30},{56,20},{100,20}}, color={0,127,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-120},
             {100,100}}),                                        graphics={
         Rectangle(
@@ -328,7 +274,7 @@ equation
           origin={0,-12},
           rotation=0,
           textString="NET")}),                                   Diagram(
-        coordinateSystem(preserveAspectRatio=false, extent={{-100,-120},{100,100}})),
+        coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})),
     Documentation(info="<html>
 <p>This is a model for a district heating substation with indirectly connected domestic hot water and space heating load. This substation contains a base station for domestic hot water (DHW) preparation and a base station for space heating (SH) together with a bypass valve. The DHW station is set to deliver a constant supply temperature at the secondary side, while the SH station delivers an outside-dependent supply temperature. The bypass valve is used to ensure a minimum supply temperature at the connection point at the primary side. Thus, it opens in case the supply temperature is below the minimum (minus bandwidth) and closes once the temperature is above the minimum (plus bandwidth). </p>
 <p>Care must be taken when chosing the nominal values for differential presure, mass flow and/or heat load, as different issues might occure:</p>
