@@ -1,7 +1,7 @@
 removePlots();
 simulateModel("DisHeatLib.Supply.Examples.Supply_T", startTime=0, tolerance=1e-6, stopTime=86400, outputInterval=900, method="dassl", resultFile="Supply_T");
 createPlot(id = 1,
- y = {"senTem.T", "supply_T.TemSup_nominal", "bou1.T_in"},
+ y = {"supply_T.sta_a.T", "supply_T.sta_b[1].T", "supply_T.TemSup_nominal"},
  grid = true);
 createPlot(id = 2,
  y = {"supply_T.Q_flow", "supply_T.Q_flow_nominal"},
