@@ -1,8 +1,6 @@
 within DisHeatLib.Substations.BaseClasses;
 model DirectBaseStation
   extends BaseStation(
-    final FlowType=DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Pump,
-    final dp1_nominal=0,
     final TemSup2_nominal=Medium.T_default,
     final TemRet2_nominal=Medium.T_default,
     final allowFlowReversal2=allowFlowReversal1,
