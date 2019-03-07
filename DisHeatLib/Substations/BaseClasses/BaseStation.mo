@@ -29,10 +29,10 @@ partial model BaseStation
   parameter BaseClasses.BaseStationFlowType FlowType = DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Pump "Flow type at primary side"
     annotation(Dialog(group = "Primary side"));
   parameter Modelica.SIunits.Temperature TemSup1_nominal(displayUnit="degC")=80.0+273.15
-    "Nominal supply temperature at the primary side"
+    "Nominal supply temperature"
     annotation(Dialog(group = "Primary side"));
   parameter Modelica.SIunits.Temperature TemRet1_nominal(displayUnit="degC")=45.0+273.15
-    "Nominal return temperature at the primary side"
+    "Nominal return temperature"
     annotation(Dialog(group = "Primary side"));
   parameter Modelica.SIunits.PressureDifference dp1_nominal(min=0,
                                                            displayUnit="Pa")
@@ -41,10 +41,10 @@ partial model BaseStation
 
   //Secondary side parameters
   parameter Modelica.SIunits.Temperature TemSup2_nominal(displayUnit="degC")=60.0+273.15
-    "Nominal supply temperature at the secondary side"
+    "Nominal supply temperature"
     annotation(Dialog(group = "Secondary side"));
   parameter Modelica.SIunits.Temperature TemRet2_nominal(displayUnit="degC")=35.0+273.15
-    "Nominal return temperature at the secondary side"
+    "Nominal return temperature"
     annotation(Dialog(group = "Secondary side"));
   parameter Boolean OutsideDependent = true
     "Outside temperature dependent secondary supply temperature"
@@ -76,6 +76,30 @@ public
           lineColor={0,0,255},
           pattern=LinePattern.None,
           fillColor={95,95,95},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{-38,64},{-100,56}},
+          lineColor={0,0,255},
+          pattern=LinePattern.None,
+          fillColor={238,46,47},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{-38,-56},{-100,-64}},
+          lineColor={0,0,255},
+          pattern=LinePattern.None,
+          fillColor={238,46,47},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{100,64},{38,56}},
+          lineColor={0,0,255},
+          pattern=LinePattern.None,
+          fillColor={0,0,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{100,-56},{38,-64}},
+          lineColor={0,0,255},
+          pattern=LinePattern.None,
+          fillColor={0,0,255},
           fillPattern=FillPattern.Solid)}),                      Diagram(
         coordinateSystem(preserveAspectRatio=false)));
 end BaseStation;
