@@ -1,0 +1,6 @@
+removePlots();
+simulateModel("DisHeatLib.Storage.Examples.StorageTank", startTime=0, tolerance=1e-6, stopTime=86400, outputInterval=900, method="dassl", resultFile="StorageTank");
+createPlot(id = 1,
+ y = {"storageTank.SOC", "storageTank.tan.vol[1].T", "storageTank.tan.vol[2].T", "storageTank.tan.vol[3].T", "storageTank.tan.vol[4].T", "storageTank.tan.vol[5].T", "storageTank.tan.vol[6].T", "storageTank.tan.vol[7].T", "storageTank.tan.vol[8].T", "storageTank.tan.vol[9].T", "storageTank.tan.vol[10].T", "storageTank.TemSup_nominal"},
+ axes = {2,1,1,1,1,1,1,1,1,1,1,1},
+ grid = true);
