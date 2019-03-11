@@ -30,12 +30,6 @@ protected
         extent={{-10,-10},{10,10}},
         rotation=0,
         origin={-26,26})));
-public
-  Modelica.Blocks.Interfaces.RealOutput P if is_electric
-    "Active power consumption/generation" annotation (Placement(transformation(
-        extent={{-10,-10},{10,10}},
-        rotation=-90,
-        origin={0,-110})));
 equation
   Q_flow = heater.Q_flow;
   connect(TSupplySet.y, heater.TSet)
@@ -43,7 +37,6 @@ equation
                                                       color={0,0,127}));
   connect(heater.TSet, TSet) annotation (Line(points={{-12,8},{-12,86},{0,86},{0,
           120}},    color={0,0,127}));
-  connect(P, P) annotation (Line(points={{0,-110},{0,-110}}, color={0,0,127}));
   connect(heater.port_b, ports_b[1])
     annotation (Line(points={{10,0},{100,0}}, color={0,127,255}));
   connect(port_a, heater.port_a)

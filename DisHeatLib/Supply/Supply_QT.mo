@@ -85,11 +85,6 @@ protected
         rotation=0,
         origin={-86,90})));
 public
-  Modelica.Blocks.Interfaces.RealOutput P if is_electric
-    "Active power consumption/generation" annotation (Placement(transformation(
-        extent={{-10,-10},{10,10}},
-        rotation=-90,
-        origin={0,-110})));
   Modelica.Blocks.Math.Min min if use_Q_in
     "Limit the input signal to maximum heat capacity; avoids problems when heat capacity is set directly at heater"
     annotation (Placement(transformation(
@@ -111,7 +106,6 @@ equation
           0,127}));
   connect(heater.TSet, TSet) annotation (Line(points={{6,8},{6,86},{60,86},{60,
           120}},    color={0,0,127}));
-  connect(P, P) annotation (Line(points={{0,-110},{0,-110}}, color={0,0,127}));
   connect(QSet,min. u1)
     annotation (Line(points={{-60,120},{-60,86}}, color={0,0,127}));
   connect(min.y, PID.u_s)
