@@ -128,9 +128,22 @@ public
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=-90,
         origin={0,-110})));
+  Modelica.Blocks.Sources.RealExpression total_power
+    "sum of all power consumption/generation in component"
+    annotation (Placement(transformation(extent={{66,-10},{86,10}})));
+public
+  Modelica.Blocks.Interfaces.RealOutput P(
+    final quantity="Power",
+    final unit="W",
+    displayUnit="W") "Electric power" annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=0,
+        origin={110,0})));
 equation
   connect(sendp.p_rel,dp)
     annotation (Line(points={{0,-97},{0,-110}},  color={0,0,127}));
+  connect(total_power.y,P)
+    annotation (Line(points={{87,0},{110,0}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)));
 end SubstationInterface;
