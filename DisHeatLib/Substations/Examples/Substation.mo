@@ -40,15 +40,13 @@ model Substation
     show_T=true,
     TemSup_nominal=363.15,
     use_bypass=false,
-    redeclare DisHeatLib.Substations.BaseClasses.IndirectBaseStation
-      baseStationSH(
+    redeclare DisHeatLib.Substations.BaseClasses.IndirectStation baseStationSH(
       Q_flow_nominal(displayUnit="kW") = 10000,
       TemRet1_nominal=308.15,
       TemSup2_nominal=323.15,
       TemRet2_nominal=303.15,
       OutsideDependent=false),
-    redeclare DisHeatLib.Substations.BaseClasses.IndirectBaseStation
-      baseStationDHW(
+    redeclare DisHeatLib.Substations.BaseClasses.IndirectStation baseStationDHW(
       Q_flow_nominal(displayUnit="kW") = 10000,
       TemRet1_nominal=288.15,
       TemSup2_nominal=333.15,

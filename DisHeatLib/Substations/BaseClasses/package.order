@@ -1,6 +1,7 @@
 BaseStation
-IndirectBaseStation
-DirectBaseStation
+DirectStation
+IndirectStation
+IndirectStationEBH
 Bypass
 SubstationInterface
 BaseStationFlowType

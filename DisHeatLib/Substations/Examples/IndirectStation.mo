@@ -1,7 +1,7 @@
 within DisHeatLib.Substations.Examples;
-model IndirectBaseStation
+model IndirectStation
   extends Modelica.Icons.Example;
-  BaseClasses.IndirectBaseStation indirectBaseStation(
+  BaseClasses.IndirectStation indirectStation(
     show_T=true,
     redeclare package Medium = Medium,
     Q_flow_nominal(displayUnit="kW") = 100000,
@@ -62,16 +62,15 @@ equation
   connect(pump.port_a, cooler.port_b)
     annotation (Line(points={{10,-40},{-10,-40}},
                                                 color={0,127,255}));
-  connect(pump.port_b, indirectBaseStation.port_a2) annotation (Line(points={{
-          30,-40},{38,-40},{38,-4.54545},{10,-4.54545}}, color={0,127,255}));
-  connect(cooler.port_a, indirectBaseStation.port_b2) annotation (Line(points={
-          {-30,-40},{-36,-40},{-36,-4.54545},{-10,-4.54545}}, color={0,127,255}));
-  connect(bou_SL_p.ports[1], indirectBaseStation.port_a1) annotation (Line(
-        points={{-36,34},{-18,34},{-18,6.36364},{-10,6.36364}}, color={0,127,
-          255}));
-  connect(indirectBaseStation.port_b1, bou_RL_p.ports[1]) annotation (Line(
-        points={{10,6.36364},{14,6.36364},{14,34},{34,34}}, color={0,127,255}));
-  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Substations/Examples/IndirectBaseStation.mos"
+  connect(pump.port_b, indirectStation.port_a2) annotation (Line(points={{30,-40},
+          {38,-40},{38,-4.54545},{10,-4.54545}}, color={0,127,255}));
+  connect(cooler.port_a, indirectStation.port_b2) annotation (Line(points={{-30,
+          -40},{-36,-40},{-36,-4.54545},{-10,-4.54545}}, color={0,127,255}));
+  connect(bou_SL_p.ports[1], indirectStation.port_a1) annotation (Line(points={
+          {-36,34},{-18,34},{-18,6.36364},{-10,6.36364}}, color={0,127,255}));
+  connect(indirectStation.port_b1, bou_RL_p.ports[1]) annotation (Line(points={
+          {10,6.36364},{14,6.36364},{14,34},{34,34}}, color={0,127,255}));
+  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Substations/Examples/IndirectStation.mos"
         "Simulate and plot"),
         Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),
@@ -80,4 +79,4 @@ equation
 <li>Feburary 27, 2019, by Benedikt Leitner:<br>Implementation and added User&apos;s guide. </li>
 </ul>
 </html>"));
-end IndirectBaseStation;
+end IndirectStation;

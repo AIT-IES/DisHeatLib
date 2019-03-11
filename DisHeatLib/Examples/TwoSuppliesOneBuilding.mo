@@ -117,14 +117,12 @@ model TwoSuppliesOneBuilding
   DisHeatLib.Substations.Substation substation(
     show_T=true,
     use_bypass=false,
-    redeclare DisHeatLib.Substations.BaseClasses.IndirectBaseStation
-      baseStationSH(
+    redeclare DisHeatLib.Substations.BaseClasses.IndirectStation baseStationSH(
       Q_flow_nominal(displayUnit="kW") = 10000,
       TemSup2_nominal=323.15,
       TemRet2_nominal=303.15,
       Ti=900),
-    redeclare DisHeatLib.Substations.BaseClasses.IndirectBaseStation
-      baseStationDHW(
+    redeclare DisHeatLib.Substations.BaseClasses.IndirectStation baseStationDHW(
       Q_flow_nominal(displayUnit="kW") = 10000,
       TemSup2_nominal=333.15,
       TemRet2_nominal=283.15,
@@ -160,14 +158,14 @@ equation
           255}));
   connect(substation.port_b, pipe.port_a2) annotation (Line(points={{10,35.4545},
           {16,35.4545},{16,22},{6,22},{6,20}}, color={0,127,255}));
-  connect(demandSH.port_b, substation.port_a_SH) annotation (Line(points={{40,
-          64},{48,64},{48,42.7273},{10,42.7273}}, color={0,127,255}));
+  connect(demandSH.port_b, substation.port_a_SH) annotation (Line(points={{40,64},
+          {48,64},{48,42.7273},{10,42.7273}},     color={0,127,255}));
   connect(substation.port_b_SH, demandSH.port_a) annotation (Line(points={{10,
           46.3636},{14,46.3636},{14,64},{20,64}}, color={0,127,255}));
-  connect(demandDHW.port_b, substation.port_a_DHW) annotation (Line(points={{
-          -20,64},{-16,64},{-16,42.7273},{-10,42.7273}}, color={0,127,255}));
-  connect(demandDHW.port_a, substation.port_b_DHW) annotation (Line(points={{
-          -40,64},{-46,64},{-46,46.3636},{-10,46.3636}}, color={0,127,255}));
+  connect(demandDHW.port_b, substation.port_a_DHW) annotation (Line(points={{-20,64},
+          {-16,64},{-16,42.7273},{-10,42.7273}},         color={0,127,255}));
+  connect(demandDHW.port_a, substation.port_b_DHW) annotation (Line(points={{-40,64},
+          {-46,64},{-46,46.3636},{-10,46.3636}},         color={0,127,255}));
   connect(supply_QT.port_a, pipe2.ports_b2[1]) annotation (Line(points={{74,-60},
           {84,-60},{84,-44},{70,-44},{70,-40}}, color={0,127,255}));
   connect(pipe2.port_a1, supply_QT.ports_b[1]) annotation (Line(points={{58,-40},

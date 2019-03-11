@@ -71,11 +71,10 @@ model OneSupplyOneBuilding
   DisHeatLib.Substations.Substation substation(
     show_T=true,
     use_bypass=false,
-    redeclare DisHeatLib.Substations.BaseClasses.DirectBaseStation
-      baseStationSH(Q_flow_nominal(displayUnit="kW") = 10000),
-    redeclare DisHeatLib.Substations.BaseClasses.IndirectBaseStation
-      baseStationDHW(Q_flow_nominal(displayUnit="kW") = 10000, OutsideDependent
-        =false),
+    redeclare DisHeatLib.Substations.BaseClasses.DirectStation baseStationSH(
+        Q_flow_nominal(displayUnit="kW") = 10000),
+    redeclare DisHeatLib.Substations.BaseClasses.IndirectStation baseStationDHW(
+        Q_flow_nominal(displayUnit="kW") = 10000, OutsideDependent=false),
     redeclare package Medium = Medium,
     FlowType=DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Valve,
     TemSup_nominal=343.15,
@@ -91,10 +90,10 @@ equation
           42.3636},{12,42.3636},{12,60},{20,60}}, color={0,127,255}));
   connect(substation.port_a_SH, demandSH.port_b) annotation (Line(points={{10,
           38.7273},{46,38.7273},{46,60},{40,60}}, color={0,127,255}));
-  connect(substation.port_b_DHW, demandDHW.port_a) annotation (Line(points={{
-          -10,42.3636},{-44,42.3636},{-44,62},{-40,62}}, color={0,127,255}));
-  connect(demandDHW.port_b, substation.port_a_DHW) annotation (Line(points={{
-          -20,62},{-14,62},{-14,38.7273},{-10,38.7273}}, color={0,127,255}));
+  connect(substation.port_b_DHW, demandDHW.port_a) annotation (Line(points={{-10,
+          42.3636},{-44,42.3636},{-44,62},{-40,62}},     color={0,127,255}));
+  connect(demandDHW.port_b, substation.port_a_DHW) annotation (Line(points={{-20,62},
+          {-14,62},{-14,38.7273},{-10,38.7273}},         color={0,127,255}));
   connect(pipe.ports_b1[1], substation.port_a) annotation (Line(points={{-6,-4},
           {-6,16},{-10,16},{-10,31.4545}}, color={0,127,255}));
   connect(pipe.port_a2, substation.port_b) annotation (Line(points={{6,-4},{6,

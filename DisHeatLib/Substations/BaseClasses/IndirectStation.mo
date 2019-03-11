@@ -1,5 +1,5 @@
 within DisHeatLib.Substations.BaseClasses;
-model IndirectBaseStation
+model IndirectStation
   extends BaseStation(
     Q_flow_nominal=m2_flow_small*(TemSup2_nominal-TemRet2_nominal)*cp_default,
     m1_flow_nominal=Q_flow_nominal/hex_efficiency/((TemSup1_nominal-TemRet1_nominal)*cp_default),
@@ -35,7 +35,6 @@ model IndirectBaseStation
     "Minimum position of flow controller (e.g, to mimic bypass)"
     annotation(Dialog(group = "Heat exchanger and flow"));
 
-
 protected
       final parameter Modelica.SIunits.SpecificHeatCapacity cp_default=
         Medium.cp_const
@@ -52,7 +51,7 @@ public
     linearized=linearizeFlowResistance,
     from_dp=from_dp,
     dpFixed_nominal=dp_hex_nominal) if FlowType == DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Valve
-    annotation (Placement(transformation(extent={{-42,70},{-22,50}})));
+    annotation (Placement(transformation(extent={{-26,70},{-6,50}})));
 public
   IBPSA.Fluid.HeatExchangers.ConstantEffectiveness hex(redeclare package
       Medium1 = Medium, redeclare package Medium2 = Medium,
@@ -82,10 +81,10 @@ public
     tau=30,
     initType=Modelica.Blocks.Types.Init.InitialOutput,
     m_flow_small=m2_flow_small)
-    annotation (Placement(transformation(extent={{-22,-44},{-42,-24}})));
+    annotation (Placement(transformation(extent={{12,-44},{-8,-24}})));
   IBPSA.Fluid.Sensors.MassFlowRate senMasFlo(redeclare package Medium = Medium,
       allowFlowReversal=allowFlowReversal2)
-    annotation (Placement(transformation(extent={{-54,-44},{-74,-24}})));
+    annotation (Placement(transformation(extent={{-12,-44},{-32,-24}})));
 public
   Controls.TemSup_control TemSup_controller(
     TemSup_min=TemSup2_min,
@@ -93,17 +92,17 @@ public
     TemOut_min=TemOut_min,
     TemOut_max=TemOut_max) if OutsideDependent
     "outside temperature dependent supply temperature set-point"
-    annotation (Placement(transformation(extent={{-38,-78},{-58,-58}})));
+    annotation (Placement(transformation(extent={{-38,-84},{-58,-64}})));
 public
   Modelica.Blocks.Sources.RealExpression TConst(y=TemSup2_nominal) if
                                                                  not OutsideDependent annotation (Placement(
         transformation(
         extent={{10,-10},{-10,10}},
         rotation=0,
-        origin={-48,-90})));
+        origin={-48,-94})));
   Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor
     outsideTemperatureSensor if OutsideDependent annotation (Placement(
-        transformation(extent={{-8,-78},{-28,-58}})));
+        transformation(extent={{-8,-84},{-28,-64}})));
 public
   Controls.flow_control valve_control(
     min_y=min_y,
@@ -112,7 +111,7 @@ public
     m_flow_nominal=m2_flow_nominal,
     k=k,
     Ti=Ti)
-    annotation (Placement(transformation(extent={{-56,-14},{-36,6}})));
+    annotation (Placement(transformation(extent={{-54,-4},{-34,16}})));
   IBPSA.Fluid.Movers.FlowControlled_m_flow pump(
     redeclare package Medium = Medium,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
@@ -124,54 +123,56 @@ public
     riseTime(displayUnit="min"),
     nominalValuesDefineDefaultPressureCurve=true,
     dp_nominal=dp1_nominal) if      FlowType == DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Pump
-    annotation (Placement(transformation(extent={{-28,40},{-8,20}})));
+    annotation (Placement(transformation(extent={{-14,40},{6,20}})));
   Modelica.Blocks.Math.Gain gain(k=m1_flow_nominal) if
                                                       FlowType == DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Pump
                                                    annotation (Placement(
         transformation(
         extent={{4,-4},{-4,4}},
         rotation=-90,
-        origin={-18,8})));
+        origin={-4,12})));
 equation
   connect(TemSup_controller.TemOut, outsideTemperatureSensor.T)
-    annotation (Line(points={{-36,-68},{-28,-68}},
+    annotation (Line(points={{-36,-74},{-28,-74}},
                                                  color={0,0,127}));
-  connect(valve_control.m_flow_measurement, senMasFlo.m_flow) annotation (Line(
-        points={{-58,1},{-64,1},{-64,-23}},                      color={0,0,127}));
-  connect(valve_control.T_set, TemSup_controller.y) annotation (Line(points={{-58,-4},
-          {-78,-4},{-78,-68},{-59,-68}},     color={0,0,127}));
-  connect(TConst.y, valve_control.T_set) annotation (Line(points={{-59,-90},{-78,
-          -90},{-78,-4},{-58,-4}},  color={0,0,127}));
+  connect(valve_control.T_set, TemSup_controller.y) annotation (Line(points={{-56,6},
+          {-78,6},{-78,-74},{-59,-74}},      color={0,0,127}));
+  connect(TConst.y, valve_control.T_set) annotation (Line(points={{-59,-94},{
+          -78,-94},{-78,6},{-56,6}},color={0,0,127}));
   connect(valve_control.y, valve.y)
-    annotation (Line(points={{-35,-4},{-32,-4},{-32,48}},    color={0,0,127}));
-  connect(senTem.T, valve_control.T_measurement) annotation (Line(points={{-32,-23},
-          {-32,-18},{-60,-18},{-60,-9},{-58,-9}}, color={0,0,127}));
-  connect(gain.u, valve_control.y) annotation (Line(points={{-18,3.2},{-18,-4},{
-          -35,-4}},   color={0,0,127}));
-  connect(gain.y, pump.m_flow_in)
-    annotation (Line(points={{-18,12.4},{-18,18}},   color={0,0,127}));
+    annotation (Line(points={{-33,6},{-16,6},{-16,48}},      color={0,0,127}));
+  connect(senTem.T, valve_control.T_measurement) annotation (Line(points={{2,-23},
+          {2,-6},{-60,-6},{-60,1},{-56,1}},       color={0,0,127}));
+  connect(gain.u, valve_control.y) annotation (Line(points={{-4,7.2},{-4,6},{
+          -33,6}},    color={0,0,127}));
   connect(port_a2, exp.port_a)
     annotation (Line(points={{100,-60},{68,-60},{68,-44}}, color={0,127,255}));
   connect(port_a2, hex.port_a2)
     annotation (Line(points={{100,-60},{32,-60},{32,-4}}, color={0,127,255}));
   connect(pump.port_b, hex.port_a1)
-    annotation (Line(points={{-8,30},{12,30},{12,8}}, color={0,127,255}));
+    annotation (Line(points={{6,30},{12,30},{12,8}},  color={0,127,255}));
   connect(valve.port_b, hex.port_a1)
-    annotation (Line(points={{-22,60},{12,60},{12,8}}, color={0,127,255}));
+    annotation (Line(points={{-6,60},{12,60},{12,8}},  color={0,127,255}));
   connect(port_a1, valve.port_a)
-    annotation (Line(points={{-100,60},{-42,60}}, color={0,127,255}));
-  connect(port_a1, pump.port_a) annotation (Line(points={{-100,60},{-60,60},{-60,
-          30},{-28,30}}, color={0,127,255}));
+    annotation (Line(points={{-100,60},{-26,60}}, color={0,127,255}));
+  connect(port_a1, pump.port_a) annotation (Line(points={{-100,60},{-34,60},{
+          -34,30},{-14,30}},
+                         color={0,127,255}));
   connect(hex.port_b1, port_b1)
     annotation (Line(points={{32,8},{32,60},{100,60}}, color={0,127,255}));
   connect(senTem.port_a, hex.port_b2)
-    annotation (Line(points={{-22,-34},{12,-34},{12,-4}}, color={0,127,255}));
+    annotation (Line(points={{12,-34},{12,-4}},           color={0,127,255}));
   connect(outsideTemperatureSensor.port, port_ht)
-    annotation (Line(points={{-8,-68},{0,-68},{0,-100}}, color={191,0,0}));
-  connect(senMasFlo.port_b, port_b2) annotation (Line(points={{-74,-34},{-84,-34},
-          {-84,-60},{-100,-60}}, color={0,127,255}));
+    annotation (Line(points={{-8,-74},{0,-74},{0,-100}}, color={191,0,0}));
+  connect(senMasFlo.port_b, port_b2) annotation (Line(points={{-32,-34},{-84,
+          -34},{-84,-60},{-100,-60}},
+                                 color={0,127,255}));
   connect(senMasFlo.port_a, senTem.port_b)
-    annotation (Line(points={{-54,-34},{-42,-34}}, color={0,127,255}));
+    annotation (Line(points={{-12,-34},{-8,-34}},  color={0,127,255}));
+  connect(gain.y, pump.m_flow_in)
+    annotation (Line(points={{-4,16.4},{-4,18}}, color={0,0,127}));
+  connect(senMasFlo.m_flow, valve_control.m_flow_measurement) annotation (Line(
+        points={{-22,-23},{-22,-8},{-62,-8},{-62,11},{-56,11}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-120},
             {100,100}}),                                        graphics={
         Rectangle(
@@ -227,4 +228,4 @@ equation
 <li>Feburary 27, 2019, by Benedikt Leitner:<br>Implementation and added User&apos;s guide. </li>
 </ul>
 </html>"));
-end IndirectBaseStation;
+end IndirectStation;

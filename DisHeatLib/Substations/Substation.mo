@@ -18,7 +18,6 @@ model Substation
   parameter Boolean use_bypass = true "Use a bypass valve"
     annotation(Dialog(tab="Bypass"), HideResult=true, choices(checkBox=true));
 
-
 protected
       final parameter Modelica.SIunits.SpecificHeatCapacity cp_default=
         Medium.cp_const
@@ -277,7 +276,7 @@ equation
           textString="NET")}),                                   Diagram(
         coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})),
     Documentation(info="<html>
-<p>This is a model for a district heating substation with indirectly connected domestic hot water and space heating load. This substation contains a base station for domestic hot water (DHW) preparation and a base station for space heating (SH) together with a bypass valve. The DHW station is set to deliver a constant supply temperature at the secondary side, while the SH station delivers an outside-dependent supply temperature. The bypass valve is used to ensure a minimum supply temperature at the connection point at the primary side. Thus, it opens in case the supply temperature is below the minimum (minus bandwidth) and closes once the temperature is above the minimum (plus bandwidth). </p>
+<p>This is a model for a district heating substation with <b>parallel</b> domestic hot water and space heating stations. This substation contains a base station for domestic hot water (DHW) preparation and a base station for space heating (SH) together with a bypass valve. The DHW station is set to deliver a constant supply temperature at the secondary side, while the SH station delivers an outside-dependent supply temperature. The bypass valve is used to ensure a minimum supply temperature at the connection point at the primary side. Thus, it opens in case the supply temperature is below the minimum (minus bandwidth) and closes once the temperature is above the minimum (plus bandwidth). </p>
 <p>Care must be taken when chosing the nominal values for differential presure, mass flow and/or heat load, as different issues might occure:</p>
 <ul>
 <li>In cases where the differential pressure is below its nominal value, the nominal mass flow is not reached. Thus, in times of high heat demand, not enough heat might be delivered to the individual stations.</li>

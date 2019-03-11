@@ -1,7 +1,7 @@
 within DisHeatLib.Substations.Examples;
-model DirectBaseStation
+model DirectStation
   extends Modelica.Icons.Example;
-  BaseClasses.DirectBaseStation   directBaseStation(
+  BaseClasses.DirectStation directBaseStation(
     redeclare package Medium = Medium,
     Q_flow_nominal(displayUnit="kW") = 10000,
     dp1_nominal(displayUnit="bar") = 100000)
@@ -67,7 +67,7 @@ equation
           -30,-40},{-38,-40},{-38,-6},{-10,-6}}, color={0,127,255}));
   connect(directBaseStation.port_b1, pump.port_b) annotation (Line(points={{10,
           -6},{38,-6},{38,-40},{30,-40}}, color={0,127,255}));
-  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Substations/Examples/DirectBaseStation.mos"
+  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Substations/Examples/DirectStation.mos"
         "Simulate and plot"),
         Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),
@@ -76,4 +76,4 @@ equation
 <li>Feburary 27, 2019, by Benedikt Leitner:<br>Implementation and added User&apos;s guide. </li>
 </ul>
 </html>"));
-end DirectBaseStation;
+end DirectStation;

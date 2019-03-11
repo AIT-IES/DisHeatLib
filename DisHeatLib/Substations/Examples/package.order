@@ -1,4 +1,5 @@
 Substation
-IndirectBaseStation
-DirectBaseStation
+DirectStation
+IndirectStation
+IndirectStationEBH
 Bypass
