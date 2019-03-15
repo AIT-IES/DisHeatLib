@@ -24,7 +24,6 @@ public
     redeclare final package Medium = Medium,
     final from_dp=from_dp,
     final linearizeFlowResistance=linearizeFlowResistance,
-    final FlowType=FlowType,
     final TemSup1_nominal=TemSup_nominal,
     final dp1_nominal=dp_nominal)
                        annotation (Dialog(group="Domestic hot water station"), Placement(transformation(
@@ -37,7 +36,6 @@ public
     redeclare final package Medium = Medium,
     final from_dp=from_dp,
     final linearizeFlowResistance=linearizeFlowResistance,
-    final FlowType=FlowType,
     final TemSup1_nominal=TemSup_nominal,
     final dp1_nominal=dp_nominal)
                        annotation (Dialog(group="Space heating station"), Placement(transformation(
@@ -67,8 +65,7 @@ public
     final m_flow_small=m_flow_small,
     final from_dp=from_dp,
     final dp_nominal=dp_nominal,
-    final linearizeFlowResistance=linearizeFlowResistance,
-    final FlowType=FlowType) if
+    final linearizeFlowResistance=linearizeFlowResistance) if
                         use_bypass constrainedby BaseClasses.Bypass
     annotation (Dialog(tab = "Bypass", enable=use_bypass), Placement(transformation(extent={{-4,-70},{16,-50}})));
 protected

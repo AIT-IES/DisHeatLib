@@ -128,7 +128,6 @@ model TwoSuppliesOneBuilding
       TemRet2_nominal=283.15,
       OutsideDependent=false),
     redeclare package Medium = Medium,
-    FlowType=DisHeatLib.BaseClasses.FlowType.Valve,
     TemSup_nominal=343.15,
     dp_nominal=100000)
     annotation (Placement(transformation(extent={{-10,30},{10,50}})));

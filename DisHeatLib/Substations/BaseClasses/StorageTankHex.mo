@@ -21,6 +21,9 @@ model StorageTankHex
   parameter Integer nInit=0
     "Number of volume segments initialized with TemSup2_nominal"
     annotation(Dialog(group="Storage tank"));
+  parameter Modelica.SIunits.PressureDifference dp_hex_nominal=0
+    "Nominal pressure difference at the heat exchanger at primary side"
+    annotation(Dialog(group = "Storage tank"));
   parameter Modelica.SIunits.Height hHex_a=storageTankHex.hTan/2
     "Height of portHex_a of the heat exchanger, measured from tank bottom"
     annotation(Dialog(group="Storage tank"));
@@ -85,53 +88,23 @@ model StorageTankHex
     u_bandwidth=u_bandwidth)
     annotation (Placement(transformation(extent={{-32,76},{-52,96}})));
 public
-  IBPSA.Fluid.Actuators.Valves.TwoWayEqualPercentage     valve(
-    redeclare package Medium = Medium,
-    dpValve_nominal=dp1_nominal,
-    m_flow_nominal=m1_flow_nominal,
-    allowFlowReversal=allowFlowReversal1,
-    riseTime(displayUnit="min"),
-    linearized=linearizeFlowResistance,
-    from_dp=from_dp) if FlowType == DisHeatLib.BaseClasses.FlowType.Valve
-    annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
-  IBPSA.Fluid.Movers.FlowControlled_m_flow pump(
-    redeclare package Medium = Medium,
-    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
-    T_start=TemSup1_nominal,
-    m_flow_nominal=m1_flow_nominal,
-    allowFlowReversal=allowFlowReversal1,
-    m_flow_small=m1_flow_small,
-    addPowerToMedium=false,
-    riseTime(displayUnit="min"),
-    nominalValuesDefineDefaultPressureCurve=true,
-    dp_nominal=dp1_nominal) if FlowType == DisHeatLib.BaseClasses.FlowType.Pump
-    annotation (Placement(transformation(extent={{-66,18},{-46,38}})));
-  Modelica.Blocks.Math.Gain gain(k=m1_flow_nominal) if FlowType == DisHeatLib.BaseClasses.FlowType.Pump
-                                                   annotation (Placement(
-        transformation(
-        extent={{-4,-4},{4,4}},
-        rotation=-90,
-        origin={-56,50})));
-public
   IBPSA.Fluid.Storage.ExpansionVessel exp(
     redeclare package Medium = Medium,
     T_start=TemSup2_nominal,
     V_start=m2_flow_nominal*0.1)
     annotation (Placement(transformation(extent={{58,-44},{78,-24}})));
 
+  replaceable DisHeatLib.BaseClasses.FlowUnit flowUnit(
+    redeclare final package Medium = Medium,
+    final allowFlowReversal=allowFlowReversal1,
+    final m_flow_nominal=m1_flow_nominal,
+    final m_flow_small=m1_flow_small,
+    final dp_nominal=dp1_nominal,
+    final dpFixed_nominal=dp_hex_nominal,
+    final from_dp=from_dp,
+    final linearizeFlowResistance=linearizeFlowResistance)
+    annotation (Dialog(group="Parameters"), Placement(transformation(extent={{-82,50},{-62,70}})));
 equation
-  connect(port_a1, valve.port_a)
-    annotation (Line(points={{-100,60},{-86,60}}, color={0,127,255}));
-  connect(port_a1, pump.port_a) annotation (Line(points={{-100,60},{-92,60},{-92,
-          28},{-66,28}}, color={0,127,255}));
-  connect(valve.port_b, storageTankHex.port_a1) annotation (Line(points={{-66,60},
-          {-40,60},{-40,6},{-10,6}}, color={0,127,255}));
-  connect(pump.port_b, storageTankHex.port_a1) annotation (Line(points={{-46,28},
-          {-40,28},{-40,6},{-10,6}}, color={0,127,255}));
-  connect(gain.y, pump.m_flow_in)
-    annotation (Line(points={{-56,45.6},{-56,40}}, color={0,0,127}));
-  connect(storage_control.y, gain.u)
-    annotation (Line(points={{-53,86},{-56,86},{-56,54.8}}, color={0,0,127}));
   connect(storageTankHex.port_b2, port_b2) annotation (Line(points={{-10,-6},
           {-40,-6},{-40,-60},{-100,-60}},
                                      color={0,127,255}));
@@ -143,8 +116,12 @@ equation
           -60}}, color={0,127,255}));
   connect(storageTankHex.TemTank[nSegMeasure], storage_control.u) annotation (Line(
         points={{4,-11},{4,-22},{20,-22},{20,86},{-30,86}}, color={0,0,127}));
-  connect(storage_control.y, valve.y)
-    annotation (Line(points={{-53,86},{-76,86},{-76,72}}, color={0,0,127}));
+  connect(port_a1, flowUnit.port_a)
+    annotation (Line(points={{-100,60},{-82,60}}, color={0,127,255}));
+  connect(flowUnit.port_b, storageTankHex.port_a1) annotation (Line(points={{
+          -62,60},{-40,60},{-40,6},{-10,6}}, color={0,127,255}));
+  connect(storage_control.y, flowUnit.y)
+    annotation (Line(points={{-53,86},{-72,86},{-72,72}}, color={0,0,127}));
   annotation (Icon(graphics={
         Ellipse(
           extent={{-46,68},{46,42}},

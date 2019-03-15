@@ -9,9 +9,6 @@ partial model SubstationInterface
     "Nominal mass flow rate"
     annotation (Evaluate=true);
 
-  parameter DisHeatLib.BaseClasses.FlowType FlowType=DisHeatLib.BaseClasses.FlowType.Pump
-    "Flow type" annotation (Dialog(group="Nominal condition"));
-
   parameter Modelica.SIunits.PressureDifference dp_nominal
     "Nominal pressure difference"
     annotation(Dialog(group = "Nominal condition"));

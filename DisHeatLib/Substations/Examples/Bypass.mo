@@ -4,7 +4,6 @@ model Bypass
   BaseClasses.Bypass bypass(
     redeclare package Medium = Medium,
     dp_nominal(displayUnit="bar") = 100000,
-    FlowType=DisHeatLib.BaseClasses.FlowType.Valve,
     m_flow_nominal=1,
     use_thermostat=true)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));

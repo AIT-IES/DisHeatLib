@@ -34,17 +34,6 @@ model IndirectStation
     annotation(Dialog(group = "Heat exchanger and flow"));
 
 public
-  IBPSA.Fluid.Actuators.Valves.TwoWayEqualPercentage     valve(
-    redeclare package Medium = Medium,
-    dpValve_nominal=dp1_nominal - dp_hex_nominal,
-    m_flow_nominal=m1_flow_nominal,
-    allowFlowReversal=allowFlowReversal1,
-    riseTime(displayUnit="min"),
-    linearized=linearizeFlowResistance,
-    from_dp=from_dp,
-    dpFixed_nominal=dp_hex_nominal) if FlowType == DisHeatLib.BaseClasses.FlowType.Valve
-    annotation (Placement(transformation(extent={{-26,70},{-6,50}})));
-public
   IBPSA.Fluid.HeatExchangers.ConstantEffectiveness hex(redeclare package
       Medium1 = Medium, redeclare package Medium2 = Medium,
     allowFlowReversal1=allowFlowReversal1,
@@ -104,24 +93,16 @@ public
     k=k,
     Ti=Ti)
     annotation (Placement(transformation(extent={{-54,-4},{-34,16}})));
-  IBPSA.Fluid.Movers.FlowControlled_m_flow pump(
-    redeclare package Medium = Medium,
-    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
-    T_start=TemSup1_nominal,
-    m_flow_nominal=m1_flow_nominal,
-    allowFlowReversal=allowFlowReversal1,
-    m_flow_small=m1_flow_small,
-    addPowerToMedium=false,
-    riseTime(displayUnit="min"),
-    nominalValuesDefineDefaultPressureCurve=true,
-    dp_nominal=dp1_nominal) if FlowType == DisHeatLib.BaseClasses.FlowType.Pump
-    annotation (Placement(transformation(extent={{-14,40},{6,20}})));
-  Modelica.Blocks.Math.Gain gain(k=m1_flow_nominal) if FlowType == DisHeatLib.BaseClasses.FlowType.Pump
-                                                   annotation (Placement(
-        transformation(
-        extent={{4,-4},{-4,4}},
-        rotation=-90,
-        origin={-4,12})));
+  replaceable DisHeatLib.BaseClasses.FlowUnit flowUnit(
+    redeclare final package Medium = Medium,
+    final allowFlowReversal=allowFlowReversal1,
+    final m_flow_nominal=m1_flow_nominal,
+    final m_flow_small=m1_flow_small,
+    final dp_nominal=dp1_nominal,
+    final dpFixed_nominal=dp_hex_nominal,
+    final from_dp=from_dp,
+    final linearizeFlowResistance=linearizeFlowResistance)
+    annotation (Dialog(group="Parameters"), Placement(transformation(extent={{-30,70},{-10,50}})));
 equation
   connect(TemSup_controller.TemOut, outsideTemperatureSensor.T)
     annotation (Line(points={{-36,-74},{-28,-74}},
@@ -130,24 +111,12 @@ equation
           {-78,6},{-78,-74},{-59,-74}},      color={0,0,127}));
   connect(TConst.y, valve_control.T_set) annotation (Line(points={{-59,-94},{-78,
           -94},{-78,6},{-56,6}},    color={0,0,127}));
-  connect(valve_control.y, valve.y)
-    annotation (Line(points={{-33,6},{-16,6},{-16,48}},      color={0,0,127}));
   connect(senTem.T, valve_control.T_measurement) annotation (Line(points={{2,-23},
           {2,-6},{-60,-6},{-60,1},{-56,1}},       color={0,0,127}));
-  connect(gain.u, valve_control.y) annotation (Line(points={{-4,7.2},{-4,6},{-33,
-          6}},        color={0,0,127}));
   connect(port_a2, exp.port_a)
     annotation (Line(points={{100,-60},{68,-60},{68,-44}}, color={0,127,255}));
   connect(port_a2, hex.port_a2)
     annotation (Line(points={{100,-60},{32,-60},{32,-4}}, color={0,127,255}));
-  connect(pump.port_b, hex.port_a1)
-    annotation (Line(points={{6,30},{12,30},{12,8}},  color={0,127,255}));
-  connect(valve.port_b, hex.port_a1)
-    annotation (Line(points={{-6,60},{12,60},{12,8}},  color={0,127,255}));
-  connect(port_a1, valve.port_a)
-    annotation (Line(points={{-100,60},{-26,60}}, color={0,127,255}));
-  connect(port_a1, pump.port_a) annotation (Line(points={{-100,60},{-34,60},{-34,
-          30},{-14,30}}, color={0,127,255}));
   connect(hex.port_b1, port_b1)
     annotation (Line(points={{32,8},{32,60},{100,60}}, color={0,127,255}));
   connect(senTem.port_a, hex.port_b2)
@@ -158,10 +127,14 @@ equation
           {-84,-60},{-100,-60}}, color={0,127,255}));
   connect(senMasFlo.port_a, senTem.port_b)
     annotation (Line(points={{-12,-34},{-8,-34}},  color={0,127,255}));
-  connect(gain.y, pump.m_flow_in)
-    annotation (Line(points={{-4,16.4},{-4,18}}, color={0,0,127}));
   connect(senMasFlo.m_flow, valve_control.m_flow_measurement) annotation (Line(
         points={{-22,-23},{-22,-8},{-62,-8},{-62,11},{-56,11}}, color={0,0,127}));
+  connect(port_a1, flowUnit.port_a)
+    annotation (Line(points={{-100,60},{-30,60}}, color={0,127,255}));
+  connect(flowUnit.port_b, hex.port_a1)
+    annotation (Line(points={{-10,60},{12,60},{12,8}}, color={0,127,255}));
+  connect(valve_control.y, flowUnit.y)
+    annotation (Line(points={{-33,6},{-20,6},{-20,48}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-120},
             {100,100}}),                                        graphics={
                                          Rectangle(

@@ -7,7 +7,6 @@ model IndirectStationEBH
     Q1_flow_nominal=100000,
     dp1_nominal(displayUnit="bar") = 100000,
     OutsideDependent=false,
-    FlowType=DisHeatLib.BaseClasses.FlowType.Valve,
     electricBoosterHeater(Q_flow_nominal(displayUnit="kW") = 10000,
         TemSup_nominal=343.15))
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));

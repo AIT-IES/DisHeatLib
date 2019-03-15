@@ -4,9 +4,7 @@ model Demand
     m_flow_nominal=Q_flow_nominal/((TemSup_nominal-TemRet_nominal)*cp_default));
   extends IBPSA.Fluid.Interfaces.TwoPortFlowResistanceParameters(
     final computeFlowResistance=(abs(dp_nominal) > Modelica.Constants.eps));
-  // Basic parameters
-  parameter DisHeatLib.BaseClasses.FlowType FlowType=DisHeatLib.BaseClasses.FlowType.Pump
-    "Flow type";
+
   // Nominal parameters
   parameter Modelica.SIunits.Power Q_flow_nominal
     "Nominal heat flow rate"
@@ -89,17 +87,17 @@ public
     final TemRet_nominal=TemRet_nominal) "Type of heat demand" annotation (Dialog(group="Nominal parameters"), Placement(
         transformation(extent={{-10,-10},{10,10}})),
       __Dymola_choicesAllMatching=true);
-  IBPSA.Fluid.Movers.FlowControlled_m_flow pump(
-    redeclare package Medium = Medium,
-    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
-    allowFlowReversal=allowFlowReversal,
-    m_flow_small=m_flow_small,
-    riseTime(displayUnit="min"),
-    nominalValuesDefineDefaultPressureCurve=true,
-    m_flow_nominal=m_flow_nominal,
-    dp_nominal=dp_nominal,
-    addPowerToMedium=false) if FlowType == DisHeatLib.BaseClasses.FlowType.Pump
-    annotation (Placement(transformation(extent={{40,-42},{60,-22}})));
+  replaceable DisHeatLib.BaseClasses.FlowUnit flowUnit(
+    redeclare final package Medium = Medium,
+    final allowFlowReversal=allowFlowReversal,
+    final m_flow_nominal=m_flow_nominal,
+    final m_flow_small=m_flow_small,
+    FlowType=DisHeatLib.BaseClasses.FlowType.Pump,
+    final dp_nominal=dp_nominal,
+    final dpFixed_nominal=0,
+    final from_dp=from_dp,
+    final linearizeFlowResistance=linearizeFlowResistance)
+    annotation (Dialog(group="Parameters"), Placement(transformation(extent={{40,-10},{60,10}})));
 protected
   Modelica.Blocks.Math.Gain gain_scaling(k=scaling)
     annotation (Placement(transformation(extent={{-24,50},{-4,70}})));
@@ -110,22 +108,6 @@ protected
         extent={{-10,-10},{10,10}},
         rotation=0,
         origin={0,32})));
-protected
-  Modelica.Blocks.Math.Gain gain(k=m_flow_nominal) if FlowType == DisHeatLib.BaseClasses.FlowType.Pump
-                                                   annotation (Placement(
-        transformation(
-        extent={{-4,-4},{4,4}},
-        rotation=-90,
-        origin={50,-10})));
-protected
-  IBPSA.Fluid.Actuators.Valves.TwoWayEqualPercentage     valve(
-    redeclare package Medium = Medium,
-    allowFlowReversal=allowFlowReversal,
-    from_dp=from_dp,
-    linearized=linearizeFlowResistance,
-    dpValve_nominal(displayUnit="bar") = dp_nominal,
-    m_flow_nominal=m_flow_nominal) if FlowType == DisHeatLib.BaseClasses.FlowType.Valve
-    annotation (Placement(transformation(extent={{38,12},{58,32}})));
 equation
   Q_flow = -demandType.Q_flow;
   Q_flow_demand = gain_scaling.y;
@@ -142,20 +124,12 @@ equation
     annotation (Line(points={{11,32},{16,32},{16,48}}, color={0,0,127}));
   connect(demandType.port_a, port_a)
     annotation (Line(points={{-10,0},{-100,0}}, color={0,127,255}));
-  connect(gain.y, pump.m_flow_in)
-    annotation (Line(points={{50,-14.4},{50,-20}}, color={0,0,127}));
-  connect(PID.y, valve.y)
-    annotation (Line(points={{27,60},{48,60},{48,34}}, color={0,0,127}));
-  connect(demandType.port_b, valve.port_a) annotation (Line(points={{10,0},{28,0},
-          {28,22},{38,22}}, color={0,127,255}));
-  connect(valve.port_b, port_b) annotation (Line(points={{58,22},{70,22},{70,0},
-          {100,0}}, color={0,127,255}));
-  connect(PID.y, gain.u) annotation (Line(points={{27,60},{64,60},{64,-5.2},{50,
-          -5.2}}, color={0,0,127}));
-  connect(demandType.port_b, pump.port_a) annotation (Line(points={{10,0},{28,0},
-          {28,-32},{40,-32}}, color={0,127,255}));
-  connect(pump.port_b, port_b) annotation (Line(points={{60,-32},{70,-32},{70,0},
-          {100,0}}, color={0,127,255}));
+  connect(demandType.port_b, flowUnit.port_a)
+    annotation (Line(points={{10,0},{40,0}}, color={0,127,255}));
+  connect(flowUnit.port_b, port_b)
+    annotation (Line(points={{60,0},{100,0}}, color={0,127,255}));
+  connect(PID.y, flowUnit.y)
+    annotation (Line(points={{27,60},{50,60},{50,12}}, color={0,0,127}));
     annotation (
               Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(

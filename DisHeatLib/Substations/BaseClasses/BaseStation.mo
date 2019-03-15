@@ -22,8 +22,6 @@ partial model BaseStation
                tab="Flow resistance", group="Primary side"));
 
   //Primary side parameters
-  parameter DisHeatLib.BaseClasses.FlowType FlowType=DisHeatLib.BaseClasses.FlowType.Pump
-    "Flow type at primary side" annotation (Dialog(group="Primary side"));
   parameter Modelica.SIunits.Power Q1_flow_nominal
     "Nominal heat flow rate at primary side"
     annotation(Evaluate=true, Dialog(group="Primary side"));

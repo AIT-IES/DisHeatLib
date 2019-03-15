@@ -6,8 +6,7 @@ model IndirectStation
     redeclare package Medium = Medium,
     Q1_flow_nominal=100000,
     dp1_nominal(displayUnit="bar") = 100000,
-    OutsideDependent=false,
-    FlowType=DisHeatLib.BaseClasses.FlowType.Valve)
+    OutsideDependent=false)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
   package Medium = IBPSA.Media.Water;
 

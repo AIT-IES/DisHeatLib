@@ -5,9 +5,6 @@ model Bypass
     final computeFlowResistance=(abs(dp_nominal) > Modelica.Constants.eps),
     final deltaM=0.1);
 
-  parameter DisHeatLib.BaseClasses.FlowType FlowType=DisHeatLib.BaseClasses.FlowType.Pump
-    "Flow type at primary side";
-
   // Control
   parameter Boolean use_thermostat = false "Use a thermostat to control the bypass valve, otherwise always opened"
     annotation(Dialog(group = "Control"), HideResult=true, choices(checkBox=true));
@@ -24,24 +21,6 @@ public
     T_min=TemSupMinBypass,
     T_bandwidth=TemBandwidthBypass)
     annotation (Placement(transformation(extent={{-30,60},{-10,80}})));
-  IBPSA.Fluid.Movers.FlowControlled_m_flow pump(
-    redeclare package Medium = Medium,
-    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
-    allowFlowReversal=allowFlowReversal,
-    m_flow_small=m_flow_small,
-    riseTime(displayUnit="min"),
-    nominalValuesDefineDefaultPressureCurve=true,
-    m_flow_nominal=m_flow_nominal,
-    dp_nominal=dp_nominal,
-    addPowerToMedium=false) if FlowType == DisHeatLib.BaseClasses.FlowType.Pump
-    annotation (Placement(transformation(extent={{-10,-50},{10,-30}})));
-protected
-  Modelica.Blocks.Math.Gain gain(k=m_flow_nominal) if FlowType == DisHeatLib.BaseClasses.FlowType.Pump
-                                                   annotation (Placement(
-        transformation(
-        extent={{-4,-4},{4,4}},
-        rotation=-90,
-        origin={18,0})));
 public
   Modelica.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium =
         Medium) "Supply fluid port"
@@ -54,32 +33,25 @@ public
     annotation (Placement(transformation(extent={{-20,-20},{20,20}},
         rotation=-90,
         origin={0,120})));
-protected
-  IBPSA.Fluid.Actuators.Valves.TwoWayEqualPercentage     valve(
-    redeclare package Medium = Medium,
-    allowFlowReversal=allowFlowReversal,
-    dpValve_nominal(displayUnit="bar") = dp_nominal,
-    m_flow_nominal=m_flow_nominal,
-    linearized=linearizeFlowResistance,
-    from_dp=from_dp) if FlowType == DisHeatLib.BaseClasses.FlowType.Valve
-    annotation (Placement(transformation(extent={{-10,30},{10,50}})));
+  replaceable DisHeatLib.BaseClasses.FlowUnit flowUnit(
+    redeclare final package Medium = Medium,
+    final allowFlowReversal=allowFlowReversal,
+    final m_flow_nominal=m_flow_nominal,
+    final m_flow_small=m_flow_small,
+    final dp_nominal=dp_nominal,
+    final dpFixed_nominal=0,
+    final from_dp=from_dp,
+    final linearizeFlowResistance=linearizeFlowResistance)
+    annotation (Dialog(group="Parameters"), Placement(transformation(extent={{-10,-10},{10,10}})));
 equation
-  connect(bypass_control.y, valve.y)
-    annotation (Line(points={{-9,70},{0,70},{0,52}}, color={0,0,127}));
-  connect(bypass_control.y, gain.u)
-    annotation (Line(points={{-9,70},{18,70},{18,4.8}}, color={0,0,127}));
-  connect(gain.y,pump. m_flow_in)
-    annotation (Line(points={{18,-4.4},{18,-28},{0,-28}},   color={0,0,127}));
-  connect(port_a, valve.port_a) annotation (Line(points={{-100,0},{-40,0},{-40,40},
-          {-10,40}}, color={0,127,255}));
-  connect(valve.port_b, port_b) annotation (Line(points={{10,40},{40,40},{40,0},
-          {100,0}}, color={0,127,255}));
-  connect(port_a, pump.port_a) annotation (Line(points={{-100,0},{-40,0},{-40,-40},
-          {-10,-40}}, color={0,127,255}));
-  connect(pump.port_b, port_b) annotation (Line(points={{10,-40},{40,-40},{40,0},
-          {100,0}}, color={0,127,255}));
   connect(bypass_control.T_measurement, T_measurement) annotation (Line(points={{-32,70},
           {-38,70},{-38,92},{0,92},{0,120}},          color={0,0,127}));
+  connect(port_a, flowUnit.port_a)
+    annotation (Line(points={{-100,0},{-10,0}}, color={0,127,255}));
+  connect(flowUnit.port_b, port_b)
+    annotation (Line(points={{10,0},{100,0}}, color={0,127,255}));
+  connect(bypass_control.y, flowUnit.y)
+    annotation (Line(points={{-9,70},{0,70},{0,12}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
           lineColor={200,200,200},

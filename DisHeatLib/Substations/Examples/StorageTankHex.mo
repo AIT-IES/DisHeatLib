@@ -4,7 +4,6 @@ model StorageTankHex
   BaseClasses.StorageTankHex storageTankHex(
     show_T=true,
     redeclare package Medium = Medium,
-    FlowType=DisHeatLib.BaseClasses.FlowType.Valve,
     Q1_flow_nominal=100000,
     dp1_nominal(displayUnit="bar") = 100000,
     Q2_flow_nominal=100000,

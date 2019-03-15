@@ -52,8 +52,7 @@ model Substation
       TemSup2_nominal=333.15,
       TemRet2_nominal=283.15,
       OutsideDependent=false),
-    redeclare package Medium = Medium,
-    FlowType=DisHeatLib.BaseClasses.FlowType.Valve)
+    redeclare package Medium = Medium)
     annotation (Placement(transformation(extent={{-10,-12},{10,8}})));
   IBPSA.Fluid.HeatExchangers.SensibleCooler_T cooler1(
     redeclare package Medium = Medium,

@@ -7,7 +7,7 @@ model OneSupplyOneBuilding
   DisHeatLib.Demand.Demand demandSH(
     redeclare package Medium = Medium,
     show_T=true,
-    FlowType=DisHeatLib.BaseClasses.FlowType.Valve,
+    flowUnit(FlowType=DisHeatLib.BaseClasses.FlowType.Valve),
     dp_nominal=100000,
     tableName="SHprofile",
     fileName="modelica://DisHeatLib/Resources/Data/SHprofile.txt",
@@ -88,7 +88,6 @@ model OneSupplyOneBuilding
       T_bandwidth_EBH=4,
       eff_EBH=1),
     redeclare package Medium = Medium,
-    FlowType=DisHeatLib.BaseClasses.FlowType.Valve,
     TemSup_nominal=323.15,
     dp_nominal=100000)
     annotation (Placement(transformation(extent={{-10,26},{10,46}})));
