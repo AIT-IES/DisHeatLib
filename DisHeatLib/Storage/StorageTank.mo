@@ -1,6 +1,19 @@
 within DisHeatLib.Storage;
 model StorageTank
-  extends IBPSA.Fluid.Interfaces.PartialTwoPortInterface;
+  extends IBPSA.Fluid.Interfaces.PartialFourPortInterface(
+    redeclare package Medium1 = Medium,
+    redeclare package Medium2 = Medium,
+    final m1_flow_nominal = m_flow_nominal,
+    final m2_flow_nominal = m_flow_nominal,
+    final allowFlowReversal1 = allowFlowReversal,
+    final allowFlowReversal2 = allowFlowReversal,
+    final m1_flow_small = m_flow_small,
+    final m2_flow_small = m_flow_small);
+
+  replaceable package Medium =
+    Modelica.Media.Interfaces.PartialMedium "Medium in the component"
+      annotation (choices(
+        choice(redeclare package Medium = IBPSA.Media.Water "Water")));
 
   parameter Modelica.SIunits.Temperature TemSup_nominal(displayUnit="degC")
     "Nominal supply temperature"
@@ -19,13 +32,22 @@ model StorageTank
   parameter Modelica.SIunits.Temperature TemInit = TemSup_nominal
     "Initial temperature of the storage tank"
     annotation(Evaluate=true, Dialog(group = "Storage tank"));
+  parameter Modelica.SIunits.Temperature TemRoom = 20.0 + 273.15
+    "Constant temperature surrounding the storage tank"
+    annotation(Evaluate=true, Dialog(group = "Storage tank"));
 
-protected
-  Modelica.Blocks.Sources.RealExpression Tin[nSeg](y=tan.vol[:].T) annotation (
-      Placement(transformation(
-        extent={{-10,-10},{10,10}},
-        rotation=0,
-        origin={40,80})));
+
+
+  parameter Modelica.SIunits.MassFlowRate m_flow_nominal
+    "Nominal mass flow rate"
+    annotation(Dialog(group = "Nominal condition"));
+  parameter Modelica.SIunits.MassFlowRate m_flow_small(min=0) = 1E-4*abs(m_flow_nominal)
+    "Small mass flow rate for regularization of zero flow"
+    annotation(Dialog(tab = "Advanced"));
+  parameter Boolean allowFlowReversal = true
+    "= false to simplify equations, assuming, but not enforcing, no flow reversal for medium 1"
+    annotation(Dialog(tab="Assumptions"), Evaluate=true);
+
 public
   IBPSA.Fluid.Storage.StratifiedEnhanced tan(
     allowFlowReversal=allowFlowReversal,
@@ -39,33 +61,93 @@ public
     redeclare package Medium = Medium,
     T_start=TemInit)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a port_ht
-    "heat port to ambient"
-    annotation (Placement(transformation(extent={{-10,90},{10,110}})));
-  BaseClasses.CalculateSOC calculateSOC(nin=nSeg, TemHot=TemSup_nominal)
-    annotation (Placement(transformation(extent={{60,70},{80,90}})));
+  Modelica.Thermal.HeatTransfer.Sources.FixedTemperature
+                                                  FixedTemRoom(T=TemRoom)
+    annotation (Placement(transformation(
+        extent={{6,6},{-6,-6}},
+        rotation=90,
+        origin={0,30})));
+  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heaPorVol[nSeg]
+    "Heat port that connects to the control volumes of the tank"
+    annotation (Placement(transformation(extent={{-6,94},{6,106}})));
+public
+  Modelica.Blocks.Interfaces.RealOutput TemTank[nSeg](
+    quantity="Temperature",
+    unit="K",
+    displayUnit="degC") "Temperature of layers in thermal storage tank"
+    annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=-90,
+        origin={40,-110}), iconTransformation(
+        extent={{-10,-10},{10,10}},
+        rotation=-90,
+        origin={40,-110})));
 public
   Modelica.Blocks.Interfaces.RealOutput SOC
     "State of charge of thermal storage tank" annotation (Placement(
         transformation(
         extent={{-10,-10},{10,10}},
+        rotation=-90,
+        origin={-40,-110}),
+                          iconTransformation(extent={{-10,-10},{10,10}},
+        rotation=-90,
+        origin={-40,-110})));
+public
+  BaseClasses.CalculateSOC calculateSOC(nin=nSeg, TemHot=TemSup_nominal)
+    annotation (Placement(transformation(extent={{-66,-90},{-46,-70}})));
+protected
+  Modelica.Blocks.Sources.RealExpression Tin[nSeg](y=tan.vol[:].T) annotation (
+      Placement(transformation(
+        extent={{-10,-10},{10,10}},
         rotation=0,
-        origin={110,80}), iconTransformation(extent={{100,70},{120,90}})));
+        origin={-86,-80})));
+  IBPSA.Fluid.FixedResistances.Junction jun(
+    redeclare package Medium = Medium,
+    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
+    dp_nominal={0,0,0},
+    m_flow_nominal={m_flow_nominal,m_flow_nominal,m_flow_nominal})
+    annotation (Placement(transformation(
+        extent={{-6,-6},{6,6}},
+        rotation=270,
+        origin={60,0})));
+  IBPSA.Fluid.FixedResistances.Junction jun1(
+    redeclare package Medium = Medium,
+    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
+    T_start=TemSup_nominal,
+    dp_nominal={0,0,0},
+    m_flow_nominal={m_flow_nominal,m_flow_nominal,m_flow_nominal})
+    annotation (Placement(transformation(
+        extent={{-6,-6},{6,6}},
+        rotation=90,
+        origin={-70,0})));
 equation
-  connect(port_ht, tan.heaPorTop)
-    annotation (Line(points={{0,100},{0,7.4},{2,7.4}}, color={191,0,0}));
-  connect(port_ht, tan.heaPorSid)
-    annotation (Line(points={{0,100},{0,0},{5.6,0}}, color={191,0,0}));
-  connect(port_ht, tan.heaPorBot)
-    annotation (Line(points={{0,100},{0,-7.4},{2,-7.4}}, color={191,0,0}));
-  connect(port_a, tan.port_a)
-    annotation (Line(points={{-100,0},{-10,0}}, color={0,127,255}));
-  connect(tan.port_b, port_b)
-    annotation (Line(points={{10,0},{100,0}}, color={0,127,255}));
-  connect(calculateSOC.y, SOC)
-    annotation (Line(points={{81,80},{110,80}}, color={0,0,127}));
+  connect(FixedTemRoom.port, tan.heaPorTop)
+    annotation (Line(points={{0,24},{0,7.4},{2,7.4}}, color={191,0,0}));
+  connect(FixedTemRoom.port, tan.heaPorSid)
+    annotation (Line(points={{0,24},{0,0},{5.6,0}}, color={191,0,0}));
+  connect(FixedTemRoom.port, tan.heaPorBot)
+    annotation (Line(points={{0,24},{0,-7.4},{2,-7.4}}, color={191,0,0}));
+  connect(heaPorVol, tan.heaPorVol) annotation (Line(points={{0,100},{0,88},
+          {-40,88},{-40,0},{0,0}},
+                              color={191,0,0}));
+  connect(Tin.y,TemTank)  annotation (Line(points={{-75,-80},{-74,-80},{-74,-64},
+          {40,-64},{40,-110}}, color={0,0,127}));
+  connect(calculateSOC.y,SOC)  annotation (Line(points={{-45,-80},{-40,-80},{-40,
+          -110}}, color={0,0,127}));
   connect(Tin.y, calculateSOC.u)
-    annotation (Line(points={{51,80},{58,80}}, color={0,0,127}));
+    annotation (Line(points={{-75,-80},{-68,-80}}, color={0,0,127}));
+  connect(jun1.port_2, port_a1) annotation (Line(points={{-70,6},{-70,60},{
+          -100,60}}, color={0,127,255}));
+  connect(port_b2, jun1.port_1) annotation (Line(points={{-100,-60},{-70,-60},
+          {-70,-6}}, color={0,127,255}));
+  connect(jun1.port_3, tan.port_a)
+    annotation (Line(points={{-64,0},{-10,0}}, color={0,127,255}));
+  connect(tan.port_b, jun.port_3)
+    annotation (Line(points={{10,0},{54,0}}, color={0,127,255}));
+  connect(jun.port_1, port_b1) annotation (Line(points={{60,6},{60,60},{100,
+          60}}, color={0,127,255}));
+  connect(jun.port_2, port_a2) annotation (Line(points={{60,-6},{60,-60},{100,
+          -60}}, color={0,127,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Ellipse(
           extent={{-50,80},{50,54}},
@@ -101,35 +183,25 @@ equation
           color={0,0,0},
           thickness=1),
         Line(
-          points={{-100,0},{-70,0},{-70,60},{-70,60},{-44,60},{-44,60},{-42,60}},
+          points={{-32,60},{-100,60}},
           color={238,46,47},
           thickness=1),
         Line(
-          points={{100,0},{70,0},{70,-60},{40,-60},{42,-60}},
+          points={{40,-58}},
+          color={238,46,47},
+          thickness=1),
+        Line(
+          points={{38,-60},{70,-60},{70,60},{98,60}},
           color={0,0,127},
           thickness=1),
-        Rectangle(
-          extent={{66,26},{70,82}},
-          lineColor={0,0,255},
-          pattern=LinePattern.None,
-          fillColor={0,0,0},
-          fillPattern=FillPattern.Solid),
-        Rectangle(
-          extent={{70,82},{100,78}},
-          lineColor={0,0,255},
-          pattern=LinePattern.None,
-          fillColor={0,0,0},
-          fillPattern=FillPattern.Solid),
-        Text(
-          extent={{28,108},{96,84}},
-          lineColor={0,0,127},
-          textString="SOC"),
-        Rectangle(
-          extent={{50,30},{68,26}},
-          lineColor={0,0,255},
-          pattern=LinePattern.None,
-          fillColor={0,0,0},
-          fillPattern=FillPattern.Solid)}),                      Diagram(
+        Line(
+          points={{70,-60},{102,-60}},
+          color={0,0,127},
+          thickness=1),
+        Line(
+          points={{-70,60},{-70,36},{-70,-60},{-100,-60}},
+          color={238,46,47},
+          thickness=1)}),                                        Diagram(
         coordinateSystem(preserveAspectRatio=false)),
     experiment(
       StopTime=36000,
@@ -139,5 +211,8 @@ equation
 <ul>
 <li>Feburary 27, 2019, by Benedikt Leitner:<br>Implementation and added User&apos;s guide. </li>
 </ul>
+</html>",
+        info="<html>
+<p>This is a model of a stratified thermal storage tank. It is basically a convenience wrapper around the model <a href=\"modelica://IBPSA.Fluid.Storage.StratifiedEnhanced\">IBPSA.Fluid.Storage.StratifiedEnhanced</a>. It adds distinct ports for supply and demand as well as a constant ambient temperature to take losses into account.</p>
 </html>"));
 end StorageTank;

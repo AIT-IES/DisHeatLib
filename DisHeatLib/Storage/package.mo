@@ -1,5 +1,5 @@
 within DisHeatLib;
-package Storage
+package Storage "Thermal storage library"
   extends Modelica.Icons.VariantsPackage;
 
 end Storage;
