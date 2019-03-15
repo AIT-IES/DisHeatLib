@@ -1,0 +1,6 @@
+removePlots();
+simulateModel("DisHeatLib.Storage.Examples.StorageTankHex", startTime=0, tolerance=1e-6, stopTime=86400, outputInterval=900, method="dassl", resultFile="StorageTankHex");
+createPlot(id = 1,
+ y = {"storageTankHex.SOC", "storageTankHex.tan.vol[1].T", "storageTankHex.tan.vol[2].T", "storageTankHex.tan.vol[3].T", "storageTankHex.tan.vol[4].T", "storageTankHex.tan.vol[5].T", "storageTankHex.tan.vol[6].T", "storageTankHex.tan.vol[7].T", "storageTankHex.tan.vol[8].T", "storageTankHex.tan.vol[9].T", "storageTankHex.tan.vol[10].T", "storageTankHex.TemSup_nominal"},
+ axes = {2,1,1,1,1,1,1,1,1,1,1,1},
+ grid = true);
