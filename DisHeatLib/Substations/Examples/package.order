@@ -2,4 +2,6 @@ Substation
 DirectStation
 IndirectStation
 IndirectStationEBH
+StorageTankHex
+StorageTankHexEBH
 Bypass

@@ -2,6 +2,7 @@ BaseStation
 DirectStation
 IndirectStation
 IndirectStationEBH
+StorageTankHex
+StorageTankHexEBH
 Bypass
 SubstationInterface
-BaseStationFlowType

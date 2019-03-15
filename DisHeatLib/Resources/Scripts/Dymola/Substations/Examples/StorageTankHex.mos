@@ -1,0 +1,8 @@
+removePlots();
+simulateModel("DisHeatLib.Substations.Examples.StorageTankHex", startTime=0, tolerance=1e-6, stopTime=604800, outputInterval=900, method="dassl", resultFile="StorageTankHex");
+createPlot(id = 1,
+ y = {"storageTankHex.sta_a1.T", "storageTankHex.sta_b1.T", "storageTankHex.sta_a2.T", "storageTankHex.sta_b2.T"},
+ grid = true);
+createPlot(id = 2,
+ y = {"storageTankHex.m1_flow", "storageTankHex.m1_flow_nominal"},
+ grid = true);
