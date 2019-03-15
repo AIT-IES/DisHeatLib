@@ -5,7 +5,8 @@ model Bypass
     final computeFlowResistance=(abs(dp_nominal) > Modelica.Constants.eps),
     final deltaM=0.1);
 
-  parameter BaseClasses.BaseStationFlowType FlowType = DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Pump "Flow type at primary side";
+  parameter DisHeatLib.BaseClasses.FlowType FlowType=DisHeatLib.BaseClasses.FlowType.Pump
+    "Flow type at primary side";
 
   // Control
   parameter Boolean use_thermostat = false "Use a thermostat to control the bypass valve, otherwise always opened"
@@ -32,10 +33,10 @@ public
     nominalValuesDefineDefaultPressureCurve=true,
     m_flow_nominal=m_flow_nominal,
     dp_nominal=dp_nominal,
-    addPowerToMedium=false) if FlowType == DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Pump
+    addPowerToMedium=false) if FlowType == DisHeatLib.BaseClasses.FlowType.Pump
     annotation (Placement(transformation(extent={{-10,-50},{10,-30}})));
 protected
-  Modelica.Blocks.Math.Gain gain(k=m_flow_nominal) if FlowType == DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Pump
+  Modelica.Blocks.Math.Gain gain(k=m_flow_nominal) if FlowType == DisHeatLib.BaseClasses.FlowType.Pump
                                                    annotation (Placement(
         transformation(
         extent={{-4,-4},{4,4}},
@@ -60,7 +61,7 @@ protected
     dpValve_nominal(displayUnit="bar") = dp_nominal,
     m_flow_nominal=m_flow_nominal,
     linearized=linearizeFlowResistance,
-    from_dp=from_dp) if FlowType == DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Valve
+    from_dp=from_dp) if FlowType == DisHeatLib.BaseClasses.FlowType.Valve
     annotation (Placement(transformation(extent={{-10,30},{10,50}})));
 equation
   connect(bypass_control.y, valve.y)

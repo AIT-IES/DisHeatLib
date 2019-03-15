@@ -4,10 +4,10 @@ model IndirectStation
   BaseClasses.IndirectStation indirectStation(
     show_T=true,
     redeclare package Medium = Medium,
-    Q_flow_nominal(displayUnit="kW") = 100000,
+    Q1_flow_nominal=100000,
     dp1_nominal(displayUnit="bar") = 100000,
     OutsideDependent=false,
-    FlowType=DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Valve)
+    FlowType=DisHeatLib.BaseClasses.FlowType.Valve)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
   package Medium = IBPSA.Media.Water;
 

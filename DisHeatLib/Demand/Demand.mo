@@ -5,7 +5,8 @@ model Demand
   extends IBPSA.Fluid.Interfaces.TwoPortFlowResistanceParameters(
     final computeFlowResistance=(abs(dp_nominal) > Modelica.Constants.eps));
   // Basic parameters
-  parameter DisHeatLib.Substations.BaseClasses.BaseStationFlowType FlowType = DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Pump "Flow type";
+  parameter DisHeatLib.BaseClasses.FlowType FlowType=DisHeatLib.BaseClasses.FlowType.Pump
+    "Flow type";
   // Nominal parameters
   parameter Modelica.SIunits.Power Q_flow_nominal
     "Nominal heat flow rate"
@@ -97,7 +98,7 @@ public
     nominalValuesDefineDefaultPressureCurve=true,
     m_flow_nominal=m_flow_nominal,
     dp_nominal=dp_nominal,
-    addPowerToMedium=false) if FlowType == DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Pump
+    addPowerToMedium=false) if FlowType == DisHeatLib.BaseClasses.FlowType.Pump
     annotation (Placement(transformation(extent={{40,-42},{60,-22}})));
 protected
   Modelica.Blocks.Math.Gain gain_scaling(k=scaling)
@@ -110,7 +111,7 @@ protected
         rotation=0,
         origin={0,32})));
 protected
-  Modelica.Blocks.Math.Gain gain(k=m_flow_nominal) if FlowType == DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Pump
+  Modelica.Blocks.Math.Gain gain(k=m_flow_nominal) if FlowType == DisHeatLib.BaseClasses.FlowType.Pump
                                                    annotation (Placement(
         transformation(
         extent={{-4,-4},{4,4}},
@@ -123,8 +124,7 @@ protected
     from_dp=from_dp,
     linearized=linearizeFlowResistance,
     dpValve_nominal(displayUnit="bar") = dp_nominal,
-    m_flow_nominal=m_flow_nominal) if
-                        FlowType == DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Valve
+    m_flow_nominal=m_flow_nominal) if FlowType == DisHeatLib.BaseClasses.FlowType.Valve
     annotation (Placement(transformation(extent={{38,12},{58,32}})));
 equation
   Q_flow = -demandType.Q_flow;

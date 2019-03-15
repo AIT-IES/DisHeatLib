@@ -9,11 +9,6 @@ model Substation
     "Nominal supply temperature"
     annotation(Dialog(group = "Nominal condition"));
 
-  final parameter Modelica.SIunits.Power Q_flow_nominal=baseStationDHW.Q_flow_nominal
-       +baseStationSH.Q_flow_nominal
-    "Nominal heat flow rate through station at secondary side"
-    annotation (Dialog(group="Space heating"));
-
   // Bypass valve - Tab: Bypass
   parameter Boolean use_bypass = true "Use a bypass valve"
     annotation(Dialog(tab="Bypass"), HideResult=true, choices(checkBox=true));
@@ -82,18 +77,15 @@ protected
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     T_start=TemSup_nominal,
     dp_nominal={0,0,0},
-    m_flow_nominal={m_flow_nominal,FracBypass*m_flow_nominal,m_flow_nominal},
-    linearized=linearizeFlowResistance,
-    from_dp=from_dp) if       use_bypass
+    m_flow_nominal={m_flow_nominal,FracBypass*m_flow_nominal,m_flow_nominal}) if
+                              use_bypass
     annotation (Placement(transformation(extent={{-32,-54},{-20,-66}})));
   IBPSA.Fluid.FixedResistances.Junction jun1(
     redeclare package Medium = Medium,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     T_start=TemSup_nominal,
     dp_nominal={0,0,0},
-    m_flow_nominal={m_flow_nominal,baseStationDHW.m1_flow_nominal,baseStationSH.m1_flow_nominal},
-    linearized=linearizeFlowResistance,
-    from_dp=from_dp)
+    m_flow_nominal={m_flow_nominal,baseStationDHW.m1_flow_nominal,baseStationSH.m1_flow_nominal})
     annotation (Placement(transformation(
         extent={{6,6},{-6,-6}},
         rotation=-90,
@@ -102,9 +94,7 @@ protected
     redeclare package Medium = Medium,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     dp_nominal={0,0,0},
-    m_flow_nominal={baseStationSH.m1_flow_nominal,m_flow_nominal,baseStationDHW.m1_flow_nominal},
-    linearized=linearizeFlowResistance,
-    from_dp=from_dp)
+    m_flow_nominal={baseStationSH.m1_flow_nominal,m_flow_nominal,baseStationDHW.m1_flow_nominal})
     annotation (Placement(transformation(
         extent={{-6,-6},{6,6}},
         rotation=-90,
@@ -113,9 +103,8 @@ protected
     redeclare package Medium = Medium,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     dp_nominal={0,0,0},
-    m_flow_nominal={bypass.m_flow_nominal,m_flow_nominal,m_flow_nominal},
-    linearized=linearizeFlowResistance,
-    from_dp=from_dp) if       use_bypass
+    m_flow_nominal={bypass.m_flow_nominal,m_flow_nominal,m_flow_nominal}) if
+                              use_bypass
     annotation (Placement(transformation(
         extent={{-6,6},{6,-6}},
         rotation=0,

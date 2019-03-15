@@ -6,7 +6,8 @@ model OneSupplyOneBuilding
 
   DisHeatLib.Demand.Demand demandSH(
     redeclare package Medium = Medium,
-    FlowType=DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Valve,
+    show_T=true,
+    FlowType=DisHeatLib.BaseClasses.FlowType.Valve,
     dp_nominal=100000,
     tableName="SHprofile",
     fileName="modelica://DisHeatLib/Resources/Data/SHprofile.txt",
@@ -14,8 +15,8 @@ model OneSupplyOneBuilding
     Q_constant(displayUnit="kW") = 100000,
     heatLoad=DisHeatLib.Demand.BaseClasses.InputTypeQ.File,
     Q_flow_nominal(displayUnit="kW") = 10000,
-    TemSup_nominal=333.15,
-    TemRet_nominal=318.15)
+    TemSup_nominal=318.15,
+    TemRet_nominal=303.15)
     annotation (Placement(transformation(extent={{20,50},{40,70}})));
 
   DisHeatLib.Pipes.DualPipe pipe(
@@ -42,21 +43,22 @@ model OneSupplyOneBuilding
     Q_flow_nominal(displayUnit="kW") = 20000,
     powerCha(Q_flow={0,1}, P={0,1}),
     OutsideDependent=false,
-    dp_set=500000,
+    dp_set=100000,
     k=1,
-    TemSup_nominal=353.15,
-    TemRet_nominal=318.15,
+    TemSup_nominal=323.15,
+    TemRet_nominal=293.15,
     dp_nominal(displayUnit="bar") = 100000,
     TemOut_min=268.15,
     TemOut_max=288.15,
     TemSup_min=343.15,
     TemSup_max=333.15,
-    dp_min(displayUnit="bar") = 500000,
+    dp_min(displayUnit="bar") = 100000,
     dp_max(displayUnit="bar") = 1000000,
     nPorts=1)
     annotation (Placement(transformation(extent={{10,-54},{-10,-74}})));
   DisHeatLib.Demand.Demand demandDHW(
     redeclare package Medium = Medium,
+    show_T=true,
     dp_nominal=100000,
     tableName="Table",
     fileName="modelica://DisHeatLib/Resources/Data/DHWprofile_E2340_P40.txt",
@@ -72,12 +74,22 @@ model OneSupplyOneBuilding
     show_T=true,
     use_bypass=false,
     redeclare DisHeatLib.Substations.BaseClasses.DirectStation baseStationSH(
-        Q_flow_nominal(displayUnit="kW") = 10000),
-    redeclare DisHeatLib.Substations.BaseClasses.IndirectStation baseStationDHW(
-        Q_flow_nominal(displayUnit="kW") = 10000, OutsideDependent=false),
+        Q1_flow_nominal=10000),
+    redeclare DisHeatLib.Substations.BaseClasses.StorageTankHexEBH
+      baseStationDHW(
+      Q1_flow_nominal=10000,
+      Q2_flow_nominal=10000,
+      VTan=1,
+      hTan=1,
+      u_min=45 + 273.15,
+      u_bandwidth=4,
+      Q_flow_nominal_EBH(displayUnit="kW") = 2000,
+      T_min_EBH=333.15,
+      T_bandwidth_EBH=4,
+      eff_EBH=1),
     redeclare package Medium = Medium,
-    FlowType=DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Valve,
-    TemSup_nominal=343.15,
+    FlowType=DisHeatLib.BaseClasses.FlowType.Valve,
+    TemSup_nominal=323.15,
     dp_nominal=100000)
     annotation (Placement(transformation(extent={{-10,26},{10,46}})));
 equation
@@ -113,6 +125,13 @@ equation
 <li>Feburary 27, 2019, by Benedikt Leitner:<br>Implementation and added User&apos;s guide. </li>
 </ul>
 </html>", info="<html>
-<p>Example of a single pressure supply unit providing heat through one pipe to a single substation with a indirect domestic hot water connection and a direct space heating connection.</p>
+<p>This example contains the following function units:</p>
+<ul>
+<li>a supply unit working as pressure and temperature source</li>
+<li>a dual pipe for fluid transport (supply and return)</li>
+<li>a substation with a thermal storage tank and electric booster heater for domestic hot water supply and a direct connection for space heating</li>
+<li>a domestic hot water demand with heat demand value from a file and with a constant return temperature</li>
+<li>a space heating demand with heat demand value from a file and with a varying return temperature</li>
+</ul>
 </html>"));
 end OneSupplyOneBuilding;

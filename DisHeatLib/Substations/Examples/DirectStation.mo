@@ -3,7 +3,7 @@ model DirectStation
   extends Modelica.Icons.Example;
   BaseClasses.DirectStation directBaseStation(
     redeclare package Medium = Medium,
-    Q_flow_nominal(displayUnit="kW") = 10000,
+    Q1_flow_nominal(displayUnit="kW") = 10000,
     dp1_nominal(displayUnit="bar") = 100000)
     annotation (Placement(transformation(extent={{-10,10},{10,-10}})));
   package Medium = IBPSA.Media.Water;

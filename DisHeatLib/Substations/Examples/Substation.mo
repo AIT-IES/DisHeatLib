@@ -41,19 +41,19 @@ model Substation
     TemSup_nominal=363.15,
     use_bypass=false,
     redeclare DisHeatLib.Substations.BaseClasses.IndirectStation baseStationSH(
-      Q_flow_nominal(displayUnit="kW") = 10000,
+      Q1_flow_nominal=10000,
       TemRet1_nominal=308.15,
       TemSup2_nominal=323.15,
       TemRet2_nominal=303.15,
       OutsideDependent=false),
     redeclare DisHeatLib.Substations.BaseClasses.IndirectStation baseStationDHW(
-      Q_flow_nominal(displayUnit="kW") = 10000,
+      Q1_flow_nominal=10000,
       TemRet1_nominal=288.15,
       TemSup2_nominal=333.15,
       TemRet2_nominal=283.15,
       OutsideDependent=false),
     redeclare package Medium = Medium,
-    FlowType=DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Valve)
+    FlowType=DisHeatLib.BaseClasses.FlowType.Valve)
     annotation (Placement(transformation(extent={{-10,-12},{10,8}})));
   IBPSA.Fluid.HeatExchangers.SensibleCooler_T cooler1(
     redeclare package Medium = Medium,

@@ -9,8 +9,8 @@ partial model SubstationInterface
     "Nominal mass flow rate"
     annotation (Evaluate=true);
 
-  parameter BaseClasses.BaseStationFlowType FlowType = DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Pump "Flow type"
-    annotation(Dialog(group = "Nominal condition"));
+  parameter DisHeatLib.BaseClasses.FlowType FlowType=DisHeatLib.BaseClasses.FlowType.Pump
+    "Flow type" annotation (Dialog(group="Nominal condition"));
 
   parameter Modelica.SIunits.PressureDifference dp_nominal
     "Nominal pressure difference"
@@ -18,12 +18,12 @@ partial model SubstationInterface
 
   parameter Boolean from_dp = false
     "= true, use m_flow = f(dp) else dp = f(m_flow)"
-    annotation (Evaluate=true, Dialog(enable = FlowType==DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Valve,
+    annotation (Evaluate=true, Dialog(enable=FlowType == DisHeatLib.BaseClasses.FlowType.Valve,
                 tab="Flow resistance", group="Primary side"));
 
   parameter Boolean linearizeFlowResistance = false
     "= true, use linear relation between m_flow and dp for any flow rate"
-    annotation(Dialog(enable = FlowType==DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Valve,
+    annotation(Dialog(enable=FlowType == DisHeatLib.BaseClasses.FlowType.Valve,
                tab="Flow resistance", group="Primary side"));
 
   parameter Boolean allowFlowReversal = true

@@ -1,9 +1,8 @@
 within DisHeatLib.Substations.BaseClasses;
 model IndirectStationEBH
   extends BaseStation(
-    Q_flow_nominal=m2_flow_small*(TemSup2_nominal-TemRet2_nominal)*cp_default,
-    m1_flow_nominal=Q_flow_nominal/hex_efficiency/((TemSup1_nominal-TemRet1_nominal)*cp_default),
-    m2_flow_nominal=Q_flow_nominal/((TemSup2_nominal-TemRet2_nominal)*cp_default),
+    Q2_flow_nominal=Q1_flow_nominal,
+    m2_flow_nominal=Q2_flow_nominal/((electricBoosterHeater.TemSup_nominal-TemRet2_nominal)*cp_default),
     total_power(y=electricBoosterHeater.P));
 
   //Secondary side supply temperature
@@ -51,7 +50,7 @@ public
     riseTime(displayUnit="min"),
     linearized=linearizeFlowResistance,
     from_dp=from_dp,
-    dpFixed_nominal=dp_hex_nominal) if FlowType == DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Valve
+    dpFixed_nominal=dp_hex_nominal) if FlowType == DisHeatLib.BaseClasses.FlowType.Valve
     annotation (Placement(transformation(extent={{-26,70},{-6,50}})));
 public
   IBPSA.Fluid.HeatExchangers.ConstantEffectiveness hex(redeclare package
@@ -123,10 +122,9 @@ public
     addPowerToMedium=false,
     riseTime(displayUnit="min"),
     nominalValuesDefineDefaultPressureCurve=true,
-    dp_nominal=dp1_nominal) if      FlowType == DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Pump
+    dp_nominal=dp1_nominal) if FlowType == DisHeatLib.BaseClasses.FlowType.Pump
     annotation (Placement(transformation(extent={{-14,40},{6,20}})));
-  Modelica.Blocks.Math.Gain gain(k=m1_flow_nominal) if
-                                                      FlowType == DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Pump
+  Modelica.Blocks.Math.Gain gain(k=m1_flow_nominal) if FlowType == DisHeatLib.BaseClasses.FlowType.Pump
                                                    annotation (Placement(
         transformation(
         extent={{4,-4},{-4,4}},
@@ -185,18 +183,7 @@ equation
           -34},{-68,-34},{-68,-60},{-100,-60}}, color={0,127,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-120},
             {100,100}}),                                        graphics={
-        Rectangle(
-          extent={{-102,65},{99,55}},
-          lineColor={0,0,255},
-          pattern=LinePattern.None,
-          fillColor={0,0,0},
-          fillPattern=FillPattern.Solid),
-        Rectangle(
-          extent={{-104,-55},{97,-65}},
-          lineColor={0,0,255},
-          pattern=LinePattern.None,
-          fillColor={0,0,0},
-          fillPattern=FillPattern.Solid),Rectangle(
+                                         Rectangle(
           extent={{-70,80},{70,-80}},
           lineColor={0,0,255},
           pattern=LinePattern.None,
@@ -207,11 +194,11 @@ equation
           color={28,108,200},
           thickness=1),
         Line(
-          points={{0,-60},{30,0},{60,-60},{70,-60}},
+          points={{0,-60},{30,0},{60,-60},{82,-60}},
           color={28,108,200},
           thickness=1),
         Line(
-          points={{0,-60},{-30,0},{-60,-60},{-70,-60}},
+          points={{0,-60},{-30,0},{-60,-60},{-80,-60}},
           color={238,46,47},
           thickness=1),
         Line(
@@ -221,10 +208,23 @@ equation
         Line(
           points={{0,-14},{30,46},{60,-14},{60,60},{100,60}},
           color={28,108,200},
-          thickness=1)}), Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+          thickness=1),
+        Ellipse(
+          extent={{-36,38},{36,-38}},
+          lineColor={0,0,0},
+          fillColor={247,247,247},
+          fillPattern=FillPattern.Solid,
+          lineThickness=0.5),
+        Polygon(
+          points={{-8,-28},{0,-2},{-14,-2},{4,30},{-2,4},{12,4},{-8,-28}},
+          lineColor={0,0,0},
+          fillColor={255,255,0},
+          fillPattern=FillPattern.Solid,
+          lineThickness=0.5)}),
+                          Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{100,100}})),
     Documentation(info="<html>
-<p>This is a model for an indirect district heating substation. Its main components are a heat exchanger, a flow regulating valve, a pump to deliver heat to the customers, an expansion vessel and controller that maintains the temperature at the secondary side by setting the position of the flow regulating valve/pump. The supply temperature setpoint at the secondary side can thereby be set to a constant or can be changed depending on the outside temperature.</p>
+<p>This is a model for an indirect district heating substation. Its main components are a heat exchanger, a flow regulating valve/pump, an expansion vessel and controller that maintains the temperature at the secondary side by setting the position of the flow regulating valve/pump. The supply temperature setpoint at the secondary side can thereby be set to a constant or can be changed depending on the outside temperature.</p>
 <p>A mismatch between the setpoint and the actual value of the secondary supply temperature can have different reasons:</p>
 <ul>
 <li>The differential pressure at the station is too low, resulting in a too low mass flow at the primary side even if the valve is completely open.</li>

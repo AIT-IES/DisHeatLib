@@ -118,17 +118,17 @@ model TwoSuppliesOneBuilding
     show_T=true,
     use_bypass=false,
     redeclare DisHeatLib.Substations.BaseClasses.IndirectStation baseStationSH(
-      Q_flow_nominal(displayUnit="kW") = 10000,
+      Q1_flow_nominal=10000,
       TemSup2_nominal=323.15,
       TemRet2_nominal=303.15,
       Ti=900),
     redeclare DisHeatLib.Substations.BaseClasses.IndirectStation baseStationDHW(
-      Q_flow_nominal(displayUnit="kW") = 10000,
+      Q1_flow_nominal=10000,
       TemSup2_nominal=333.15,
       TemRet2_nominal=283.15,
       OutsideDependent=false),
     redeclare package Medium = Medium,
-    FlowType=DisHeatLib.Substations.BaseClasses.BaseStationFlowType.Valve,
+    FlowType=DisHeatLib.BaseClasses.FlowType.Valve,
     TemSup_nominal=343.15,
     dp_nominal=100000)
     annotation (Placement(transformation(extent={{-10,30},{10,50}})));
