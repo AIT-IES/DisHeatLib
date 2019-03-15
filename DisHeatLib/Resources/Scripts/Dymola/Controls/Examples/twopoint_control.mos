@@ -1,0 +1,5 @@
+removePlots();
+simulateModel("DisHeatLib.Controls.Examples.twopoint_control", startTime=0, tolerance=1e-6, stopTime=3600, outputInterval=10, method="dassl", resultFile="twopoint_control");
+createPlot(id = 1,
+ y = {"control.u", "control.y", "control.u_min"},
+ grid = true);
