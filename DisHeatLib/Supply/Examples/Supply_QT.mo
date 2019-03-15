@@ -10,7 +10,7 @@ model Supply_QT
     Q_flow_nominal=5000,
     TemSup_nominal=343.15,
     TemRet_nominal=313.15,
-    dp_nominal=0,
+    dp_nominal=100000,
     powerCha(Q_flow={0}, P={0}),
     use_Q_in=true,
     nPorts=1)
