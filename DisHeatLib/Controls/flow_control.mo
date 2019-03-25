@@ -12,7 +12,7 @@ model flow_control
   annotation(Evaluate=true, HideResult=true, choices(checkBox=true));
   parameter Modelica.SIunits.Temperature T_const(displayUnit="degC") = 60.0+273.15 "Constant temperature setpoint"
     annotation(Dialog(enable = not use_T_in));
-  parameter Modelica.SIunits.MassFlowRate m_flow_nominal "Nominal mass flow rate at secondary side"
+  parameter Modelica.SIunits.MassFlowRate m_flow_nominal = 0 "Nominal mass flow rate at secondary side"
     annotation(Dialog(enable = use_m_flow_in));
   parameter Modelica.SIunits.MassFlowRate m_flow_min = 0.0001*abs(m_flow_nominal) "Mass flow rate at secondary side where minimum valve/pump position is set"
     annotation(Dialog(enable = use_m_flow_in));
