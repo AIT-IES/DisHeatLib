@@ -1,5 +1,5 @@
 within DisHeatLib;
-package Utilities
+package Utilities "Utilities package"
   extends Modelica.Icons.Package;
 
 annotation (Icon(graphics={

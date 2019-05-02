@@ -5,27 +5,22 @@ package FMI
   model FMIhelper
     extends Modelica.Blocks.Interfaces.SISO;
 
-    type FMIInterfaceType = enumeration(
-      Instantaneous   "Instantaneous",
-      Mean   "Mean",
-      Integral   "Integral");
-
     parameter Modelica.SIunits.Time deltaT(start=900.0) "Time step"
-      annotation(Dialog(enable = mode <> FMIInterfaceType.Instantaneous));
-    parameter FMIInterfaceType mode = FMIInterfaceType.Instantaneous;
+      annotation(Dialog(enable = mode <> DisHeatLib.Utilities.FMI.FMIInterfaceType.Instantaneous));
+    parameter DisHeatLib.Utilities.FMI.FMIInterfaceType mode = DisHeatLib.Utilities.FMI.FMIInterfaceType.Instantaneous;
 
 
 protected
     Modelica.Blocks.Math.Mean mean(f=1/deltaT, x0=0) if mode ==
-      FMIInterfaceType.Integral or mode == FMIInterfaceType.Mean
+      DisHeatLib.Utilities.FMI.FMIInterfaceType.Integral or mode == DisHeatLib.Utilities.FMI.FMIInterfaceType.Mean
       annotation (Placement(transformation(extent={{-30,30},{-10,50}})));
-    Modelica.Blocks.Math.Gain gain(k=deltaT) if mode == FMIInterfaceType.Integral
+    Modelica.Blocks.Math.Gain gain(k=deltaT) if mode == DisHeatLib.Utilities.FMI.FMIInterfaceType.Integral
       annotation (Placement(transformation(extent={{10,50},{30,70}})));
     Modelica.Blocks.Routing.RealPassThrough realPassThrough if mode ==
-      FMIInterfaceType.Mean
+      DisHeatLib.Utilities.FMI.FMIInterfaceType.Mean
       annotation (Placement(transformation(extent={{10,10},{30,30}})));
     Modelica.Blocks.Routing.RealPassThrough realPassThrough1 if mode ==
-      FMIInterfaceType.Instantaneous
+      DisHeatLib.Utilities.FMI.FMIInterfaceType.Instantaneous
       annotation (Placement(transformation(extent={{-10,-50},{10,-30}})));
   equation
     connect(mean.y, gain.u)
@@ -55,6 +50,11 @@ protected
 </ul>
 </html>"));
   end FMIhelper;
+
+  type FMIInterfaceType = enumeration(
+    Instantaneous   "Instantaneous",
+    Mean   "Mean",
+    Integral   "Integral");
 
 annotation (Icon(graphics={
                  Bitmap(extent={{-90,-86},{84,88}}, fileName=
