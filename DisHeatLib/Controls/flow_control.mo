@@ -24,7 +24,7 @@ model flow_control
   Modelica.Blocks.Interfaces.RealOutput y
     "Connector of Real output signal"
     annotation (Placement(transformation(extent={{100,-10},{120,10}})));
-protected
+public
   Modelica.Blocks.Continuous.LimPID PID(
     yMax=1,
     yMin=min_y,
@@ -34,6 +34,7 @@ protected
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
     strict=false)
             annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));
+protected
   Modelica.Blocks.Sources.RealExpression minValvePos(y=min_y) if use_m_flow_in
                                                           annotation (Placement(
         transformation(
