@@ -1,11 +1,11 @@
-within DisHeatLib.Substations.BaseClasses;
+within DisHeatLib.Substations.BaseStations;
 model DirectStation
-  extends BaseStation(
+  extends BaseClasses.BaseStation(
     final Q2_flow_nominal=Q1_flow_nominal,
     final TemSup2_nominal=Medium.T_default,
     final TemRet2_nominal=Medium.T_default,
-    final allowFlowReversal2=allowFlowReversal1,
-    final m2_flow_small=m1_flow_small,
+    allowFlowReversal2=allowFlowReversal1,
+    m2_flow_small=m1_flow_small,
     final m2_flow_nominal=m1_flow_nominal,
     final OutsideDependent=false);
 

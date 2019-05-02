@@ -1,8 +1,5 @@
-SubstationSingle
-SubstationParallel
 DirectStation
 IndirectStation
 IndirectStationEBH
 StorageTankHex
 StorageTankHexEBH
-Bypass

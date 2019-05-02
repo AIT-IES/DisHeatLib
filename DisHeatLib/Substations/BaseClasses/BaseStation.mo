@@ -22,7 +22,7 @@ partial model BaseStation
                tab="Flow resistance", group="Primary side"));
 
   //Primary side parameters
-  parameter Modelica.SIunits.Power Q1_flow_nominal
+  parameter Modelica.SIunits.Power Q1_flow_nominal=m1_flow_nominal*(TemSup1_nominal-TemRet1_nominal)*cp_default
     "Nominal heat flow rate at primary side"
     annotation(Evaluate=true, Dialog(group="Primary side"));
   parameter Modelica.SIunits.Temperature TemSup1_nominal(displayUnit="degC")=80.0+273.15
@@ -37,7 +37,7 @@ partial model BaseStation
     annotation(Dialog(group = "Primary side"));
 
   //Secondary side parameters
-  parameter Modelica.SIunits.Power Q2_flow_nominal
+  parameter Modelica.SIunits.Power Q2_flow_nominal=m2_flow_nominal*(TemSup2_nominal-TemRet2_nominal)*cp_default
     "Nominal heat flow rate at primary side"
     annotation(Evaluate=true, Dialog(group="Secondary side"));
   parameter Modelica.SIunits.Temperature TemSup2_nominal(displayUnit="degC")=60.0+273.15
@@ -46,7 +46,7 @@ partial model BaseStation
   parameter Modelica.SIunits.Temperature TemRet2_nominal(displayUnit="degC")=35.0+273.15
     "Nominal return temperature"
     annotation(Dialog(group = "Secondary side"));
-  parameter Boolean OutsideDependent = true
+  parameter Boolean OutsideDependent = false
     "Outside temperature dependent secondary supply temperature"
     annotation(Evaluate=true, HideResult=true, choices(checkBox=true), Dialog(group="Secondary side"));
 

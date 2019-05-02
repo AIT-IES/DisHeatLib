@@ -1,7 +1,7 @@
 within DisHeatLib.Substations.Examples;
 model IndirectStation
   extends Modelica.Icons.Example;
-  BaseClasses.IndirectStation indirectStation(
+  BaseStations.IndirectStation indirectStation(
     show_T=true,
     redeclare package Medium = Medium,
     Q1_flow_nominal=100000,

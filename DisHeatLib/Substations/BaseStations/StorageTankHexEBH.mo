@@ -1,48 +1,34 @@
-within DisHeatLib.Substations.BaseClasses;
+within DisHeatLib.Substations.BaseStations;
 model StorageTankHexEBH
-  extends StorageTankHex(total_power(y=sum(prescribedHeatFlow[i].Q_flow for
-          i in 1:nSegEBH)/eff_EBH),
+  extends BaseStations.StorageTankHex(
+                         total_power(y=EBH.P),
           nSegMeasure = nSegEBH+1);
 
-  parameter Modelica.SIunits.Power Q_flow_nominal_EBH "Heat capacity of EBH"
+  parameter Modelica.SIunits.Power Q_flow_nominal_EBH = Q2_flow_nominal "Heat capacity of EBH"
     annotation(Dialog(group="Electric booster heater"));
-  parameter Modelica.SIunits.Temperature T_min_EBH "Reference temperature of EBH"
+  parameter Modelica.SIunits.Temperature T_min_EBH = TemSup2_nominal "Reference temperature of EBH"
     annotation(Dialog(group="Electric booster heater"));
-  parameter Modelica.SIunits.TemperatureDifference T_bandwidth_EBH "Temperature bandwidth of EBH"
+  parameter Modelica.SIunits.TemperatureDifference T_bandwidth_EBH = 4.0 "Temperature bandwidth of EBH"
     annotation(Dialog(group="Electric booster heater"));
   parameter Integer nSegEBH=1 "Number of top tank segments heated by EBH"
     annotation(Dialog(group="Electric booster heater"));
-  parameter Modelica.SIunits.Efficiency eff_EBH "Power-to-heat efficiency of EBH"
+  parameter Modelica.SIunits.Efficiency eff_EBH = 0.97 "Power-to-heat efficiency of EBH"
     annotation(Dialog(group="Electric booster heater"));
 
-  Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow prescribedHeatFlow[nSegEBH]
-    annotation (Placement(transformation(
-        extent={{-10,-10},{10,10}},
-        rotation=-90,
-        origin={0,28})));
-  Controls.twopoint_control EBH_control(
-    y_max=Q_flow_nominal_EBH/nSegEBH,
-    y_min=0,
+  Supply.BaseClasses.ElectricHeatingRod EBH(
+    Q_flow_nominal=Q_flow_nominal_EBH,
+    eff=eff_EBH,
+    nPorts=nSegEBH,
     u_min=T_min_EBH,
     u_bandwidth=T_bandwidth_EBH) annotation (Placement(transformation(
-        extent={{10,-10},{-10,10}},
-        rotation=90,
-        origin={0,68})));
-  Modelica.Blocks.Routing.Replicator replicator(nout=nSegEBH)
-                                                annotation (Placement(
-        transformation(
-        extent={{-5,-4},{5,4}},
+        extent={{-10,-10},{10,10}},
         rotation=-90,
-        origin={0,47})));
+        origin={0,34})));
 equation
-  connect(replicator.y, prescribedHeatFlow.Q_flow)
-    annotation (Line(points={{0,41.5},{0,38}}, color={0,0,127}));
-  connect(EBH_control.y, replicator.u)
-    annotation (Line(points={{0,57},{0,53}}, color={0,0,127}));
-  connect(storageTankHex.TemTank[1], EBH_control.u) annotation (Line(points={
-          {4,-11},{4,-22},{20,-22},{20,80},{0,80}}, color={0,0,127}));
-  connect(prescribedHeatFlow.port, storageTankHex.heaPorVol[1:nSegEBH])
-    annotation (Line(points={{0,18},{0,10}}, color={191,0,0}));
+  connect(storageTankHex.TemTank[1], EBH.u) annotation (Line(points={{0,-11},{0,
+          -22},{20,-22},{20,52},{0,52},{0,46}}, color={0,0,127}));
+  connect(EBH.port, storageTankHex.heaPorVol[1:nSegEBH])
+    annotation (Line(points={{0,24},{0,10}}, color={191,0,0}));
   annotation (Icon(graphics={
         Line(
           points={{-14,58},{-20,58},{-20,58},{-20,26},{-10,40},{0,26},{10,40},

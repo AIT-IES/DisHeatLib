@@ -1,8 +1,4 @@
 BaseStation
-DirectStation
-IndirectStation
-IndirectStationEBH
-StorageTankHex
-StorageTankHexEBH
 Bypass
-SubstationInterface
+SubstationParallelInterface
+SubstationSingleInterface

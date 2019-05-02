@@ -1,5 +1,5 @@
 within DisHeatLib.Substations.Examples;
-model Substation
+model SubstationParallel
   import DisHeatLib;
   extends Modelica.Icons.Example;
   package Medium = IBPSA.Media.Water;
@@ -35,25 +35,19 @@ model Substation
     startTime(displayUnit="h") = 3600,
     duration(displayUnit="h") = 21600)
     annotation (Placement(transformation(extent={{-90,-26},{-70,-6}})));
-  DisHeatLib.Substations.Substation substation(
-    dp_nominal=100000,
+  DisHeatLib.Substations.SubstationParallel substation(
+    dp1_nominal=100000,
+    redeclare DisHeatLib.Substations.BaseStations.IndirectStation baseStation2(
+        Q1_flow_nominal(displayUnit="kW") = 10000),
+    redeclare DisHeatLib.Substations.BaseStations.IndirectStation baseStation1(
+      Q1_flow_nominal(displayUnit="kW") = 10000,
+      TemSup2_nominal=333.15,
+      TemRet2_nominal=283.15),
     show_T=true,
     TemSup_nominal=363.15,
     use_bypass=false,
-    redeclare DisHeatLib.Substations.BaseClasses.IndirectStation baseStationSH(
-      Q1_flow_nominal=10000,
-      TemRet1_nominal=308.15,
-      TemSup2_nominal=323.15,
-      TemRet2_nominal=303.15,
-      OutsideDependent=false),
-    redeclare DisHeatLib.Substations.BaseClasses.IndirectStation baseStationDHW(
-      Q1_flow_nominal=10000,
-      TemRet1_nominal=288.15,
-      TemSup2_nominal=333.15,
-      TemRet2_nominal=283.15,
-      OutsideDependent=false),
     redeclare package Medium = Medium)
-    annotation (Placement(transformation(extent={{-10,-12},{10,8}})));
+    annotation (Placement(transformation(extent={{-10,8},{10,-12}})));
   IBPSA.Fluid.HeatExchangers.SensibleCooler_T cooler1(
     redeclare package Medium = Medium,
     m_flow_nominal=1,
@@ -100,19 +94,19 @@ equation
     annotation (Line(points={{-44,32},{-40,32}}, color={0,127,255}));
   connect(cooler1.port_b, pump1.port_a)
     annotation (Line(points={{64,32},{68,32}}, color={0,127,255}));
-  connect(bou_RL_p.ports[1], substation.port_b) annotation (Line(points={{40,
-          -20},{20,-20},{20,-6.54545},{10,-6.54545}}, color={0,127,255}));
-  connect(bou_SL_p.ports[1], substation.port_a) annotation (Line(points={{-40,
-          -20},{-20,-20},{-20,-6.54545},{-10,-6.54545}}, color={0,127,255}));
-  connect(substation.port_b_DHW, cooler.port_a) annotation (Line(points={{-10,
-          4.36364},{-76,4.36364},{-76,32},{-64,32}}, color={0,127,255}));
-  connect(pump.port_b, substation.port_a_DHW) annotation (Line(points={{-20,32},
-          {-16,32},{-16,0.727273},{-10,0.727273}}, color={0,127,255}));
-  connect(substation.port_b_SH, cooler1.port_a) annotation (Line(points={{10,
-          4.36364},{30,4.36364},{30,32},{44,32}}, color={0,127,255}));
-  connect(pump1.port_b, substation.port_a_SH) annotation (Line(points={{88,32},
-          {92,32},{92,0.727273},{10,0.727273}}, color={0,127,255}));
-  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Substations/Examples/Substation.mos"
+  connect(bou_SL_p.ports[1], substation.port_a1) annotation (Line(points={{-40,-20},
+          {-20,-20},{-20,-8},{-10,-8}}, color={0,127,255}));
+  connect(substation.port_b1, bou_RL_p.ports[1]) annotation (Line(points={{10,-8},
+          {20,-8},{20,-20},{40,-20}}, color={0,127,255}));
+  connect(substation.port_b2, cooler.port_a) annotation (Line(points={{-10,6},{-68,
+          6},{-68,32},{-64,32}}, color={0,127,255}));
+  connect(pump.port_b, substation.port_a2) annotation (Line(points={{-20,32},{-16,
+          32},{-16,2},{-10,2}}, color={0,127,255}));
+  connect(substation.port_b3, cooler1.port_a) annotation (Line(points={{10,6},{40,
+          6},{40,32},{44,32}}, color={0,127,255}));
+  connect(pump1.port_b, substation.port_a3) annotation (Line(points={{88,32},{92,
+          32},{92,2},{10,2}}, color={0,127,255}));
+  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Substations/Examples/SubstationParallel.mos"
         "Simulate and plot"),
         Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),
@@ -121,4 +115,4 @@ equation
 <li>Feburary 27, 2019, by Benedikt Leitner:<br>Implementation and added User&apos;s guide. </li>
 </ul>
 </html>"));
-end Substation;
+end SubstationParallel;

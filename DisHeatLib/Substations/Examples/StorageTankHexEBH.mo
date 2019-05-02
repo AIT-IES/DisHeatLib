@@ -1,8 +1,7 @@
 within DisHeatLib.Substations.Examples;
 model StorageTankHexEBH
   extends Modelica.Icons.Example;
-  BaseClasses.StorageTankHexEBH
-                             storageTankHexEBH(
+  BaseStations.StorageTankHexEBH storageTankHexEBH(
     show_T=true,
     redeclare package Medium = Medium,
     Q1_flow_nominal=100000,
@@ -13,7 +12,7 @@ model StorageTankHexEBH
     Q_flow_nominal_EBH(displayUnit="kW") = 200000,
     T_min_EBH=363.15,
     T_bandwidth_EBH=5,
-    nSegEBH=2,
+    nSegEBH=1,
     eff_EBH=0.95)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
   package Medium = IBPSA.Media.Water;

@@ -1,15 +1,14 @@
 within DisHeatLib.Substations.Examples;
 model StorageTankHex
   extends Modelica.Icons.Example;
-  BaseClasses.StorageTankHex storageTankHex(
+  BaseStations.StorageTankHex storageTankHex(
     show_T=true,
     redeclare package Medium = Medium,
     Q1_flow_nominal=100000,
     dp1_nominal(displayUnit="bar") = 100000,
     Q2_flow_nominal=100000,
     VTan=10,
-    hTan=3)
-    annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
+    hTan=3) annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
   package Medium = IBPSA.Media.Water;
 
   IBPSA.Fluid.Sources.Boundary_pT bou_RL_p(

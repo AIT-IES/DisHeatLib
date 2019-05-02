@@ -1,7 +1,9 @@
-within DisHeatLib.Substations.BaseClasses;
-model IndirectStation
-  extends BaseStation(
-    Q2_flow_nominal=Q1_flow_nominal);
+within DisHeatLib.Substations.BaseStations;
+model IndirectStationEBH
+  extends BaseClasses.BaseStation(
+    Q2_flow_nominal=Q1_flow_nominal,
+    m2_flow_nominal=Q2_flow_nominal/((electricBoosterHeater.TemSup_nominal-TemRet2_nominal)*cp_default),
+    total_power(y=electricBoosterHeater.P));
 
   //Secondary side supply temperature
   parameter Modelica.SIunits.Temperature TemOut_max(displayUnit="degC")=15.0+273.15
@@ -33,6 +35,12 @@ model IndirectStation
     "Minimum position of flow controller (e.g, to mimic bypass)"
     annotation(Dialog(group = "Heat exchanger and flow"));
 
+protected
+      final parameter Modelica.SIunits.SpecificHeatCapacity cp_default=
+        Medium.cp_const
+        "Specific heat capacity of the fluid"
+        annotation(Evaluate=true);
+
 public
   IBPSA.Fluid.HeatExchangers.ConstantEffectiveness hex(redeclare package
       Medium1 = Medium, redeclare package Medium2 = Medium,
@@ -46,7 +54,7 @@ public
     dp2_nominal(displayUnit="kPa") = 0,
     dp1_nominal=0)
     annotation (Placement(transformation(extent={{12,-8},{32,12}})));
-public
+protected
   IBPSA.Fluid.Storage.ExpansionVessel exp(redeclare package Medium = Medium,
     T_start=TemSup2_nominal,
     V_start=m2_flow_nominal*0.1)
@@ -63,6 +71,7 @@ public
     initType=Modelica.Blocks.Types.Init.InitialOutput,
     m_flow_small=m2_flow_small)
     annotation (Placement(transformation(extent={{12,-44},{-8,-24}})));
+protected
   IBPSA.Fluid.Sensors.MassFlowRate senMasFlo(redeclare package Medium = Medium,
       allowFlowReversal=allowFlowReversal2)
     annotation (Placement(transformation(extent={{-12,-44},{-32,-24}})));
@@ -81,6 +90,7 @@ public
         extent={{10,-10},{-10,10}},
         rotation=0,
         origin={-48,-94})));
+protected
   Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor
     outsideTemperatureSensor if OutsideDependent annotation (Placement(
         transformation(extent={{-8,-84},{-28,-64}})));
@@ -93,6 +103,15 @@ public
     k=k,
     Ti=Ti)
     annotation (Placement(transformation(extent={{-54,-4},{-34,16}})));
+  replaceable Supply.Supply_T electricBoosterHeater(
+    redeclare final package Medium = Medium,
+    final allowFlowReversal=allowFlowReversal2,
+    final m_flow_nominal=m2_flow_nominal,
+    final TemRet_nominal=TemRet2_nominal,
+    powerCha(Q_flow={0,1}, P={0,1}),
+    final m_flow_small=m2_flow_small,
+    nPorts=1) constrainedby Supply.Supply_T
+    annotation (Dialog(group="Electric booster heater"), Placement(transformation(extent={{-40,-44},{-60,-24}})));
   replaceable DisHeatLib.BaseClasses.FlowUnit flowUnit(
     redeclare final package Medium = Medium,
     final allowFlowReversal=allowFlowReversal1,
@@ -123,12 +142,14 @@ equation
     annotation (Line(points={{12,-34},{12,-4}},           color={0,127,255}));
   connect(outsideTemperatureSensor.port, port_ht)
     annotation (Line(points={{-8,-74},{0,-74},{0,-100}}, color={191,0,0}));
-  connect(senMasFlo.port_b, port_b2) annotation (Line(points={{-32,-34},{-84,-34},
-          {-84,-60},{-100,-60}}, color={0,127,255}));
   connect(senMasFlo.port_a, senTem.port_b)
     annotation (Line(points={{-12,-34},{-8,-34}},  color={0,127,255}));
   connect(senMasFlo.m_flow, valve_control.m_flow_measurement) annotation (Line(
         points={{-22,-23},{-22,-8},{-62,-8},{-62,11},{-56,11}}, color={0,0,127}));
+  connect(electricBoosterHeater.port_a, senMasFlo.port_b)
+    annotation (Line(points={{-40,-34},{-32,-34}}, color={0,127,255}));
+  connect(electricBoosterHeater.ports_b[1], port_b2) annotation (Line(points={{-60,
+          -34},{-68,-34},{-68,-60},{-100,-60}}, color={0,127,255}));
   connect(port_a1, flowUnit.port_a)
     annotation (Line(points={{-100,60},{-30,60}}, color={0,127,255}));
   connect(flowUnit.port_b, hex.port_a1)
@@ -162,10 +183,23 @@ equation
         Line(
           points={{0,-14},{30,46},{60,-14},{60,60},{100,60}},
           color={28,108,200},
-          thickness=1)}), Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+          thickness=1),
+        Ellipse(
+          extent={{-36,38},{36,-38}},
+          lineColor={0,0,0},
+          fillColor={247,247,247},
+          fillPattern=FillPattern.Solid,
+          lineThickness=0.5),
+        Polygon(
+          points={{-8,-28},{0,-2},{-14,-2},{4,30},{-2,4},{12,4},{-8,-28}},
+          lineColor={0,0,0},
+          fillColor={255,255,0},
+          fillPattern=FillPattern.Solid,
+          lineThickness=0.5)}),
+                          Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{100,100}})),
     Documentation(info="<html>
-<p>This is a model for an indirect district heating substation. Its main components are a heat exchanger, a flow regulating valve, a pump to deliver heat to the customers, an expansion vessel and controller that maintains the temperature at the secondary side by setting the position of the flow regulating valve/pump. The supply temperature setpoint at the secondary side can thereby be set to a constant or can be changed depending on the outside temperature.</p>
+<p>This is a model for an indirect district heating substation. Its main components are a heat exchanger, a flow regulating valve/pump, an expansion vessel and controller that maintains the temperature at the secondary side by setting the position of the flow regulating valve/pump. The supply temperature setpoint at the secondary side can thereby be set to a constant or can be changed depending on the outside temperature.</p>
 <p>A mismatch between the setpoint and the actual value of the secondary supply temperature can have different reasons:</p>
 <ul>
 <li>The differential pressure at the station is too low, resulting in a too low mass flow at the primary side even if the valve is completely open.</li>
@@ -179,4 +213,4 @@ equation
 <li>Feburary 27, 2019, by Benedikt Leitner:<br>Implementation and added User&apos;s guide. </li>
 </ul>
 </html>"));
-end IndirectStation;
+end IndirectStationEBH;
