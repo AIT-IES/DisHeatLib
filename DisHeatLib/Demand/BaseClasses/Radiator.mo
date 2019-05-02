@@ -11,7 +11,7 @@ model Radiator
   parameter Real n=1.3
     "Heat transfer exponent";
 
-public
+protected
   IBPSA.Fluid.HeatExchangers.Radiators.RadiatorEN442_2 rad(
     redeclare package Medium = Medium,
     m_flow_small=m_flow_small,

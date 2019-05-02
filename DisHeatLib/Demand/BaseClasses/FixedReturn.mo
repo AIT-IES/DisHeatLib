@@ -20,7 +20,7 @@ model FixedReturn
     "Columns of table to be interpolated"
     annotation (Dialog(group="Return temperature - From file",enable=returnTemperature == DisHeatLib.Demand.BaseClasses.InputTypeTret.File));
 
-public
+protected
   IBPSA.Fluid.HeatExchangers.SensibleCooler_T cooler(
     redeclare package Medium = Medium,
     m_flow_nominal=m_flow_nominal,

@@ -6,6 +6,7 @@ model dp_control
     "Time constant of Integrator block";
   parameter Modelica.SIunits.Pressure dp_min(displayUnit="bar")=50000 "Minimum differential pressure";
   parameter Modelica.SIunits.Pressure dp_max(displayUnit="bar")=500000 "Maximum differential pressure";
+public
   Modelica.Blocks.Continuous.LimPID PID(
     yMax=dp_max,
     yMin=dp_min,
