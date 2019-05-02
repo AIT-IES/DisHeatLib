@@ -20,6 +20,11 @@ model Supply_QT "Heat flow and temperature controlled supply unit"
   "Get the heat supply from the input connector, otherwise use nominal value"
   annotation(Dialog(group = "Heat supply"), Evaluate=true, HideResult=true, choices(checkBox=true));
 
+  // Limit mass flow injection
+  parameter Boolean use_m_flow_limit = false
+  "Limit mass flow to input signal"
+  annotation(Dialog(group = "Heat supply"), Evaluate=true, HideResult=true, choices(checkBox=true));
+
 public
   Modelica.Blocks.Interfaces.RealInput TSet(min=273.15, final unit="K") if
     use_T_in
@@ -91,6 +96,24 @@ public
         extent={{-10,-10},{10,10}},
         rotation=-90,
         origin={-66,74})));
+public
+  Modelica.Blocks.Interfaces.RealInput m_flow_limit if use_m_flow_limit
+    annotation (Placement(transformation(
+        extent={{-20,-20},{20,20}},
+        rotation=-90,
+        origin={0,120})));
+public
+  Modelica.Blocks.Math.Min min1 if use_m_flow_limit
+    "Limit the input signal to m_flow_limit; avoids injection of higher mass flows than needed in network"
+    annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=-90,
+        origin={-12,52})));
+  Modelica.Blocks.Routing.RealPassThrough realPassThrough if not
+    use_m_flow_limit annotation (Placement(transformation(
+        extent={{-7,-7},{7,7}},
+        rotation=-90,
+        origin={-43,27})));
 equation
   Q_flow = heater.Q_flow;
   connect(TSupplySet.y, heater.TSet)
@@ -99,8 +122,6 @@ equation
           {-44,76},{-44,66}},   color={0,0,127}));
   connect(pump.port_b, heater.port_a) annotation (Line(
         points={{-20,0},{8,0}},color={0,127,255}));
-  connect(PID.y, pump.m_flow_in) annotation (Line(points={{-33,54},{-30,54},{-30,
-          12}},                      color={0,0,127}));
   connect(QconstSet.y, PID.u_s) annotation (Line(points={{-65,30},{-60,30},{-60,
           54},{-56,54}},                        color={0,
           0,127}));
@@ -116,6 +137,16 @@ equation
     annotation (Line(points={{-100,0},{-40,0}}, color={0,127,255}));
   connect(heater.port_b, ports_b[1])
     annotation (Line(points={{28,0},{100,0}}, color={0,127,255}));
+  connect(m_flow_limit, min1.u1) annotation (Line(points={{0,120},{-2,120},{-2,64},
+          {-6,64}}, color={0,0,127}));
+  connect(PID.y, min1.u2) annotation (Line(points={{-33,54},{-30,54},{-30,72},{-18,
+          72},{-18,64}}, color={0,0,127}));
+  connect(min1.y, pump.m_flow_in) annotation (Line(points={{-12,41},{-12,38},{-30,
+          38},{-30,12}}, color={0,0,127}));
+  connect(PID.y, realPassThrough.u) annotation (Line(points={{-33,54},{-30,54},{
+          -30,40},{-43,40},{-43,35.4}}, color={0,0,127}));
+  connect(realPassThrough.y, pump.m_flow_in) annotation (Line(points={{-43,19.3},
+          {-43,18},{-30,18},{-30,12}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false),
         graphics={
         Line(

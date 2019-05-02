@@ -83,8 +83,8 @@ equation
           {-74,64.8}}, color={0,0,127}));
   connect(gain.y, boundary.m_flow_in) annotation (Line(points={{-74,55.6},{-74,
           42},{-58,42}}, color={0,0,127}));
-  connect(storageTank.TemTank[3], storage_control.u) annotation (Line(points=
-         {{4,-3.25},{4,-10},{20,-10},{20,68},{-42,68}}, color={0,0,127}));
+  connect(storageTank.TemTank[3], storage_control.u) annotation (Line(points={{0,-3.25},
+          {0,-10},{20,-10},{20,68},{-42,68}},           color={0,0,127}));
   annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Storage/Examples/StorageTank.mos"
         "Simulate and plot"),
         Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(

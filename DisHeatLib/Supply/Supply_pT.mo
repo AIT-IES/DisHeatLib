@@ -8,35 +8,31 @@ model Supply_pT "Differential pressure and temperature supply"
     "Nominal pressure difference of pump"
     annotation(Dialog(group = "Nominal condition"));
 
-  parameter Modelica.SIunits.Efficiency pump_eff = 0.4 "Total efficiency of the pump"
-    annotation(Dialog(group="Nominal parameters"), Evaluate=true);
-
   // Outside dependent supply temperature
-  parameter Boolean OutsideDependent = false
-    "Outside temperature dependent supply temperature"
-    annotation(Dialog(group="Supply temperature"), Evaluate=true, HideResult=true, choices(checkBox=true));
+  parameter DisHeatLib.Supply.BaseClasses.InputTypeSupplyTemp SupplyTemperature=DisHeatLib.Supply.BaseClasses.InputTypeSupplyTemp.Constant "Supply temperature type"
+    annotation (Dialog(group="Supply temperature"));
   parameter Modelica.SIunits.Temperature TemOut_min(displayUnit="degC") "Outside temperature where maximum supply temperature is used"
   annotation (Evaluate = true,
-                Dialog(group="Supply temperature", enable = OutsideDependent));
+                Dialog(group="Supply temperature", enable = SupplyTemperature==DisHeatLib.Supply.BaseClasses.InputTypeSupplyTemp.OutsideDependent));
   parameter Modelica.SIunits.Temperature TemOut_max(displayUnit="degC") "Outside temperature where minimum supply temperature is used"
     annotation (Evaluate = true,
-                Dialog(group="Supply temperature", enable = OutsideDependent));
+                Dialog(group="Supply temperature", enable = SupplyTemperature==DisHeatLib.Supply.BaseClasses.InputTypeSupplyTemp.OutsideDependent));
   parameter Modelica.SIunits.Temperature TemSup_min(displayUnit="degC") "Minimum supply temperature"
     annotation (Evaluate = true,
-                Dialog(group="Supply temperature", enable = OutsideDependent));
-  parameter Modelica.SIunits.Temperature TemSup_max(displayUnit="degC") = TemSup_nominal  "Maximum supply temperature"
+                Dialog(group="Supply temperature", enable = SupplyTemperature==DisHeatLib.Supply.BaseClasses.InputTypeSupplyTemp.OutsideDependent));
+  parameter Modelica.SIunits.Temperature TemSup_max(displayUnit="degC")  "Maximum supply temperature"
     annotation (Evaluate = true,
-                Dialog(group="Supply temperature", enable = OutsideDependent));
+                Dialog(group="Supply temperature", enable = SupplyTemperature==DisHeatLib.Supply.BaseClasses.InputTypeSupplyTemp.OutsideDependent));
 
   // Differential pressure
   parameter Boolean dp_controller = true
     "Use differential pressure controller (otherwise constant pressure head, using nominal pressure, between supply and demand is used)"
     annotation(Dialog(group="Differential pressure"), Evaluate=true, HideResult=true, choices(checkBox=true));
-  parameter Modelica.SIunits.Pressure dp_min(displayUnit="bar")=500000 "Minimum differential pressure"
+  parameter Modelica.SIunits.Pressure dp_min(displayUnit="bar") "Minimum differential pressure"
     annotation (Evaluate = true, Dialog(group="Differential pressure", enable = dp_controller));
-  parameter Modelica.SIunits.Pressure dp_set(displayUnit="bar")=1000000 "Differential pressure setpoint"
+  parameter Modelica.SIunits.Pressure dp_set(displayUnit="bar") "Differential pressure setpoint"
     annotation (Evaluate = true, Dialog(group="Differential pressure", enable = dp_controller));
-  parameter Modelica.SIunits.Pressure dp_max(displayUnit="bar")=5000000 "Maximum differential pressure"
+  parameter Modelica.SIunits.Pressure dp_max(displayUnit="bar") "Maximum differential pressure"
     annotation (Evaluate = true, Dialog(group="Differential pressure", enable = dp_controller));
   parameter Real k=50 "Gain of controller"
     annotation (Evaluate = true, Dialog(group="Differential pressure", enable = dp_controller));
@@ -51,7 +47,7 @@ public
 
 public
   Modelica.Blocks.Sources.RealExpression TSetConst(y=
-        TemSup_nominal) if not OutsideDependent annotation (Placement(
+        TemSup_nominal) if SupplyTemperature==DisHeatLib.Supply.BaseClasses.InputTypeSupplyTemp.Constant annotation (Placement(
         transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
@@ -70,33 +66,39 @@ public
     TemSup_min=TemSup_min,
     TemSup_max=TemSup_max,
     y(start=TemSup_max)) if
-                        OutsideDependent
+                        SupplyTemperature==DisHeatLib.Supply.BaseClasses.InputTypeSupplyTemp.OutsideDependent
     annotation (Placement(transformation(extent={{20,70},{0,90}})));
 public
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a port_ht if
-              OutsideDependent
+              SupplyTemperature==DisHeatLib.Supply.BaseClasses.InputTypeSupplyTemp.OutsideDependent
     annotation (Placement(transformation(extent={{50,90},{70,110}})));
 public
   Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor
     outsideTemperatureSensor(T(start=TemOut_min)) if
-                                OutsideDependent annotation (Placement(
+                                SupplyTemperature==DisHeatLib.Supply.BaseClasses.InputTypeSupplyTemp.OutsideDependent annotation (Placement(
         transformation(extent={{52,70},{32,90}})));
 public
+  replaceable
   IBPSA.Fluid.Movers.FlowControlled_dp     pump(
     redeclare package Medium = Medium,
-    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
-    T_start=TemSup_nominal,
-    m_flow_small=m_flow_small,
+    final energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
+    final massDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
+    final p_start=Medium.p_default,
+    final T_start=TemSup_nominal,
+    final X_start=Medium.X_default,
+    final C_start=fill(0, Medium.nC),
+    final C_nominal=fill(1E-2, Medium.nC),
+    final m_flow_small=m_flow_small,
     addPowerToMedium=true,
-    nominalValuesDefineDefaultPressureCurve=true,
-    m_flow_nominal=m_flow_nominal,
-    inputType=if dp_controller then IBPSA.Fluid.Types.InputType.Continuous
+    final nominalValuesDefineDefaultPressureCurve=true,
+    final m_flow_nominal=m_flow_nominal,
+    final inputType=if dp_controller then IBPSA.Fluid.Types.InputType.Continuous
          else IBPSA.Fluid.Types.InputType.Constant,
-    constantHead=dp_nominal,
-    allowFlowReversal=allowFlowReversal,
-    dp_nominal=dp_nominal,
-    per(hydraulicEfficiency(eta={sqrt(pump_eff)}), motorEfficiency(eta={sqrt(
-            pump_eff)})))
+    final constantHead=dp_nominal,
+    final allowFlowReversal=allowFlowReversal,
+    final dp_nominal=dp_nominal,
+    each final heads={0},
+    final prescribeSystemPressure=false)
     annotation (Placement(transformation(extent={{20,-10},{40,10}})));
 public
   IBPSA.Fluid.HeatExchangers.Heater_T heater(redeclare package Medium = Medium,
@@ -116,6 +118,13 @@ public
         extent={{-10,-10},{10,10}},
         rotation=-90,
         origin={0,-110})));
+public
+  Modelica.Blocks.Interfaces.RealInput TSup_in(unit="K", displayUnit="degC") if
+       SupplyTemperature == DisHeatLib.Supply.BaseClasses.InputTypeSupplyTemp.Input
+    annotation (Placement(transformation(
+        extent={{-20,-20},{20,20}},
+        rotation=-90,
+        origin={60,120})));
 equation
   Q_flow = heater.Q_flow;
 
@@ -139,6 +148,8 @@ equation
     annotation (Line(points={{-100,0},{-36,0},{-36,14}}, color={0,127,255}));
   connect(pump.port_b, ports_b[1])
     annotation (Line(points={{40,0},{100,0}}, color={0,127,255}));
+  connect(TSup_in, heater.TSet) annotation (Line(points={{60,120},{60,80},{-20,
+          80},{-20,8},{-16,8}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false),
         graphics={      Polygon(
     points={{-28,52},{-50,42},{-36,66},{-20,78},{-6,92},{16,84},{34,86},{58,68},

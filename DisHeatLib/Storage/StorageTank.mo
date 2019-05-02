@@ -78,29 +78,16 @@ public
     annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,
-        origin={40,-110}), iconTransformation(
+        origin={0,-110}),  iconTransformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,
-        origin={40,-110})));
-public
-  Modelica.Blocks.Interfaces.RealOutput SOC
-    "State of charge of thermal storage tank" annotation (Placement(
-        transformation(
-        extent={{-10,-10},{10,10}},
-        rotation=-90,
-        origin={-40,-110}),
-                          iconTransformation(extent={{-10,-10},{10,10}},
-        rotation=-90,
-        origin={-40,-110})));
-public
-  BaseClasses.CalculateSOC calculateSOC(nin=nSeg, TemHot=TemSup_nominal)
-    annotation (Placement(transformation(extent={{-66,-90},{-46,-70}})));
+        origin={0,-110})));
 protected
   Modelica.Blocks.Sources.RealExpression Tin[nSeg](y=tan.vol[:].T) annotation (
       Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
-        origin={-86,-80})));
+        origin={-24,-80})));
   IBPSA.Fluid.FixedResistances.Junction jun(
     redeclare package Medium = Medium,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
@@ -130,12 +117,8 @@ equation
   connect(heaPorVol, tan.heaPorVol) annotation (Line(points={{0,100},{0,88},
           {-40,88},{-40,0},{0,0}},
                               color={191,0,0}));
-  connect(Tin.y,TemTank)  annotation (Line(points={{-75,-80},{-74,-80},{-74,-64},
-          {40,-64},{40,-110}}, color={0,0,127}));
-  connect(calculateSOC.y,SOC)  annotation (Line(points={{-45,-80},{-40,-80},{-40,
-          -110}}, color={0,0,127}));
-  connect(Tin.y, calculateSOC.u)
-    annotation (Line(points={{-75,-80},{-68,-80}}, color={0,0,127}));
+  connect(Tin.y,TemTank)  annotation (Line(points={{-13,-80},{0,-80},{0,-110}},
+                               color={0,0,127}));
   connect(jun1.port_2, port_a1) annotation (Line(points={{-70,6},{-70,60},{
           -100,60}}, color={0,127,255}));
   connect(port_b2, jun1.port_1) annotation (Line(points={{-100,-60},{-70,-60},

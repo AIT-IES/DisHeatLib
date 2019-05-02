@@ -130,19 +130,6 @@ protected
         origin={0,34})));
 
 public
-  BaseClasses.CalculateSOC calculateSOC(nin=nSeg, TemHot=TemSup2_nominal)
-    annotation (Placement(transformation(extent={{-66,-90},{-46,-70}})));
-public
-  Modelica.Blocks.Interfaces.RealOutput SOC
-    "State of charge of thermal storage tank" annotation (Placement(
-        transformation(
-        extent={{-10,-10},{10,10}},
-        rotation=-90,
-        origin={-40,-110}),
-                          iconTransformation(extent={{-10,-10},{10,10}},
-        rotation=-90,
-        origin={-40,-110})));
-public
   Modelica.Blocks.Interfaces.RealOutput TemTank[nSeg](
     quantity="Temperature",
     unit="K",
@@ -150,10 +137,10 @@ public
     annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,
-        origin={40,-110}), iconTransformation(
+        origin={0,-110}),  iconTransformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,
-        origin={40,-110})));
+        origin={0,-110})));
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heaPorVol[nSeg]
     "Heat port that connects to the control volumes of the tank"
     annotation (Placement(transformation(extent={{-6,94},{6,106}})));
@@ -162,11 +149,8 @@ protected
       Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
-        origin={-86,-80})));
+        origin={-20,-82})));
 equation
-  connect(Tin.y,calculateSOC. u)
-    annotation (Line(points={{-75,-80},{-68,-80}},
-                                               color={0,0,127}));
   connect(port_a1, port_a1) annotation (Line(points={{-100,60},{-100,63},{-100,63},
           {-100,60}}, color={0,127,255}));
   connect(tan.port_b, port_a2) annotation (Line(points={{10,0},{48,0},{48,-60},{
@@ -183,10 +167,8 @@ equation
     annotation (Line(points={{0,28},{0,0},{5.6,0}}, color={191,0,0}));
   connect(FixedTemRoom.port, tan.heaPorBot)
     annotation (Line(points={{0,28},{0,-7.4},{2,-7.4}}, color={191,0,0}));
-  connect(calculateSOC.y, SOC) annotation (Line(points={{-45,-80},{-40,-80},{-40,
-          -110}}, color={0,0,127}));
-  connect(Tin.y, TemTank) annotation (Line(points={{-75,-80},{-74,-80},{-74,-64},
-          {40,-64},{40,-110}}, color={0,0,127}));
+  connect(Tin.y, TemTank) annotation (Line(points={{-9,-82},{0,-82},{0,-110}},
+                               color={0,0,127}));
   connect(heaPorVol, tan.heaPorVol) annotation (Line(points={{0,100},{0,88},{-40,
           88},{-40,0},{0,0}}, color={191,0,0}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={

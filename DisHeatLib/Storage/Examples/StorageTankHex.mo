@@ -66,23 +66,6 @@ model StorageTankHex
         extent={{-4,-4},{4,4}},
         rotation=-90,
         origin={-74,60})));
-  Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow
-    prescribedHeatFlow annotation (Placement(transformation(
-        extent={{-10,-10},{10,10}},
-        rotation=-90,
-        origin={0,42})));
-  Controls.twopoint_control storage_control1(
-    u_min=60 + 273.15,
-    u_bandwidth=6)
-    annotation (Placement(transformation(
-        extent={{10,-10},{-10,10}},
-        rotation=90,
-        origin={0,84})));
-  Modelica.Blocks.Math.Gain gain1(k=0)             annotation (Placement(
-        transformation(
-        extent={{-4,-4},{4,4}},
-        rotation=-90,
-        origin={0,60})));
   IBPSA.Fluid.Storage.ExpansionVessel exp(redeclare package Medium = Medium,
       V_start=0.1)
     annotation (Placement(transformation(extent={{58,-32},{78,-12}})));
@@ -107,21 +90,12 @@ equation
     annotation (Line(points={{5,-74},{20,-74},{20,-52}}, color={0,0,127}));
   connect(gain.y, boundary.m_flow_in) annotation (Line(points={{-74,55.6},{-74,
           42},{-58,42}}, color={0,0,127}));
-  connect(gain1.y, prescribedHeatFlow.Q_flow)
-    annotation (Line(points={{0,55.6},{0,52}}, color={0,0,127}));
-  connect(storage_control1.y, gain1.u)
-    annotation (Line(points={{0,73},{0,64.8}}, color={0,0,127}));
-  connect(storageTankHex.TemTank[1], storage_control1.u) annotation (Line(
-        points={{4,-0.25},{4,-10},{20,-10},{20,96},{6.66134e-16,96}}, color={
-          0,0,127}));
-  connect(prescribedHeatFlow.port, storageTankHex.heaPorVol[1])
-    annotation (Line(points={{0,32},{0,19.55}}, color={191,0,0}));
   connect(exp.port_a, pump.port_b) annotation (Line(points={{68,-32},{68,-40},{
           30,-40}},                    color={0,127,255}));
   connect(flow_control.y, gain.u)
     annotation (Line(points={{-53,74},{-74,74},{-74,64.8}}, color={0,0,127}));
   connect(storageTankHex.TemTank[3], flow_control.T_measurement) annotation (
-      Line(points={{4,-1.25},{4,-10},{20,-10},{20,69},{-30,69}}, color={0,0,127}));
+      Line(points={{0,-1.25},{0,-10},{20,-10},{20,69},{-30,69}}, color={0,0,127}));
   annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Storage/Examples/StorageTankHex.mos"
         "Simulate and plot"),
         Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
