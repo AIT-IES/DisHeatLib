@@ -1,0 +1,5 @@
+removePlots();
+simulateModel("DisHeatLib.Substations.Examples.SubstationParallel", startTime=0, tolerance=1e-6, stopTime=86400, outputInterval=900, method="dassl", resultFile="SubstationParallel");
+createPlot(id = 1,
+ y = {"substation.sta_a1.T", "substation.sta_b1.T", "substation.sta_a2.T", "substation.sta_b2.T", "substation.sta_a3.T", "substation.sta_b3.T"},
+ grid = true);
