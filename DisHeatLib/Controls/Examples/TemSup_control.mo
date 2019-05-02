@@ -12,7 +12,7 @@ model TemSup_control
 equation
   connect(sine.y, control.TemOut)
     annotation (Line(points={{-31,0},{-12,0}}, color={0,0,127}));
-  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Controls/Examples/dp_control.mos"
+  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Controls/Examples/TemSup_control.mos"
         "Simulate and plot"),
         Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),
