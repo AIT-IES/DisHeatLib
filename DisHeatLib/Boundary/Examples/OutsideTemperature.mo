@@ -2,15 +2,16 @@ within DisHeatLib.Boundary.Examples;
 model OutsideTemperature
   extends Modelica.Icons.Example;
   DisHeatLib.Boundary.OutsideTemperature outsideTemperature_const(inputType=
-        DisHeatLib.Boundary.BaseClasses.InputTypeTemp.Constant, TemOut_const=283.15)
-    annotation (Placement(transformation(extent={{-10,30},{10,50}})));
+        DisHeatLib.Boundary.BaseClasses.InputTypeOutTemp.Constant, TemOut_const=
+       283.15) annotation (Placement(transformation(extent={{-10,30},{10,50}})));
   DisHeatLib.Boundary.OutsideTemperature outsideTemperature_file(
-    inputType=DisHeatLib.Boundary.BaseClasses.InputTypeTemp.File,
+    inputType=DisHeatLib.Boundary.BaseClasses.InputTypeOutTemp.File,
     tableName="TempOut",
-    fileName=Modelica.Utilities.Files.loadResource("modelica://DisHeatLib/Resources/Data/TempOut.txt"))
+    fileName=Modelica.Utilities.Files.loadResource(
+        "modelica://DisHeatLib/Resources/Data/TempOut.txt"))
     annotation (Placement(transformation(extent={{-10,-12},{10,8}})));
   DisHeatLib.Boundary.OutsideTemperature outsideTemperature_input(inputType=
-        DisHeatLib.Boundary.BaseClasses.InputTypeTemp.Input)
+        DisHeatLib.Boundary.BaseClasses.InputTypeOutTemp.Input)
     annotation (Placement(transformation(extent={{-10,-50},{10,-30}})));
   Modelica.Blocks.Sources.Sine sine(
     amplitude=10,

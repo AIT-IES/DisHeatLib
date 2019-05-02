@@ -1,7 +1,10 @@
 within DisHeatLib.Boundary.Examples;
 model SoilTemperature
   extends Modelica.Icons.Example;
-  DisHeatLib.Boundary.SoilTemperature soilTemperature
+  DisHeatLib.Boundary.SoilTemperature soilTemperature(inputType=DisHeatLib.Boundary.BaseClasses.InputTypeSoilTemp.Undisturbed,
+    T_mean=288.15,
+    T_amp=10,
+    t_min=0)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
   annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Boundary/Examples/SoilTemperature.mos"
         "Simulate and plot"),

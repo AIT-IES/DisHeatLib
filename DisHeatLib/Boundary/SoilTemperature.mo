@@ -1,15 +1,32 @@
 within DisHeatLib.Boundary;
 model SoilTemperature "Undisturbed soil temperature model"
+
+  parameter DisHeatLib.Boundary.BaseClasses.InputTypeSoilTemp inputType=
+      DisHeatLib.Boundary.BaseClasses.InputTypeSoilTemp.Constant
+    "Model for ground temperature" annotation (choicesAllMatching=true);
+
+
+  // Constant temperature
+  parameter Modelica.SIunits.Temperature T_const(start=10.0 + 273.15) "Constant temperature"
+    annotation(Dialog(enable= inputType==DisHeatLib.Boundary.BaseClasses.InputTypeSoilTemp.Constant));
+
+  // Kusuda model
   import Modelica.Constants.pi;
   parameter Modelica.SIunits.ThermalDiffusivity alpha=5.96732e-7
-    "Soil thermal diffusivity";
-  parameter Modelica.SIunits.Length z = 1 "Average depth of pipes";
-  parameter Modelica.SIunits.Temperature T_mean = 8.65 + 273.15
-    "Average annual ground surface temperature";
-  parameter Modelica.SIunits.TemperatureDifference T_amp = 17.146875
-    "Amplitude of annual ground surface temperature";
-  parameter Modelica.SIunits.Time t_min = 353*24*60*60
-    "Time of the year presenting the minimum surface temperature";
+    "Soil thermal diffusivity"
+    annotation(Dialog(enable= inputType==DisHeatLib.Boundary.BaseClasses.InputTypeSoilTemp.Undisturbed));
+  parameter Modelica.SIunits.Length z = 1 "Average depth of pipes"
+    annotation(Dialog(enable= inputType==DisHeatLib.Boundary.BaseClasses.InputTypeSoilTemp.Undisturbed));
+  parameter Modelica.SIunits.Temperature T_mean(start=8.65 + 273.15)
+    "Average annual ground surface temperature"
+    annotation(Dialog(enable= inputType==DisHeatLib.Boundary.BaseClasses.InputTypeSoilTemp.Undisturbed));
+  parameter Modelica.SIunits.TemperatureDifference T_amp(start=17.146875)
+    "Amplitude of annual ground surface temperature"
+    annotation(Dialog(enable= inputType==DisHeatLib.Boundary.BaseClasses.InputTypeSoilTemp.Undisturbed));
+  parameter Modelica.SIunits.Time t_min(start=353*24*60*60)
+    "Time of the year presenting the minimum surface temperature"
+    annotation(Dialog(enable= inputType==DisHeatLib.Boundary.BaseClasses.InputTypeSoilTemp.Undisturbed));
+
   Modelica.SIunits.Power Q_flow "Heat flow to/from soil (e.g., losses)";
 
 protected
@@ -25,9 +42,14 @@ public
         iconTransformation(extent={{-10,90},{10,110}})));
 
 equation
-  port.T = T_mean - T_amp*exp(-z*sqrt(Modelica.Constants.pi/(365*alpha_day)))*
-    cos(2*Modelica.Constants.pi/365*(time/86400 + startTime/86400 - t_min/86400 - z/2*sqrt(365/(
-    Modelica.Constants.pi*alpha_day))));
+  if inputType==DisHeatLib.Boundary.BaseClasses.InputTypeSoilTemp.Undisturbed then
+    port.T = T_mean - T_amp*exp(-z*sqrt(Modelica.Constants.pi/(365*alpha_day)))*
+      cos(2*Modelica.Constants.pi/365*(time/86400 + startTime/86400 - t_min/86400 - z/2*sqrt(365/(
+      Modelica.Constants.pi*alpha_day))));
+  else
+    port.T = T_const;
+  end if;
+
   Q_flow = port.Q_flow;
   annotation (                  Documentation(info="<html>
 <p>The model is based on the Kusuda equations, which describes the temperature on the ground as a function of the depth z and time. </p>

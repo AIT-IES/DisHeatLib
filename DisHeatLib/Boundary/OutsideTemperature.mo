@@ -1,24 +1,29 @@
 within DisHeatLib.Boundary;
 model OutsideTemperature "Outside temperature model"
   // Choose input type
-  parameter DisHeatLib.Boundary.BaseClasses.InputTypeTemp inputType=DisHeatLib.Boundary.BaseClasses.InputTypeTemp.Constant "Input type for temperature"
-  annotation (choicesAllMatching=true);
+  parameter DisHeatLib.Boundary.BaseClasses.InputTypeOutTemp inputType=
+      DisHeatLib.Boundary.BaseClasses.InputTypeOutTemp.Constant
+    "Input type for temperature" annotation (choicesAllMatching=true);
 
   // From parameter
-  parameter Modelica.SIunits.Temperature TemOut_const = 20.0+273.15 "Constant outside temperature"
-    annotation(Dialog(group = "Constant", enable = inputType==DisHeatLib.Boundary.BaseClasses.InputTypeTemp.Constant), Evaluate=true);
+  parameter Modelica.SIunits.Temperature TemOut_const(start=20.0+273.15) "Constant outside temperature"
+    annotation(Dialog(group = "Constant", enable=inputType == DisHeatLib.Boundary.BaseClasses.InputTypeOutTemp.Constant));
 
   // From file
   parameter Boolean use_degC = false
     "Data in degC instead of K"
-    annotation(Dialog(group="From file", enable = inputType==DisHeatLib.Boundary.BaseClasses.InputTypeTemp.File), Evaluate=true, HideResult=true, choices(checkBox=true));
+    annotation(Dialog(group="From file", enable=inputType == DisHeatLib.Boundary.BaseClasses.InputTypeOutTemp.File),
+                                                                                                                  Evaluate=true, HideResult=true, choices(checkBox=true));
   parameter String tableName="NoName" "Table name on file or in function usertab (see docu)"
-    annotation(Dialog(enable = inputType==DisHeatLib.Boundary.BaseClasses.InputTypeTemp.File, group = "From file"), HideResult=true);
+    annotation(Dialog(enable=inputType == DisHeatLib.Boundary.BaseClasses.InputTypeOutTemp.File,
+                                                                                              group = "From file"), HideResult=true);
   parameter String fileName="NoName" "File where matrix is stored"
-    annotation(Dialog(enable = inputType==DisHeatLib.Boundary.BaseClasses.InputTypeTemp.File, group = "From file", loadSelector(filter="Text files (*.txt);;MATLAB MAT-files (*.mat)",
+    annotation(Dialog(enable=inputType == DisHeatLib.Boundary.BaseClasses.InputTypeOutTemp.File,
+                                                                                              group = "From file", loadSelector(filter="Text files (*.txt);;MATLAB MAT-files (*.mat)",
           caption="Open file in which table is present")), HideResult=true);
   parameter Integer columns[:]={2} "Columns of table to be interpolated"
-    annotation(Dialog(enable = inputType==DisHeatLib.Boundary.BaseClasses.InputTypeTemp.File, group = "From file"), HideResult=true);
+    annotation(Dialog(enable=inputType == DisHeatLib.Boundary.BaseClasses.InputTypeOutTemp.File,
+                                                                                              group = "From file"), HideResult=true);
 
 public
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b port annotation (
@@ -30,27 +35,31 @@ public
     tableName=tableName,
     columns=columns,
     extrapolation=Modelica.Blocks.Types.Extrapolation.HoldLastPoint,
-    fileName=Modelica.Utilities.Files.loadResource(fileName)) if
-                        inputType==DisHeatLib.Boundary.BaseClasses.InputTypeTemp.File
+    fileName=Modelica.Utilities.Files.loadResource(fileName)) if inputType ==
+    DisHeatLib.Boundary.BaseClasses.InputTypeOutTemp.File
     annotation (Placement(transformation(extent={{-88,-52},{-68,-32}})));
+protected
   Modelica.Thermal.HeatTransfer.Sources.PrescribedTemperature
-    outsideTemperature if not (use_degC and inputType == DisHeatLib.Boundary.BaseClasses.InputTypeTemp.File)
+    outsideTemperature if not (use_degC and inputType == DisHeatLib.Boundary.BaseClasses.InputTypeOutTemp.File)
     annotation (Placement(transformation(extent={{-30,-10},{-10,10}})));
+public
   Modelica.Blocks.Sources.RealExpression TConst(y=TemOut_const) if inputType ==
-    DisHeatLib.Boundary.BaseClasses.InputTypeTemp.Constant
+    DisHeatLib.Boundary.BaseClasses.InputTypeOutTemp.Constant
     annotation (Placement(
         transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
         origin={-80,36})));
   // From input
-  Modelica.Blocks.Interfaces.RealInput TemOut_in(unit="K", displayUnit="degC") if  inputType==DisHeatLib.Boundary.BaseClasses.InputTypeTemp.Input
+  Modelica.Blocks.Interfaces.RealInput TemOut_in(unit="K", displayUnit="degC") if
+    inputType == DisHeatLib.Boundary.BaseClasses.InputTypeOutTemp.Input
     annotation (Placement(transformation(
         extent={{-20,-20},{20,20}},
         rotation=0,
         origin={-120,0})));
+protected
   Modelica.Thermal.HeatTransfer.Celsius.PrescribedTemperature
-    outsideTemperature1 if use_degC and inputType == DisHeatLib.Boundary.BaseClasses.InputTypeTemp.File
+    outsideTemperature1 if use_degC and inputType == DisHeatLib.Boundary.BaseClasses.InputTypeOutTemp.File
     annotation (Placement(transformation(extent={{-30,-52},{-10,-32}})));
 equation
 
