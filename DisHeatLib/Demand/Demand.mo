@@ -14,25 +14,27 @@ model Demand
   parameter Modelica.SIunits.Temperature TemRet_nominal(displayUnit="degC")=35.0+273.15 "Nominal return temperature"
     annotation(Evaluate = true, Dialog(group="Nominal condition"));
 
-  // Heat load
-  parameter DisHeatLib.Demand.BaseClasses.InputTypeQ heatLoad = DisHeatLib.Demand.BaseClasses.InputTypeQ.Constant "Calculation of heat load"
-    annotation(Evaluate = true, Dialog(group="Heat demand"));
+  // Heat/flow load
+  parameter DisHeatLib.Demand.BaseClasses.InputTypeDemand heatLoad = DisHeatLib.Demand.BaseClasses.InputTypeDemand.ConstantQ "Calculation of heat load"
+    annotation(Evaluate = true, Dialog(group="Heat/flow demand"));
   parameter Real scaling = 1.0 "Scaling factor for heat demand"
-  annotation (Evaluate = true, Dialog(group="Heat demand"));
+  annotation (Evaluate = true, Dialog(group="Heat/flow demand"));
   parameter Modelica.SIunits.Power Q_constant = 0.0 "Constant heat demand"
-    annotation (Evaluate = true, Dialog(enable = heatLoad==DisHeatLib.Demand.BaseClasses.InputTypeQ.Constant, group="Heat demand"));
+    annotation (Evaluate = true, Dialog(enable = heatLoad==DisHeatLib.Demand.BaseClasses.InputTypeDemand.ConstantQ, group="Heat/flow demand"));
+  parameter Modelica.SIunits.MassFlowRate m_constant = 0.0 "Constant flow demand"
+    annotation (Evaluate = true, Dialog(enable = heatLoad==DisHeatLib.Demand.BaseClasses.InputTypeDemand.ConstantM, group="Heat/flow demand"));
   parameter String tableName="NoName"
     "Table name on file or in function usertab (see docu)"
-    annotation (Dialog(enable = heatLoad==DisHeatLib.Demand.BaseClasses.InputTypeQ.File, group="Heat demand"));
+    annotation (Dialog(enable = heatLoad==DisHeatLib.Demand.BaseClasses.InputTypeDemand.FileQ or heatLoad==DisHeatLib.Demand.BaseClasses.InputTypeDemand.FileM, group="Heat/flow demand"));
   parameter String fileName="NoName" "File where matrix is stored"
-    annotation (Dialog(enable = heatLoad==DisHeatLib.Demand.BaseClasses.InputTypeQ.File, group="Heat demand",
+    annotation (Dialog(enable = heatLoad==DisHeatLib.Demand.BaseClasses.InputTypeDemand.FileQ or heatLoad==DisHeatLib.Demand.BaseClasses.InputTypeDemand.FileM, group="Heat/flow demand",
       loadSelector(filter="Text files (*.txt);;MATLAB MAT-files (*.mat)",
           caption="Open file in which table is present")));
   parameter Integer columns[:]={2}
     "Columns of table to be interpolated"
-    annotation (Dialog(enable = heatLoad==DisHeatLib.Demand.BaseClasses.InputTypeQ.File, group="Heat demand"));
+    annotation (Dialog(enable = heatLoad==DisHeatLib.Demand.BaseClasses.InputTypeDemand.FileQ or heatLoad==DisHeatLib.Demand.BaseClasses.InputTypeDemand.FileM, group="Heat/flow demand"));
 
-protected
+public
   Modelica.Blocks.Continuous.LimPID PID(
     Ti=60,
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
@@ -40,16 +42,20 @@ protected
     yMin=0,
     y_start=1.0,
     k=1.0/Q_flow_nominal,
-    yMax=1.0)
-    annotation (Placement(transformation(extent={{6,50},{26,70}})));
+    yMax=1.0) if heatLoad == DisHeatLib.Demand.BaseClasses.InputTypeDemand.ConstantQ
+     or heatLoad == DisHeatLib.Demand.BaseClasses.InputTypeDemand.InputQ or
+    heatLoad == DisHeatLib.Demand.BaseClasses.InputTypeDemand.FileQ
+    annotation (Placement(transformation(extent={{16,42},{36,62}})));
 
+protected
   Modelica.Blocks.Sources.CombiTimeTable load_profile(
     tableOnFile=true,
     tableName=tableName,
     columns=columns,
     extrapolation=Modelica.Blocks.Types.Extrapolation.HoldLastPoint,
-    fileName=Modelica.Utilities.Files.loadResource(fileName)) if
-                          heatLoad==DisHeatLib.Demand.BaseClasses.InputTypeQ.File
+    fileName=Modelica.Utilities.Files.loadResource(fileName)) if heatLoad ==
+    DisHeatLib.Demand.BaseClasses.InputTypeDemand.FileQ or heatLoad ==
+    DisHeatLib.Demand.BaseClasses.InputTypeDemand.FileM
                  annotation (Placement(transformation(extent={{-88,50},
             {-68,70}})));
 public
@@ -65,14 +71,16 @@ protected
           X=Medium.X_default)) "Specific heat capacity at default medium state";
 
 protected
-  Modelica.Blocks.Sources.RealExpression load_const_input(y=
-        Q_constant) if heatLoad==DisHeatLib.Demand.BaseClasses.InputTypeQ.Constant annotation (
-      Placement(transformation(
+  Modelica.Blocks.Sources.RealExpression load_constQ_input(y=Q_constant) if
+    heatLoad == DisHeatLib.Demand.BaseClasses.InputTypeDemand.ConstantQ
+    annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
         origin={-78,34})));
 public
-  Modelica.Blocks.Interfaces.RealInput Qin(final unit="W") if  heatLoad==DisHeatLib.Demand.BaseClasses.InputTypeQ.Input
+  Modelica.Blocks.Interfaces.RealInput u(final unit=if heatLoad == DisHeatLib.Demand.BaseClasses.InputTypeDemand.InputQ
+         then "W" else "kg/s") if heatLoad == DisHeatLib.Demand.BaseClasses.InputTypeDemand.InputQ
+     or heatLoad == DisHeatLib.Demand.BaseClasses.InputTypeDemand.InputM
     "Connector of Real input signal" annotation (Placement(transformation(
         extent={{-20,-20},{20,20}},
         rotation=270,
@@ -98,30 +106,45 @@ public
     final from_dp=from_dp,
     final linearizeFlowResistance=linearizeFlowResistance)
     annotation (Dialog(group="Parameters"), Placement(transformation(extent={{40,-10},{60,10}})));
-protected
+public
   Modelica.Blocks.Math.Gain gain_scaling(k=scaling)
-    annotation (Placement(transformation(extent={{-24,50},{-4,70}})));
+    annotation (Placement(transformation(extent={{-24,42},{-4,62}})));
 
 protected
-  Modelica.Blocks.Sources.RealExpression Q_flow_in(y=Q_flow) annotation (
+  Modelica.Blocks.Math.Gain gain_relative(k=1/m_flow_nominal) if heatLoad ==
+    DisHeatLib.Demand.BaseClasses.InputTypeDemand.InputM or heatLoad ==
+    DisHeatLib.Demand.BaseClasses.InputTypeDemand.ConstantM or heatLoad ==
+    DisHeatLib.Demand.BaseClasses.InputTypeDemand.FileM
+    annotation (Placement(transformation(extent={{16,76},{36,96}})));
+protected
+  Modelica.Blocks.Sources.RealExpression load_constM_input(y=m_constant) if
+    heatLoad == DisHeatLib.Demand.BaseClasses.InputTypeDemand.ConstantM                  annotation (
       Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
-        origin={0,32})));
+        origin={-78,16})));
+protected
+  Modelica.Blocks.Math.Gain negative(k=-1) annotation (Placement(transformation(
+        extent={{-6,-6},{6,6}},
+        rotation=90,
+        origin={26,26})));
 equation
   Q_flow = -demandType.Q_flow;
-  Q_flow_demand = gain_scaling.y;
+  if heatLoad == DisHeatLib.Demand.BaseClasses.InputTypeDemand.ConstantQ or heatLoad == DisHeatLib.Demand.BaseClasses.InputTypeDemand.InputQ or heatLoad == DisHeatLib.Demand.BaseClasses.InputTypeDemand.FileQ then
+    Q_flow_demand = gain_scaling.y;
+  else
+    Q_flow_demand = 0.0;
+  end if;
 
   connect(gain_scaling.y, PID.u_s)
-    annotation (Line(points={{-3,60},{4,60}}, color={0,0,127}));
+    annotation (Line(points={{-3,52},{14,52}},color={0,0,127}));
   connect(load_profile.y[1], gain_scaling.u)
-    annotation (Line(points={{-67,60},{-26,60}}, color={0,0,127}));
-  connect(load_const_input.y, gain_scaling.u) annotation (Line(points={{-67,34},
-          {-40,34},{-40,60},{-26,60}}, color={0,0,127}));
-  connect(gain_scaling.u, Qin) annotation (Line(points={{-26,60},{-40,60},{-40,80},
+    annotation (Line(points={{-67,60},{-46,60},{-46,52},{-26,52}},
+                                                 color={0,0,127}));
+  connect(load_constQ_input.y, gain_scaling.u) annotation (Line(points={{-67,34},
+          {-40,34},{-40,52},{-26,52}}, color={0,0,127}));
+  connect(gain_scaling.u, u) annotation (Line(points={{-26,52},{-40,52},{-40,80},
           {0,80},{0,120}}, color={0,0,127}));
-  connect(Q_flow_in.y, PID.u_m)
-    annotation (Line(points={{11,32},{16,32},{16,48}}, color={0,0,127}));
   connect(demandType.port_a, port_a)
     annotation (Line(points={{-10,0},{-100,0}}, color={0,127,255}));
   connect(demandType.port_b, flowUnit.port_a)
@@ -129,7 +152,17 @@ equation
   connect(flowUnit.port_b, port_b)
     annotation (Line(points={{60,0},{100,0}}, color={0,127,255}));
   connect(PID.y, flowUnit.y)
-    annotation (Line(points={{27,60},{50,60},{50,12}}, color={0,0,127}));
+    annotation (Line(points={{37,52},{50,52},{50,12}}, color={0,0,127}));
+  connect(gain_relative.y, flowUnit.y)
+    annotation (Line(points={{37,86},{50,86},{50,12}}, color={0,0,127}));
+  connect(gain_scaling.y, gain_relative.u)
+    annotation (Line(points={{-3,52},{2,52},{2,86},{14,86}}, color={0,0,127}));
+  connect(load_constM_input.y, gain_scaling.u) annotation (Line(points={{-67,16},
+          {-40,16},{-40,52},{-26,52}}, color={0,0,127}));
+  connect(PID.u_m, negative.y)
+    annotation (Line(points={{26,40},{26,32.6}}, color={0,0,127}));
+  connect(demandType.Q_flow, negative.u) annotation (Line(points={{0,-11},{0,
+          -26},{26,-26},{26,18.8}}, color={0,0,127}));
     annotation (
               Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(

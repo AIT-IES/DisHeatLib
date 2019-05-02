@@ -67,13 +67,14 @@ model Demand
     redeclare package Medium = Medium,
     Q_flow_nominal=1000,
     dp_nominal(displayUnit="bar") = 100000,
-    heatLoad=DisHeatLib.Demand.BaseClasses.InputTypeQ.Input,
+    heatLoad=DisHeatLib.Demand.BaseClasses.InputTypeDemand.InputQ,
     redeclare BaseClasses.FixedReturn demandType)
     annotation (Placement(transformation(extent={{-10,38},{10,58}})));
   DisHeatLib.Demand.Demand demand1(
     redeclare package Medium = Medium,
     Q_flow_nominal=1000,
     dp_nominal=100000,
+    heatLoad=DisHeatLib.Demand.BaseClasses.InputTypeDemand.ConstantQ,
     Q_constant=1000,
     redeclare BaseClasses.FixedReturn demandType)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
@@ -81,7 +82,7 @@ model Demand
     redeclare package Medium = Medium,
     Q_flow_nominal=10000,
     dp_nominal=100000,
-    heatLoad=DisHeatLib.Demand.BaseClasses.InputTypeQ.File,
+    heatLoad=DisHeatLib.Demand.BaseClasses.InputTypeDemand.FileQ,
     tableName="SHprofile",
     fileName="modelica://DisHeatLib/Resources/Data/SHprofile.txt",
     redeclare BaseClasses.Radiator demandType)
@@ -91,8 +92,6 @@ equation
     annotation (Line(points={{-53,-64},{-42,-64}}, color={0,0,127}));
   connect(T1.y, boundarySL1.T_in)
     annotation (Line(points={{-53,4},{-42,4}}, color={0,0,127}));
-  connect(Q.y, demand.Qin)
-    annotation (Line(points={{-9,84},{0,84},{0,60}}, color={0,0,127}));
   connect(boundarySL1.ports[1], demand1.port_a)
     annotation (Line(points={{-20,0},{-10,0}}, color={0,127,255}));
   connect(demand1.port_b, boundaryRL1.ports[1])
@@ -107,6 +106,8 @@ equation
     annotation (Line(points={{-20,48},{-10,48}}, color={0,127,255}));
   connect(demand.port_b, boundaryRL.ports[1])
     annotation (Line(points={{10,48},{20,48}}, color={0,127,255}));
+  connect(Q.y, demand.u)
+    annotation (Line(points={{-9,84},{0,84},{0,60}}, color={0,0,127}));
   annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Demand/Examples/Demand.mos"
         "Simulate and plot"),
         Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(

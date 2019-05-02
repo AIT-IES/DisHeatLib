@@ -11,7 +11,7 @@ model TwoSuppliesOneBuilding
     fileName="modelica://DisHeatLib/Resources/Data/SHprofile.txt",
     redeclare DisHeatLib.Demand.BaseClasses.Radiator demandType,
     Q_constant(displayUnit="kW") = 100000,
-    heatLoad=DisHeatLib.Demand.BaseClasses.InputTypeQ.File,
+    heatLoad=DisHeatLib.Demand.BaseClasses.InputTypeDemand.FileQ,
     Q_flow_nominal(displayUnit="kW") = 10000,
     TemSup_nominal=323.15,
     TemRet_nominal=303.15)
@@ -28,6 +28,7 @@ model TwoSuppliesOneBuilding
         rotation=90,
         origin={-32,-14})));
   DisHeatLib.Boundary.SoilTemperature soil(
+    T_const=283.15,
     z=1,
     T_amp=1,
     t_min=1,
@@ -41,7 +42,6 @@ model TwoSuppliesOneBuilding
     show_T=true,
     Q_flow_nominal(displayUnit="kW") = 20000,
     powerCha(Q_flow={0,1}, P={0,1}),
-    OutsideDependent=false,
     dp_set=500000,
     k=1,
     TemSup_nominal=343.15,
@@ -56,14 +56,14 @@ model TwoSuppliesOneBuilding
     nPorts=1)
     annotation (Placement(transformation(extent={{-22,-52},{-42,-72}})));
   DisHeatLib.Boundary.OutsideTemperature outsideTemperature(
-    inputType=DisHeatLib.Boundary.BaseClasses.InputTypeTemp.File,
+    inputType=DisHeatLib.Boundary.BaseClasses.InputTypeOutTemp.File,
     tableName="TempOut",
     fileName=Modelica.Utilities.Files.loadResource(
-        "modelica://DisHeatLib/Resources/Data/TempOut.txt"))
-    annotation (Placement(transformation(
+        "modelica://DisHeatLib/Resources/Data/TempOut.txt")) annotation (
+      Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,
-        origin={-76,82})));
+        origin={-74,82})));
   DisHeatLib.Demand.Demand demandDHW(
     redeclare package Medium = Medium,
     dp_nominal(displayUnit="bar") = 100000,
@@ -71,7 +71,7 @@ model TwoSuppliesOneBuilding
     fileName="modelica://DisHeatLib/Resources/Data/DHWprofile_E2340_P40.txt",
     redeclare DisHeatLib.Demand.BaseClasses.FixedReturn demandType,
     Q_constant(displayUnit="kW") = 100000,
-    heatLoad=DisHeatLib.Demand.BaseClasses.InputTypeQ.File,
+    heatLoad=DisHeatLib.Demand.BaseClasses.InputTypeDemand.FileQ,
     Q_flow_nominal(displayUnit="kW") = 10000,
     TemSup_nominal=333.15,
     TemRet_nominal=283.15)
@@ -114,23 +114,25 @@ model TwoSuppliesOneBuilding
     width=50,
     period(displayUnit="h") = 86400)
     annotation (Placement(transformation(extent={{38,-94},{58,-74}})));
-  DisHeatLib.Substations.Substation substation(
-    show_T=true,
-    use_bypass=false,
-    redeclare DisHeatLib.Substations.BaseClasses.IndirectStation baseStationSH(
+  DisHeatLib.Substations.SubstationParallel substation(
+    dp1_nominal=100000,
+    redeclare DisHeatLib.Substations.BaseStations.IndirectStation baseStation2(
       Q1_flow_nominal=10000,
       TemSup2_nominal=323.15,
       TemRet2_nominal=303.15,
       Ti=900),
-    redeclare DisHeatLib.Substations.BaseClasses.IndirectStation baseStationDHW(
+    redeclare DisHeatLib.Substations.BaseStations.IndirectStation baseStation1(
       Q1_flow_nominal=10000,
       TemSup2_nominal=333.15,
       TemRet2_nominal=283.15,
       OutsideDependent=false),
+    show_T=true,
+    use_bypass=false,
     redeclare package Medium = Medium,
-    TemSup_nominal=343.15,
-    dp_nominal=100000)
-    annotation (Placement(transformation(extent={{-10,30},{10,50}})));
+    TemSup_nominal=343.15)
+    annotation (Placement(transformation(extent={{-10,50},{10,30}})));
+  Modelica.Blocks.Sources.RealExpression dp_measure_min(y=substation.senRelPre.p_rel)
+    annotation (Placement(transformation(extent={{12,-84},{-8,-64}})));
 equation
   connect(pipe1.port_ht, soil.port)
     annotation (Line(points={{-42,-14},{-68,-14}}, color={191,0,0}));
@@ -152,27 +154,27 @@ equation
           58,-2},{-6,-2},{-6,0}}, color={0,127,255}));
   connect(pipe1.ports_b1[1], pipe.port_a1)
     annotation (Line(points={{-38,-4},{-38,0},{-6,0}}, color={0,127,255}));
-  connect(pipe.ports_b1[1], substation.port_a) annotation (Line(points={{-6,20},
-          {-8,20},{-8,22},{-18,22},{-18,35.4545},{-10,35.4545}}, color={0,127,
-          255}));
-  connect(substation.port_b, pipe.port_a2) annotation (Line(points={{10,35.4545},
-          {16,35.4545},{16,22},{6,22},{6,20}}, color={0,127,255}));
-  connect(demandSH.port_b, substation.port_a_SH) annotation (Line(points={{40,64},
-          {48,64},{48,42.7273},{10,42.7273}},     color={0,127,255}));
-  connect(substation.port_b_SH, demandSH.port_a) annotation (Line(points={{10,
-          46.3636},{14,46.3636},{14,64},{20,64}}, color={0,127,255}));
-  connect(demandDHW.port_b, substation.port_a_DHW) annotation (Line(points={{-20,64},
-          {-16,64},{-16,42.7273},{-10,42.7273}},         color={0,127,255}));
-  connect(demandDHW.port_a, substation.port_b_DHW) annotation (Line(points={{-40,64},
-          {-46,64},{-46,46.3636},{-10,46.3636}},         color={0,127,255}));
+  connect(pipe.ports_b1[1], substation.port_a1) annotation (Line(points={{-6,20},
+          {-8,20},{-8,22},{-18,22},{-18,34},{-10,34}}, color={0,127,255}));
+  connect(substation.port_b1, pipe.port_a2) annotation (Line(points={{10,34},{
+          16,34},{16,22},{6,22},{6,20}}, color={0,127,255}));
+  connect(demandSH.port_b, substation.port_a3) annotation (Line(points={{40,64},
+          {48,64},{48,44},{10,44}}, color={0,127,255}));
+  connect(substation.port_b3, demandSH.port_a) annotation (Line(points={{10,48},
+          {14,48},{14,64},{20,64}}, color={0,127,255}));
+  connect(demandDHW.port_b, substation.port_a2) annotation (Line(points={{-20,
+          64},{-16,64},{-16,44},{-10,44}}, color={0,127,255}));
+  connect(demandDHW.port_a, substation.port_b2) annotation (Line(points={{-40,
+          64},{-46,64},{-46,48},{-10,48}}, color={0,127,255}));
   connect(supply_QT.port_a, pipe2.ports_b2[1]) annotation (Line(points={{74,-60},
           {84,-60},{84,-44},{70,-44},{70,-40}}, color={0,127,255}));
   connect(pipe2.port_a1, supply_QT.ports_b[1]) annotation (Line(points={{58,-40},
           {58,-44},{44,-44},{44,-60},{54,-60}}, color={0,127,255}));
-  connect(substation.dp, baseSupply.dp_measure) annotation (Line(points={{0,
-          30.9091},{0,-80},{-26,-80},{-26,-74}}, color={0,0,127}));
   connect(outsideTemperature.port, substation.port_ht)
-    annotation (Line(points={{-66,82},{0,82},{0,50}}, color={191,0,0}));
+    annotation (Line(points={{-64,82},{0,82},{0,50}}, color={191,0,0}));
+  connect(baseSupply.dp_measure,dp_measure_min. y)
+    annotation (Line(points={{-26,-74},{-9,-74}},
+                                                color={0,0,127}));
   annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Examples/TwoSuppliesOneBuilding.mos"
         "Simulate and plot"), experiment(
       StopTime=604800,
