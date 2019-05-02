@@ -4,3 +4,6 @@ createPlot(id = 1,
  y = {"supply_QT.Q_flow", "Q_flow_set.y", "supply_QT.sta_b[1].T"},
  axes={1, 1, 2},
  grid = true);
+createPlot(id = 2,
+ y = {"supply_QT.port_a.m_flow", "supply_QT.m_flow_limit"},
+ grid = true);
