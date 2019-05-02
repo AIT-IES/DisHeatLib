@@ -48,6 +48,7 @@ model DualPipe
     annotation(Dialog(tab = "Initialization"));
 
   Modelica.SIunits.Power Q_flow "Heat flow to soil (i.e., losses)";
+protected
   IBPSA.Fluid.FixedResistances.PlugFlowPipe pipe_sl(
     redeclare package Medium = Medium,
     from_dp=from_dp,
@@ -92,6 +93,7 @@ model DualPipe
     allowFlowReversal=allowFlowReversal,
     kIns=cf*pipeType.kIns)
     annotation (Placement(transformation(extent={{10,-70},{-10,-50}})));
+public
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a port_ht
     annotation (Placement(transformation(extent={{-10,90},{10,110}})));
 equation
