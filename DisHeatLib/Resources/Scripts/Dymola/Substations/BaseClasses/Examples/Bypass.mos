@@ -1,0 +1,6 @@
+removePlots();
+simulateModel("DisHeatLib.Substations.BaseClasses.Examples.Bypass", startTime=0, tolerance=1e-6, stopTime=36000, outputInterval=900, method="dassl", resultFile="Bypass");
+createPlot(id = 1,
+ y = {"bypass.port_a.m_flow", "bypass.T_measurement"},
+ axes={1, 2},
+ grid = true);

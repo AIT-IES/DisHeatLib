@@ -67,7 +67,7 @@ equation
           -30,-40},{-38,-40},{-38,-6},{-10,-6}}, color={0,127,255}));
   connect(directBaseStation.port_b1, pump.port_b) annotation (Line(points={{10,
           -6},{38,-6},{38,-40},{30,-40}}, color={0,127,255}));
-  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Substations/Examples/DirectStation.mos"
+  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Substations/BaseStations/Examples/DirectStation.mos"
         "Simulate and plot"),
         Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),

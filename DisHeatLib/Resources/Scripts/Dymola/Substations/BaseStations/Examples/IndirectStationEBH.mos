@@ -1,5 +1,5 @@
 removePlots();
-simulateModel("DisHeatLib.Substations.Examples.IndirectStationEBH", startTime=0, tolerance=1e-6, stopTime=36000, outputInterval=900, method="dassl", resultFile="IndirectBaseStation");
+simulateModel("DisHeatLib.Substations.BaseStations.Examples.IndirectStationEBH", startTime=0, tolerance=1e-6, stopTime=36000, outputInterval=900, method="dassl", resultFile="IndirectBaseStation");
 createPlot(id = 1,
  y = {"indirectStationEBH.sta_a1.T", "indirectStationEBH.sta_b1.T", "indirectStationEBH.sta_a2.T", "indirectStationEBH.sta_b2.T", "indirectStationEBH.electricBoosterHeater.TemSup_nominal"},
  grid = true);

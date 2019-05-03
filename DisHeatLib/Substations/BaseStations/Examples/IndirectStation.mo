@@ -69,7 +69,7 @@ equation
           {-36,34},{-18,34},{-18,6.36364},{-10,6.36364}}, color={0,127,255}));
   connect(indirectStation.port_b1, bou_RL_p.ports[1]) annotation (Line(points={
           {10,6.36364},{14,6.36364},{14,34},{34,34}}, color={0,127,255}));
-  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Substations/Examples/IndirectStation.mos"
+  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Substations/BaseStations/Examples/IndirectStation.mos"
         "Simulate and plot"),
         Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),

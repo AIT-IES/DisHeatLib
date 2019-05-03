@@ -1,0 +1,6 @@
+removePlots();
+simulateModel("DisHeatLib.Substations.BaseStations.Examples.DirectStation", startTime=0, tolerance=1e-6, stopTime=36000, outputInterval=900, method="dassl", resultFile="DirectStation");
+createPlot(id = 1,
+ y = {"cooler.Q_flow", "bou_SL_p.T_in"},
+ axes={1, 2},
+ grid = true);

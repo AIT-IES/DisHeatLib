@@ -39,7 +39,7 @@ equation
     annotation (Line(points={{-30,0},{-10,0}}, color={0,127,255}));
   connect(bypass.port_b, bou_RL_p.ports[1])
     annotation (Line(points={{10,0},{30,0}}, color={0,127,255}));
-  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Substations/Examples/Bypass.mos"
+  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Substations/BaseClasses/Examples/Bypass.mos"
         "Simulate and plot"),
         Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),
