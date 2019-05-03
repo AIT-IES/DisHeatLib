@@ -1,4 +1,4 @@
-within DisHeatLib.Substations.Examples;
+within DisHeatLib.Substations.BaseClasses.Examples;
 model Bypass
   extends Modelica.Icons.Example;
   BaseClasses.Bypass bypass(

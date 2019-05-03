@@ -1,11 +1,13 @@
-within DisHeatLib.Substations.Examples;
-model DirectStation
+within DisHeatLib.Substations.BaseStations.Examples;
+model IndirectStation
   extends Modelica.Icons.Example;
-  BaseStations.DirectStation directBaseStation(
+  BaseStations.IndirectStation indirectStation(
+    show_T=true,
     redeclare package Medium = Medium,
-    Q1_flow_nominal(displayUnit="kW") = 10000,
-    dp1_nominal(displayUnit="bar") = 100000)
-    annotation (Placement(transformation(extent={{-10,10},{10,-10}})));
+    Q1_flow_nominal=100000,
+    dp1_nominal(displayUnit="bar") = 100000,
+    OutsideDependent=false)
+    annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
   package Medium = IBPSA.Media.Water;
 
   IBPSA.Fluid.Sources.Boundary_pT bou_RL_p(
@@ -50,24 +52,24 @@ model DirectStation
     constantMassFlowRate=0.1)
     annotation (Placement(transformation(extent={{10,-50},{30,-30}})));
 equation
-
-  connect(cooler.TSet,TConst. y)
+  connect(cooler.TSet, TConst.y)
     annotation (Line(points={{-32,-32},{-43,-32}},
                                                  color={0,0,127}));
-  connect(bou_SL_p.T_in,T. y)
+  connect(bou_SL_p.T_in, T.y)
     annotation (Line(points={{-58,38},{-69,38}},   color={0,0,127}));
-  connect(pump.port_a,cooler. port_b)
+
+  connect(pump.port_a, cooler.port_b)
     annotation (Line(points={{10,-40},{-10,-40}},
                                                 color={0,127,255}));
-  connect(bou_RL_p.ports[1], directBaseStation.port_a2) annotation (Line(points=
-         {{34,34},{20,34},{20,6},{10,6}}, color={0,127,255}));
-  connect(directBaseStation.port_b2, bou_SL_p.ports[1]) annotation (Line(points=
-         {{-10,6},{-20,6},{-20,34},{-36,34}}, color={0,127,255}));
-  connect(cooler.port_a, directBaseStation.port_a1) annotation (Line(points={{
-          -30,-40},{-38,-40},{-38,-6},{-10,-6}}, color={0,127,255}));
-  connect(directBaseStation.port_b1, pump.port_b) annotation (Line(points={{10,
-          -6},{38,-6},{38,-40},{30,-40}}, color={0,127,255}));
-  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Substations/Examples/DirectStation.mos"
+  connect(pump.port_b, indirectStation.port_a2) annotation (Line(points={{30,-40},
+          {38,-40},{38,-4.54545},{10,-4.54545}}, color={0,127,255}));
+  connect(cooler.port_a, indirectStation.port_b2) annotation (Line(points={{-30,
+          -40},{-36,-40},{-36,-4.54545},{-10,-4.54545}}, color={0,127,255}));
+  connect(bou_SL_p.ports[1], indirectStation.port_a1) annotation (Line(points={
+          {-36,34},{-18,34},{-18,6.36364},{-10,6.36364}}, color={0,127,255}));
+  connect(indirectStation.port_b1, bou_RL_p.ports[1]) annotation (Line(points={
+          {10,6.36364},{14,6.36364},{14,34},{34,34}}, color={0,127,255}));
+  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Substations/Examples/IndirectStation.mos"
         "Simulate and plot"),
         Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),
@@ -76,4 +78,4 @@ equation
 <li>Feburary 27, 2019, by Benedikt Leitner:<br>Implementation and added User&apos;s guide. </li>
 </ul>
 </html>"));
-end DirectStation;
+end IndirectStation;

@@ -1,4 +1,4 @@
-within DisHeatLib.Substations.Examples;
+within DisHeatLib.Substations.BaseStations.Examples;
 model StorageTankHex
   extends Modelica.Icons.Example;
   BaseStations.StorageTankHex storageTankHex(

@@ -1,14 +1,19 @@
-within DisHeatLib.Substations.Examples;
-model IndirectStationEBH
+within DisHeatLib.Substations.BaseStations.Examples;
+model StorageTankHexEBH
   extends Modelica.Icons.Example;
-  BaseStations.IndirectStationEBH indirectStationEBH(
+  BaseStations.StorageTankHexEBH storageTankHexEBH(
     show_T=true,
     redeclare package Medium = Medium,
     Q1_flow_nominal=100000,
     dp1_nominal(displayUnit="bar") = 100000,
-    OutsideDependent=false,
-    electricBoosterHeater(Q_flow_nominal(displayUnit="kW") = 10000,
-        TemSup_nominal=343.15))
+    Q2_flow_nominal=100000,
+    VTan=10,
+    hTan=3,
+    Q_flow_nominal_EBH(displayUnit="kW") = 200000,
+    T_min_EBH=363.15,
+    T_bandwidth_EBH=5,
+    nSegEBH=1,
+    eff_EBH=0.95)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
   package Medium = IBPSA.Media.Water;
 
@@ -22,7 +27,7 @@ model IndirectStationEBH
     redeclare package Medium = Medium,
     use_p_in=false,
     use_T_in=true,
-    p=600000,
+    p=200000,
     T=353.15,
     nPorts=1)
     annotation (Placement(transformation(extent={{-56,24},{-36,44}})));
@@ -40,7 +45,7 @@ model IndirectStationEBH
     height=80,
     offset=273.15 + 10.0,
     startTime(displayUnit="h") = 3600,
-    duration(displayUnit="h") = 21600)
+    duration(displayUnit="d") = 86400)
     annotation (Placement(transformation(extent={{-90,28},{-70,48}})));
   IBPSA.Fluid.Movers.FlowControlled_m_flow pump(
     redeclare package Medium = Medium,
@@ -63,15 +68,15 @@ equation
   connect(pump.port_a, cooler.port_b)
     annotation (Line(points={{10,-40},{-10,-40}},
                                                 color={0,127,255}));
-  connect(pump.port_b, indirectStationEBH.port_a2) annotation (Line(points={{30,
-          -40},{38,-40},{38,-4.54545},{10,-4.54545}}, color={0,127,255}));
-  connect(cooler.port_a, indirectStationEBH.port_b2) annotation (Line(points={{-30,
-          -40},{-36,-40},{-36,-4.54545},{-10,-4.54545}}, color={0,127,255}));
-  connect(bou_SL_p.ports[1], indirectStationEBH.port_a1) annotation (Line(
-        points={{-36,34},{-18,34},{-18,6.36364},{-10,6.36364}}, color={0,127,255}));
-  connect(indirectStationEBH.port_b1, bou_RL_p.ports[1]) annotation (Line(
-        points={{10,6.36364},{14,6.36364},{14,34},{34,34}}, color={0,127,255}));
-  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Substations/Examples/IndirectStationEBH.mos"
+  connect(pump.port_b, storageTankHexEBH.port_a2) annotation (Line(points={{30,
+          -40},{38,-40},{38,-6},{10,-6}}, color={0,127,255}));
+  connect(cooler.port_a, storageTankHexEBH.port_b2) annotation (Line(points={
+          {-30,-40},{-36,-40},{-36,-6},{-10,-6}}, color={0,127,255}));
+  connect(bou_SL_p.ports[1], storageTankHexEBH.port_a1) annotation (Line(
+        points={{-36,34},{-18,34},{-18,6},{-10,6}}, color={0,127,255}));
+  connect(storageTankHexEBH.port_b1, bou_RL_p.ports[1]) annotation (Line(
+        points={{10,6},{14,6},{14,34},{34,34}}, color={0,127,255}));
+  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Substations/Examples/StorageTankHexEBH.mos"
         "Simulate and plot"),
         Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),
@@ -80,4 +85,4 @@ equation
 <li>Feburary 27, 2019, by Benedikt Leitner:<br>Implementation and added User&apos;s guide. </li>
 </ul>
 </html>"));
-end IndirectStationEBH;
+end StorageTankHexEBH;

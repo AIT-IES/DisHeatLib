@@ -1,12 +1,14 @@
-within DisHeatLib.Substations.Examples;
-model IndirectStation
+within DisHeatLib.Substations.BaseStations.Examples;
+model IndirectStationEBH
   extends Modelica.Icons.Example;
-  BaseStations.IndirectStation indirectStation(
+  BaseStations.IndirectStationEBH indirectStationEBH(
     show_T=true,
     redeclare package Medium = Medium,
     Q1_flow_nominal=100000,
     dp1_nominal(displayUnit="bar") = 100000,
-    OutsideDependent=false)
+    OutsideDependent=false,
+    electricBoosterHeater(Q_flow_nominal(displayUnit="kW") = 10000,
+        TemSup_nominal=343.15))
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
   package Medium = IBPSA.Media.Water;
 
@@ -61,15 +63,15 @@ equation
   connect(pump.port_a, cooler.port_b)
     annotation (Line(points={{10,-40},{-10,-40}},
                                                 color={0,127,255}));
-  connect(pump.port_b, indirectStation.port_a2) annotation (Line(points={{30,-40},
-          {38,-40},{38,-4.54545},{10,-4.54545}}, color={0,127,255}));
-  connect(cooler.port_a, indirectStation.port_b2) annotation (Line(points={{-30,
+  connect(pump.port_b, indirectStationEBH.port_a2) annotation (Line(points={{30,
+          -40},{38,-40},{38,-4.54545},{10,-4.54545}}, color={0,127,255}));
+  connect(cooler.port_a, indirectStationEBH.port_b2) annotation (Line(points={{-30,
           -40},{-36,-40},{-36,-4.54545},{-10,-4.54545}}, color={0,127,255}));
-  connect(bou_SL_p.ports[1], indirectStation.port_a1) annotation (Line(points={
-          {-36,34},{-18,34},{-18,6.36364},{-10,6.36364}}, color={0,127,255}));
-  connect(indirectStation.port_b1, bou_RL_p.ports[1]) annotation (Line(points={
-          {10,6.36364},{14,6.36364},{14,34},{34,34}}, color={0,127,255}));
-  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Substations/Examples/IndirectStation.mos"
+  connect(bou_SL_p.ports[1], indirectStationEBH.port_a1) annotation (Line(
+        points={{-36,34},{-18,34},{-18,6.36364},{-10,6.36364}}, color={0,127,255}));
+  connect(indirectStationEBH.port_b1, bou_RL_p.ports[1]) annotation (Line(
+        points={{10,6.36364},{14,6.36364},{14,34},{34,34}}, color={0,127,255}));
+  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Substations/Examples/IndirectStationEBH.mos"
         "Simulate and plot"),
         Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),
@@ -78,4 +80,4 @@ equation
 <li>Feburary 27, 2019, by Benedikt Leitner:<br>Implementation and added User&apos;s guide. </li>
 </ul>
 </html>"));
-end IndirectStation;
+end IndirectStationEBH;
