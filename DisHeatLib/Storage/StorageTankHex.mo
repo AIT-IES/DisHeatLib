@@ -144,12 +144,11 @@ public
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heaPorVol[nSeg]
     "Heat port that connects to the control volumes of the tank"
     annotation (Placement(transformation(extent={{-6,94},{6,106}})));
-protected
-  Modelica.Blocks.Sources.RealExpression Tin[nSeg](y=tan.vol[:].T) annotation (
-      Placement(transformation(
+  Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor SenTemTank[nSeg]
+    "Temperature tank" annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
-        rotation=0,
-        origin={-20,-82})));
+        rotation=-90,
+        origin={0,-50})));
 equation
   connect(port_a1, port_a1) annotation (Line(points={{-100,60},{-100,63},{-100,63},
           {-100,60}}, color={0,127,255}));
@@ -167,10 +166,12 @@ equation
     annotation (Line(points={{0,28},{0,0},{5.6,0}}, color={191,0,0}));
   connect(FixedTemRoom.port, tan.heaPorBot)
     annotation (Line(points={{0,28},{0,-7.4},{2,-7.4}}, color={191,0,0}));
-  connect(Tin.y, TemTank) annotation (Line(points={{-9,-82},{0,-82},{0,-110}},
-                               color={0,0,127}));
   connect(heaPorVol, tan.heaPorVol) annotation (Line(points={{0,100},{0,88},{-40,
           88},{-40,0},{0,0}}, color={191,0,0}));
+  connect(tan.heaPorVol, SenTemTank.port)
+    annotation (Line(points={{0,0},{0,-40}}, color={191,0,0}));
+  connect(SenTemTank.T, TemTank)
+    annotation (Line(points={{0,-60},{0,-110}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Ellipse(
           extent={{-50,80},{50,54}},
