@@ -1,5 +1,5 @@
 within DisHeatLib.Controls;
-model dp_control
+block dp_control
   parameter Modelica.SIunits.Pressure dp_setpoint(displayUnit="bar") "Set-point for differential pressure";
   parameter Real k=50 "Gain of controller";
   parameter Modelica.SIunits.Time Ti(min=Modelica.Constants.small)=120

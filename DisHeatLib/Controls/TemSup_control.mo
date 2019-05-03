@@ -1,5 +1,5 @@
 within DisHeatLib.Controls;
-model TemSup_control
+block TemSup_control
 
   parameter Modelica.SIunits.Temperature TemOut_min(displayUnit="degC") = -5.0 + 273.15 "Outside temperature where maximum supply temperature is used";
   parameter Modelica.SIunits.Temperature TemOut_max(displayUnit="degC") = 15.0 + 273.15 "Outside temperature where minimum supply temperature is used";

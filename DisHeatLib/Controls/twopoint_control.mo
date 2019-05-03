@@ -1,5 +1,5 @@
 within DisHeatLib.Controls;
-model twopoint_control
+block twopoint_control
   parameter Real y_max = 1.0 "Maximum set-point value for valve/pump";
   parameter Real y_min = 0.0 "Minimum set-point value for valve/pump";
   parameter Real u_min "Minimum input value for charging activation";

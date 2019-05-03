@@ -1,5 +1,5 @@
 within DisHeatLib.Controls;
-model bypass_control
+block bypass_control
   parameter Real max_y(min=0, max=1) = 1.0 "Maximum set-point value for valve/pump";
   parameter Boolean use_thermostat = true "Use a thermostat to control the bypass valve, otherwise always opened"
     annotation(HideResult=true, choices(checkBox=true));

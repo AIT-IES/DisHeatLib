@@ -1,5 +1,5 @@
 within DisHeatLib.Controls;
-model flow_control
+block flow_control
   parameter Real k(min=0, unit="1") = 0.01 "Gain of controller";
   parameter Modelica.SIunits.Time Ti(min=Modelica.Constants.small)=120
     "Time constant of Integrator block";
@@ -18,8 +18,7 @@ model flow_control
     annotation(Dialog(enable = use_m_flow_in));
 
   Modelica.Blocks.Interfaces.RealInput T_set(unit="K", displayUnit="degC") if
-    use_T_in
-    "Input signal connector"
+    use_T_in "Input signal connector"
     annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
   Modelica.Blocks.Interfaces.RealOutput y
     "Connector of Real output signal"

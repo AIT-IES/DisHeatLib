@@ -1,5 +1,5 @@
 within DisHeatLib.Controls.BaseClasses;
-model RegStep
+block RegStep
   "Approximation of a general step, such that the approximation is continuous and differentiable"
   parameter Real x_small(min=0) = 1e-5
     "Approximation of step for -x_small <= x <= x_small; x_small >= 0 required";
