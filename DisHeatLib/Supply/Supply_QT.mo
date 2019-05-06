@@ -47,15 +47,6 @@ protected
         rotation=0,
         origin={-8,26})));
 public
-  Modelica.Blocks.Continuous.LimPID PID(
-    controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    yMin=0,
-    yMax=if Q_flow_nominal < 0.001 then 0 else m_flow_nominal,
-    k=if Q_flow_nominal < 0.001 then 1 else 0.5*m_flow_nominal/Q_flow_nominal,
-    Ti=60)
-    "uses correlation Q_flow = c_p delta_T m_flow and allowing for a 50 percent smaller delta_T than nominal when limiting m_flow"
-    annotation (Placement(transformation(extent={{-54,64},{-34,44}})));
-public
   Modelica.Blocks.Interfaces.RealInput QSet if use_Q_in annotation (Placement(
         transformation(
         extent={{-20,-20},{20,20}},
@@ -82,71 +73,40 @@ protected
     annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
-        origin={-76,30})));
-protected
-  Modelica.Blocks.Sources.RealExpression Q_flow_nominal1(y=Q_flow_nominal) if
-    use_Q_in annotation (Placement(transformation(
-        extent={{-10,-10},{10,10}},
-        rotation=0,
-        origin={-86,90})));
-public
-  Modelica.Blocks.Math.Min min if use_Q_in
-    "Limit the input signal to maximum heat capacity; avoids problems when heat capacity is set directly at heater"
-    annotation (Placement(transformation(
-        extent={{-10,-10},{10,10}},
-        rotation=-90,
-        origin={-66,74})));
+        origin={-88,70})));
 public
   Modelica.Blocks.Interfaces.RealInput m_flow_limit if use_m_flow_limit
     annotation (Placement(transformation(
         extent={{-20,-20},{20,20}},
         rotation=-90,
         origin={0,120})));
-public
-  Modelica.Blocks.Math.Min min1 if use_m_flow_limit
-    "Limit the input signal to m_flow_limit; avoids injection of higher mass flows than needed in network"
-    annotation (Placement(transformation(
-        extent={{-10,-10},{10,10}},
-        rotation=-90,
-        origin={-12,52})));
-  Modelica.Blocks.Routing.RealPassThrough realPassThrough if not
-    use_m_flow_limit annotation (Placement(transformation(
-        extent={{-7,-7},{7,7}},
-        rotation=-90,
-        origin={-43,27})));
+  Controls.Q_flow_control q_flow_control(
+    Q_flow_nominal=Q_flow_nominal,
+    m_flow_nominal=m_flow_nominal,
+    limit_m_flow=use_m_flow_limit,
+    Ti=60) annotation (Placement(transformation(extent={{-60,60},{-40,80}})));
 equation
   Q_flow = heater.Q_flow;
   connect(TSupplySet.y, heater.TSet)
     annotation (Line(points={{3,26},{6,26},{6,8}},    color={0,0,127}));
-  connect(heater.Q_flow, PID.u_m) annotation (Line(points={{29,8},{30,8},{30,76},
-          {-44,76},{-44,66}},   color={0,0,127}));
   connect(pump.port_b, heater.port_a) annotation (Line(
         points={{-20,0},{8,0}},color={0,127,255}));
-  connect(QconstSet.y, PID.u_s) annotation (Line(points={{-65,30},{-60,30},{-60,
-          54},{-56,54}},                        color={0,
-          0,127}));
   connect(heater.TSet, TSet) annotation (Line(points={{6,8},{6,86},{60,86},{60,
           120}},    color={0,0,127}));
-  connect(QSet,min. u1)
-    annotation (Line(points={{-60,120},{-60,86}}, color={0,0,127}));
-  connect(min.y, PID.u_s)
-    annotation (Line(points={{-66,63},{-66,54},{-56,54}}, color={0,0,127}));
-  connect(min.u2, Q_flow_nominal1.y)
-    annotation (Line(points={{-72,86},{-72,90},{-75,90}}, color={0,0,127}));
   connect(port_a, pump.port_a)
     annotation (Line(points={{-100,0},{-40,0}}, color={0,127,255}));
   connect(heater.port_b, ports_b[1])
     annotation (Line(points={{28,0},{100,0}}, color={0,127,255}));
-  connect(m_flow_limit, min1.u1) annotation (Line(points={{0,120},{-2,120},{-2,64},
-          {-6,64}}, color={0,0,127}));
-  connect(PID.y, min1.u2) annotation (Line(points={{-33,54},{-30,54},{-30,72},{-18,
-          72},{-18,64}}, color={0,0,127}));
-  connect(min1.y, pump.m_flow_in) annotation (Line(points={{-12,41},{-12,38},{-30,
-          38},{-30,12}}, color={0,0,127}));
-  connect(PID.y, realPassThrough.u) annotation (Line(points={{-33,54},{-30,54},{
-          -30,40},{-43,40},{-43,35.4}}, color={0,0,127}));
-  connect(realPassThrough.y, pump.m_flow_in) annotation (Line(points={{-43,19.3},
-          {-43,18},{-30,18},{-30,12}}, color={0,0,127}));
+  connect(m_flow_limit, q_flow_control.m_flow_max) annotation (Line(points={{0,
+          120},{0,88},{-50,88},{-50,82}}, color={0,0,127}));
+  connect(q_flow_control.y, pump.m_flow_in)
+    annotation (Line(points={{-39,70},{-30,70},{-30,12}}, color={0,0,127}));
+  connect(QconstSet.y, q_flow_control.Q_flow_set)
+    annotation (Line(points={{-77,70},{-62,70}}, color={0,0,127}));
+  connect(QSet, q_flow_control.Q_flow_set) annotation (Line(points={{-60,120},{
+          -60,90},{-68,90},{-68,70},{-62,70}}, color={0,0,127}));
+  connect(q_flow_control.Q_flow_measure, heater.Q_flow) annotation (Line(points
+        ={{-50,58},{-50,46},{34,46},{34,8},{29,8}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false),
         graphics={
         Line(
