@@ -1,0 +1,6 @@
+removePlots();
+simulateModel("DisHeatLib.Demand.BaseDemands.Examples.Radiator", startTime=0, tolerance=1e-6, stopTime=864000, outputInterval=900, method="dassl", resultFile="Radiator");
+createPlot(id = 1,
+ y = {"radiator.Q_flow", "boundarySL.medium.T", "radiator.TemRoom"},
+ axes = {1, 2, 2},
+ grid = true);

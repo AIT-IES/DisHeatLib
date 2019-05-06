@@ -1,4 +1,4 @@
-within DisHeatLib.Demand.Examples;
+within DisHeatLib.Demand.BaseDemands.Examples;
 model Radiator
   extends Modelica.Icons.Example;
   package Medium = IBPSA.Media.Water;
@@ -30,7 +30,7 @@ equation
     annotation (Line(points={{20,0},{10,0}}, color={0,127,255}));
   connect(boundarySL.ports[1], radiator.port_a)
     annotation (Line(points={{-20,0},{-10,0}}, color={0,127,255}));
-  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Demand/Examples/Radiator.mos"
+  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Demand/BaseDemands/Examples/Radiator.mos"
         "Simulate and plot"),
         Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),

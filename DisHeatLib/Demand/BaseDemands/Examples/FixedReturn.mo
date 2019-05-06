@@ -1,4 +1,4 @@
-within DisHeatLib.Demand.Examples;
+within DisHeatLib.Demand.BaseDemands.Examples;
 model FixedReturn
   extends Modelica.Icons.Example;
   package Medium = IBPSA.Media.Water;
@@ -20,7 +20,7 @@ model FixedReturn
     startTime(displayUnit="d") = 86400)
     annotation (Placement(transformation(extent={{-74,-6},{-54,14}})));
 
-  BaseClasses.FixedReturn fixedReturn(
+  BaseDemands.FixedReturn fixedReturn(
     redeclare package Medium = Medium,
     Q_flow_nominal(displayUnit="kW") = 10000,
     returnTemperature=DisHeatLib.Demand.BaseClasses.InputTypeTret.Constant)
@@ -32,7 +32,7 @@ equation
     annotation (Line(points={{20,0},{10,0}}, color={0,127,255}));
   connect(boundarySL.ports[1], fixedReturn.port_a)
     annotation (Line(points={{-20,0},{-10,0}}, color={0,127,255}));
-  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Demand/Examples/FixedReturn.mos"
+  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Demand/BaseDemands/Examples/FixedReturn.mos"
         "Simulate and plot"),
         Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),

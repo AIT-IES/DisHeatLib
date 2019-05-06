@@ -1,7 +1,6 @@
-within DisHeatLib.Demand.BaseClasses;
+within DisHeatLib.Demand.BaseDemands;
 model Radiator
-  extends BaseDemand(
-    show_radiator = true);
+  extends BaseClasses.BaseDemand(show_radiator=true);
   // EN442 parameters
   parameter Modelica.SIunits.Temperature TemRoom(displayUnit="degC") = 21.0+273.15
     "Room temperature at nominal condition";

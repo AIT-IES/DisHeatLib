@@ -1,6 +1,6 @@
-within DisHeatLib.Demand.BaseClasses;
+within DisHeatLib.Demand.BaseDemands;
 model FixedReturn
-  extends BaseDemand;
+  extends BaseClasses.BaseDemand;
 
   // Return temperature
   parameter DisHeatLib.Demand.BaseClasses.InputTypeTret returnTemperature = DisHeatLib.Demand.BaseClasses.InputTypeTret.Constant "Fixed return temperature"

@@ -1,0 +1,6 @@
+removePlots();
+simulateModel("DisHeatLib.Demand.BaseDemands.Examples.FixedReturn", startTime=0, tolerance=1e-6, stopTime=864000, outputInterval=900, method="dassl", resultFile="FixedReturn");
+createPlot(id = 1,
+ y = {"fixedReturn.Q_flow", "boundarySL.medium.T", "fixedReturn.TemRet_nominal"},
+ axes = {1, 2, 2},
+ grid = true);
