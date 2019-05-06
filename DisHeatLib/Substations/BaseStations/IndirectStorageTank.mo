@@ -43,6 +43,8 @@ model IndirectStorageTank
   parameter Modelica.SIunits.MassFlowRate m_flow_charging
     "Nominal mass flow rate"
     annotation(Dialog(group = "Storage controller"));
+  parameter Integer nSegMeasure=1 "Volume segment to take top temperature from"
+    annotation(Dialog(group="Storage controller"));
   parameter Modelica.SIunits.Temperature T_top_set(displayUnit="degC") "Constant temperature setpoint for top layer"
     annotation(Evaluate=true, Dialog(group = "Storage controller"));
   parameter Modelica.SIunits.Temperature T_bot_set(displayUnit="degC") "Constant temperature setpoint for bottom layer"
@@ -172,9 +174,9 @@ equation
     annotation (Line(points={{-40,0},{-40,-20}}, color={0,127,255}));
   connect(flowUnit1.y, storage_control.y)
     annotation (Line(points={{12,10},{19,10}}, color={0,0,127}));
-  connect(storageTank.TemTank[1], storage_control.T_top) annotation (Line(
+  connect(storageTank.TemTank[nSegMeasure], storage_control.T_top) annotation (Line(
         points={{-10,-65},{-10,-80},{52,-80},{52,15},{42,15}}, color={0,0,127}));
-  connect(storageTank.TemTank[2], storage_control.T_bot) annotation (Line(
+  connect(storageTank.TemTank[nSeg], storage_control.T_bot) annotation (Line(
         points={{-10,-65},{-10,-80},{52,-80},{52,5},{42,5}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-120},
             {100,100}}),                                        graphics={
