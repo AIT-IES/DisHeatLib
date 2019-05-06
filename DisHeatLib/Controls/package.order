@@ -4,4 +4,7 @@ dp_control
 flow_control
 bypass_control
 twopoint_control
+storage_control
+m_flow_control
+Q_flow_control
 Examples
