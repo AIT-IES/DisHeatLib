@@ -15,9 +15,6 @@ model StorageTank
       annotation (choices(
         choice(redeclare package Medium = IBPSA.Media.Water "Water")));
 
-  parameter Modelica.SIunits.Temperature TemSup_nominal(displayUnit="degC")
-    "Nominal supply temperature"
-    annotation(Dialog(group = "Nominal condition"));
   parameter Modelica.SIunits.Volume VTan "Tank volume"
     annotation(Evaluate=false, Dialog(group = "Storage tank"));
   parameter Modelica.SIunits.Length hTan = 1 "Height of tank (without insulation)"
@@ -29,14 +26,12 @@ model StorageTank
     annotation(Evaluate=true, Dialog(group = "Storage tank"));
   parameter Integer nSeg(min=4) = 4 "Number of volume segments"
     annotation(Evaluate=true, Dialog(group = "Storage tank"));
-  parameter Modelica.SIunits.Temperature TemInit = TemSup_nominal
+  parameter Modelica.SIunits.Temperature TemInit
     "Initial temperature of the storage tank"
     annotation(Evaluate=true, Dialog(group = "Storage tank"));
   parameter Modelica.SIunits.Temperature TemRoom = 20.0 + 273.15
     "Constant temperature surrounding the storage tank"
     annotation(Evaluate=true, Dialog(group = "Storage tank"));
-
-
 
   parameter Modelica.SIunits.MassFlowRate m_flow_nominal
     "Nominal mass flow rate"
@@ -100,7 +95,7 @@ protected
   IBPSA.Fluid.FixedResistances.Junction jun1(
     redeclare package Medium = Medium,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
-    T_start=TemSup_nominal,
+    T_start=TemInit,
     dp_nominal={0,0,0},
     m_flow_nominal={m_flow_nominal,m_flow_nominal,m_flow_nominal})
     annotation (Placement(transformation(
