@@ -10,9 +10,9 @@ model SubstationSingle
     "Nominal supply temperature"
     annotation(Dialog(group = "Nominal condition"));
 
-  // Bypass valve - Tab: Bypass
+  // Bypass valve - group: Bypass
   parameter Boolean use_bypass = true "Use a bypass valve"
-    annotation(Dialog(tab="Bypass"), HideResult=true, choices(checkBox=true));
+    annotation(Dialog(group="Bypass"), HideResult=true, choices(checkBox=true));
 
 protected
       final parameter Modelica.SIunits.SpecificHeatCapacity cp_default=
@@ -60,7 +60,7 @@ public
     final from_dp=from_dp1,
     final dp_nominal=dp1_nominal,
     final linearizeFlowResistance=linearizeFlowResistance1) if use_bypass
-    annotation (Dialog(tab = "Bypass", enable=use_bypass), Placement(transformation(extent={{-10,50},
+    annotation (Dialog(group = "Bypass", enable=use_bypass), Placement(transformation(extent={{-10,50},
             {10,70}})));
 protected
   IBPSA.Fluid.FixedResistances.Junction jun1(
