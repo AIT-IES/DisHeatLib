@@ -1,5 +1,8 @@
 within DisHeatLib.Controls;
 block flow_control
+  parameter Boolean reverseAction=false
+    "Set to true for reversed PI controller (error term decreases output)"
+    annotation(Evaluate=true, HideResult=true, choices(checkBox=true));
   parameter Real k(min=0, unit="1") = 0.01 "Gain of controller";
   parameter Modelica.SIunits.Time Ti(min=Modelica.Constants.small)=120
     "Time constant of Integrator block";
@@ -24,14 +27,15 @@ block flow_control
     "Connector of Real output signal"
     annotation (Placement(transformation(extent={{100,-10},{120,10}})));
 public
-  Modelica.Blocks.Continuous.LimPID PID(
+  IBPSA.Controls.Continuous.LimPID  conPID(
     yMax=1,
     yMin=min_y,
     k=k,
     Ti(displayUnit="s") = Ti,
     wd=0.1,
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    strict=false)
+    strict=false,
+    reverseAction=reverseAction)
             annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));
 protected
   Modelica.Blocks.Sources.RealExpression minValvePos(y=min_y) if use_m_flow_in
@@ -47,6 +51,7 @@ public
   Modelica.Blocks.Interfaces.RealInput T_measurement(unit="K", displayUnit="degC")
     "Input signal connector"
     annotation (Placement(transformation(extent={{-140,-70},{-100,-30}})));
+
 protected
   Modelica.Blocks.Sources.RealExpression TSetConst(y=T_const) if not use_T_in
     annotation (Placement(transformation(
@@ -66,18 +71,11 @@ protected
         rotation=0,
         origin={-86,26})));
 equation
-  connect(T_measurement, PID.u_m) annotation (Line(points={{-120,-50},{-50,-50},
-          {-50,-12}}, color={0,0,127}));
-  connect(T_set, PID.u_s) annotation (Line(points={{-120,0},{-62,0}},
-                color={0,0,127}));
-  connect(TSetConst.y, PID.u_s) annotation (Line(points={{-77,-22},{-70,-22},{
-          -70,0},{-62,0}},
-                         color={0,0,127}));
-  connect(PID.y, realPassThrough.u) annotation (Line(points={{-39,0},{-26,0},{
-          -26,-40},{-12,-40}}, color={0,0,127}));
+  connect(conPID.y, realPassThrough.u) annotation (Line(points={{-39,0},{-26,0},
+          {-26,-40},{-12,-40}}, color={0,0,127}));
   connect(minValvePos.y, regStep.y2) annotation (Line(points={{-39,76},{-26,76},
           {-26,46},{-12,46}}, color={0,0,127}));
-  connect(PID.y, regStep.y1) annotation (Line(points={{-39,0},{-26,0},{-26,34},
+  connect(conPID.y, regStep.y1) annotation (Line(points={{-39,0},{-26,0},{-26,34},
           {-12,34}}, color={0,0,127}));
   connect(m_flow_min_set.y, add.u2) annotation (Line(points={{-75,26},{-70,26},{
           -70,34},{-64,34}}, color={0,0,127}));
@@ -89,6 +87,12 @@ equation
         color={0,0,127}));
   connect(realPassThrough.y, y) annotation (Line(points={{11,-40},{40,-40},{40,
           0},{110,0}}, color={0,0,127}));
+  connect(T_measurement, conPID.u_m) annotation (Line(points={{-120,-50},{-50,-50},
+          {-50,-12}}, color={0,0,127}));
+  connect(TSetConst.y, conPID.u_s) annotation (Line(points={{-77,-22},{-72,-22},
+          {-72,0},{-62,0}}, color={0,0,127}));
+  connect(T_set, conPID.u_s)
+    annotation (Line(points={{-120,0},{-62,0}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
                               Rectangle(extent={{-100,100},{100,-100}},  lineColor = {135, 135, 135}, fillColor = {255, 255, 170},
             fillPattern =                                                                                                   FillPattern.Solid), Text(extent = {{-58, 32}, {62, -20}}, lineColor = {175, 175, 175}, textString = "%name")}),
