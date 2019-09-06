@@ -1,7 +1,7 @@
 within DisHeatLib.Supply;
 model Supply_pT "Differential pressure and temperature supply"
-  extends DisHeatLib.Supply.BaseClasses.BaseSupply(otherPowerUnits(y=pump.P), nPorts=
-        1);
+  extends DisHeatLib.Supply.BaseClasses.BaseSupply(nPorts=1);
+  extends DisHeatLib.Supply.BaseClasses.ThermalElectricInterface;
 
 
   parameter Modelica.SIunits.PressureDifference dp_nominal
@@ -126,7 +126,6 @@ public
         rotation=-90,
         origin={60,120})));
 equation
-  Q_flow = heater.Q_flow;
 
   connect(dp_control.dp, dp_measure) annotation (Line(points={{-2,50},{-10,50},{
           -10,64},{-60,64},{-60,120}},color={0,0,127}));
@@ -150,6 +149,8 @@ equation
     annotation (Line(points={{40,0},{100,0}}, color={0,127,255}));
   connect(TSup_in, heater.TSet) annotation (Line(points={{60,120},{60,80},{-20,
           80},{-20,8},{-16,8}}, color={0,0,127}));
+  connect(heater.Q_flow, powerCharacteristic.u) annotation (Line(points={{7,8},
+          {10,8},{10,-34},{-66,-34},{-66,-58},{-56,-58}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false),
         graphics={      Polygon(
     points={{-28,52},{-50,42},{-36,66},{-20,78},{-6,92},{16,84},{34,86},{58,68},

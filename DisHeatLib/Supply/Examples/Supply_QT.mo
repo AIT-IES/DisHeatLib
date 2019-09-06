@@ -16,16 +16,6 @@ model Supply_QT
     use_m_flow_limit=true,
     nPorts=1)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-  IBPSA.Fluid.Sources.FixedBoundary bou(
-    redeclare package Medium = Medium,
-    use_T=false,
-    nPorts=1)
-    annotation (Placement(transformation(extent={{40,-10},{20,10}})));
-  IBPSA.Fluid.Sources.FixedBoundary bou1(
-    redeclare package Medium = Medium,
-    T=313.15,
-    nPorts=1)
-    annotation (Placement(transformation(extent={{-40,-10},{-20,10}})));
   Modelica.Blocks.Sources.Ramp Q_flow_set(
     height=10000,
     offset=0,
@@ -38,15 +28,22 @@ model Supply_QT
     duration(displayUnit="h") = 72000,
     startTime(displayUnit="h") = 7200)
     annotation (Placement(transformation(extent={{38,30},{18,50}})));
+  IBPSA.Fluid.Sources.Boundary_pT bou1(
+    redeclare package Medium = Medium,
+    T=313.15,
+    nPorts=1)
+    annotation (Placement(transformation(extent={{-40,-10},{-20,10}})));
+  IBPSA.Fluid.Sources.Boundary_pT bou(redeclare package Medium = Medium, nPorts
+      =1) annotation (Placement(transformation(extent={{40,-10},{20,10}})));
 equation
   connect(Q_flow_set.y, supply_QT.QSet)
     annotation (Line(points={{-15,40},{-6,40},{-6,12}}, color={0,0,127}));
+  connect(m_flow_limit.y, supply_QT.m_flow_limit)
+    annotation (Line(points={{17,40},{0,40},{0,12}}, color={0,0,127}));
   connect(bou1.ports[1], supply_QT.port_a)
     annotation (Line(points={{-20,0},{-10,0}}, color={0,127,255}));
   connect(supply_QT.ports_b[1], bou.ports[1])
     annotation (Line(points={{10,0},{20,0}}, color={0,127,255}));
-  connect(m_flow_limit.y, supply_QT.m_flow_limit)
-    annotation (Line(points={{17,40},{0,40},{0,12}}, color={0,0,127}));
   annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Supply/Examples/Supply_QT.mos"
         "Simulate and plot"),
         Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(

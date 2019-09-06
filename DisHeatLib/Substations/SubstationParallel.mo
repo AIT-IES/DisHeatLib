@@ -68,12 +68,13 @@ public
   replaceable
   BaseClasses.Bypass bypass(
     redeclare final package Medium = Medium,
-    final allowFlowReversal=allowFlowReversal,
-    m_flow_nominal=0.03*m_flow_nominal,
-    final m_flow_small=m_flow_small,
-    final from_dp=from_dp,
-    final dp_nominal=dp_nominal,
-    final linearizeFlowResistance=linearizeFlowResistance) if use_bypass
+    final allowFlowReversal=allowFlowReversal1,
+    m_flow_nominal=0.03*m1_flow_nominal,
+    final m_flow_small=m1_flow_small,
+    final from_dp=from_dp1,
+    final dp_nominal=dp1_nominal,
+    final linearizeFlowResistance=linearizeFlowResistance1) if
+                                                              use_bypass
                                    constrainedby BaseClasses.Bypass
     annotation (Dialog(group = "Bypass", enable=use_bypass), Placement(transformation(extent={{-10,50},
             {10,70}})));
@@ -109,7 +110,7 @@ protected
     redeclare package Medium = Medium,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     dp_nominal={0,0,0},
-    m_flow_nominal={bypass.m1_flow_nominal,m1_flow_nominal,m1_flow_nominal}) if
+    m_flow_nominal={bypass.m_flow_nominal,m1_flow_nominal,m1_flow_nominal}) if
                               use_bypass
     annotation (Placement(transformation(
         extent={{-6,-6},{6,6}},

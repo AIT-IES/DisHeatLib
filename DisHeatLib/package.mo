@@ -31,10 +31,12 @@ Icon(coordinateSystem(preserveAspectRatio=true, initialScale=0.1), graphics={
           radius=25.0),
                   Bitmap(extent={{-90,-90},{90,90}}, fileName="modelica://DisHeatLib/Resources/Images/DisHeatLib_logo.png")}),
 preferredView="info",
-version="1.1",
-versionDate="2019-03-06",
-dateModified="2019-03-06",
-uses(Modelica(version="3.2.2"), IBPSA(version="3.0.0")),
+version="1.2",
+versionDate="2019-09-06",
+dateModified="2019-09-06",
+uses(
+    Modelica(version="3.2.3"),
+    IBPSA(version="3.0.0")),
 Documentation(info="<html>
 <p><img src=\"modelica://DisHeatLib/Resources/Images/DisHeatLib_logo.png\" width=\"250\" align=\"right\" border=1\" /> </p>
 <p>The <span style=\"font-family: Courier New;\">DisHeatLib</span> library is a library for dynamic modeling of district heating networks including corresponding control systems. Many models are based on the excellent Modelica library <span style=\"font-family: Courier New;\"><a href=\"https://github.com/ibpsa/modelica-ibpsa\">IBPSA</a></span>. </p>
@@ -55,5 +57,6 @@ Documentation(info="<html>
 <ul>
 <li>Feburary 27, 2019, by Benedikt Leitner:<br>Implementation and added User&apos;s guide. </li>
 </ul>
-</html>"));
+</html>"),
+  conversion(noneFromVersion="1.1"));
 end DisHeatLib;

@@ -31,6 +31,11 @@ equation
         Line(
           points={{100,60},{32,60},{32,-60},{100,-60}},
           color={28,108,200},
+          thickness=1),
+        Line(
+          points={{-126,44},{-84,34},{-82,34}},
+          color={0,0,0},
+          pattern=LinePattern.None,
           thickness=1)}),                   Documentation(info="<html>
 <p>This is a model for an direct district heating substation. It is directly connects the primary side with the secondary side. It is basically only used as placeholder and to simplify compatibility issues.</p>
 </html>"));

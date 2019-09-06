@@ -1,0 +1,6 @@
+removePlots();
+simulateModel("DisHeatLib.Storage.BaseClasses.Examples.ThermostatMixer", startTime=0, tolerance=1e-6, stopTime=259200, outputInterval=10, method="dassl", resultFile="ThermostatMixer");
+createPlot(id = 1,
+ y = {"storageTank.tan.vol[1].T", "storageTank.tan.vol[2].T", "storageTank.tan.vol[3].T", "storageTank.tan.vol[4].T", "senTem.T"},
+ axes = {1,1,1,1,1},
+ grid = true);

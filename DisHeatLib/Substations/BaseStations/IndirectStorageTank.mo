@@ -21,6 +21,8 @@ model IndirectStorageTank
     annotation(Dialog(group = "Heat exchanger and flow"));
 
   // Storage tank
+  parameter Modelica.SIunits.Temperature TemSupTan_nominal "Nominal supply temperature"
+    annotation(Evaluate=false, Dialog(group = "Storage tank"));
   parameter Modelica.SIunits.Volume VTan "Tank volume"
     annotation(Evaluate=false, Dialog(group = "Storage tank"));
   parameter Modelica.SIunits.Length hTan = 1 "Height of tank (without insulation)"
@@ -116,7 +118,7 @@ public
     min_y=0,
     use_T_in=false,
     use_m_flow_in=true,
-    T_const=TemSup2_nominal,
+    T_const=TemSupTan_nominal,
     m_flow_nominal=m_flow_charging,
     k=k,
     Ti=Ti)
@@ -141,9 +143,10 @@ public
     T_bot_set=T_bot_set,
     T_top_bandwidth=T_top_bandwidth)
     annotation (Placement(transformation(extent={{40,0},{20,20}})));
-  Storage.BaseClasses.Mixer mixer(
+  Storage.BaseClasses.ThermostatMixer thermostatMixer(
     redeclare package Medium = Medium,
     m_flow_nominal=m2_flow_nominal,
+    dp_nominal=100000,
     Tem_set=TemSup2_nominal)
     annotation (Placement(transformation(extent={{-40,-70},{-60,-50}})));
 equation
@@ -181,12 +184,12 @@ equation
         points={{-10,-65},{-10,-80},{52,-80},{52,15},{42,15}}, color={0,0,127}));
   connect(storageTank.TemTank[nSeg], storage_control.T_bot) annotation (Line(
         points={{-10,-65},{-10,-80},{52,-80},{52,5},{42,5}}, color={0,0,127}));
-  connect(mixer.port_2, port_b2)
+  connect(thermostatMixer.port_2, port_b2)
     annotation (Line(points={{-60,-60},{-100,-60}}, color={0,127,255}));
-  connect(mixer.port_1, storageTank.port_b2)
+  connect(thermostatMixer.port_1, storageTank.port_b2)
     annotation (Line(points={{-40,-60},{-20,-60}}, color={0,127,255}));
-  connect(storageTank.port_a2, mixer.port_3) annotation (Line(points={{0,-60},{
-          0,-76},{-50,-76},{-50,-70}}, color={0,127,255}));
+  connect(storageTank.port_a2, thermostatMixer.port_3) annotation (Line(points={
+          {0,-60},{0,-76},{-50,-76},{-50,-70}}, color={0,127,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-120},
             {100,100}}),                                        graphics={
         Line(

@@ -4,6 +4,7 @@ block twopoint_control
   parameter Real y_min = 0.0 "Minimum set-point value for valve/pump";
   parameter Real u_min "Minimum input value for charging activation";
   parameter Real u_bandwidth "bandwidth for charging de-/activation";
+  parameter Boolean pre_y_start=true "Value of pre(y) at initial time";
 
   Modelica.Blocks.Interfaces.RealOutput y "Valve/pump set-point"
     annotation (Placement(transformation(extent={{100,-10},{120,10}})));
@@ -15,7 +16,8 @@ protected
         extent={{-10,-10},{10,10}},
         rotation=0,
         origin={-62,28})));
-  Modelica.Blocks.Logical.OnOffController onOffController(pre_y_start=true,
+  Modelica.Blocks.Logical.OnOffController onOffController(pre_y_start=
+        pre_y_start,
       bandwidth=u_bandwidth)
     annotation (Placement(transformation(extent={{-26,-10},{-6,10}})));
   Modelica.Blocks.Logical.Switch switch1

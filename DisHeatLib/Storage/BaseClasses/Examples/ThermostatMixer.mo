@@ -1,5 +1,5 @@
-within DisHeatLib.Storage.Examples;
-model Mixer
+within DisHeatLib.Storage.BaseClasses.Examples;
+model ThermostatMixer
   extends Modelica.Icons.Example;
   package Medium = IBPSA.Media.Water;
 
@@ -72,9 +72,11 @@ model Mixer
         extent={{6,-6},{-6,6}},
         rotation=-90,
         origin={56,0})));
-  BaseClasses.Mixer mixer(
+  BaseClasses.ThermostatMixer thermostatMixer(
     redeclare package Medium = Medium,
+    FlowType=DisHeatLib.BaseClasses.FlowType.Valve,
     m_flow_nominal=1,
+    dp_nominal=100000,
     Tem_set=313.15) annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=90,
@@ -96,17 +98,17 @@ equation
     annotation (Line(points={{11,-68},{24,-68},{24,-62}},color={0,0,127}));
   connect(storage_control.y,gain. u) annotation (Line(points={{-63,84},{-72,84},
           {-72,80.8}}, color={0,0,127}));
-  connect(gain.y,boundary. m_flow_in) annotation (Line(points={{-72,71.6},{-72,
-          58},{-56,58}}, color={0,0,127}));
+  connect(gain.y,boundary. m_flow_in) annotation (Line(points={{-72,71.6},{-72,58},
+          {-56,58}},     color={0,0,127}));
   connect(storageTank.TemTank[1], storage_control.T_top) annotation (Line(
         points={{2,13.75},{2,6},{22,6},{22,89},{-40,89}},     color={0,0,127}));
   connect(storageTank.TemTank[4], storage_control.T_bot) annotation (Line(
         points={{2,12.25},{2,6},{22,6},{22,79},{-40,79}},     color={0,0,127}));
   connect(pump.port_b, jun.port_1)
     annotation (Line(points={{34,-50},{56,-50},{56,-6}}, color={0,127,255}));
-  connect(mixer.port_3, jun.port_3)
+  connect(thermostatMixer.port_3, jun.port_3)
     annotation (Line(points={{-42,0},{50,0}}, color={0,127,255}));
-  connect(mixer.port_1, storageTank.port_b2)
+  connect(thermostatMixer.port_1, storageTank.port_b2)
     annotation (Line(points={{-52,10},{-52,18},{-8,18}}, color={0,127,255}));
   connect(storageTank.port_a2, jun.port_2)
     annotation (Line(points={{12,18},{56,18},{56,6}}, color={0,127,255}));
@@ -114,9 +116,9 @@ equation
           -50},{-38,-50}}, color={0,127,255}));
   connect(TConst.y, cooler.TSet)
     annotation (Line(points={{-57,-42},{-40,-42}}, color={0,0,127}));
-  connect(mixer.port_2, senTem.port_a)
+  connect(thermostatMixer.port_2, senTem.port_a)
     annotation (Line(points={{-52,-10},{-52,-16}}, color={0,127,255}));
-  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Storage/Examples/StorageTank.mos"
+  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Storage/BaseClasses/Examples/ThermostatMixer.mos"
         "Simulate and plot"),
         Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),
@@ -129,4 +131,4 @@ equation
 <li>Feburary 27, 2019, by Benedikt Leitner:<br>Implementation and added User&apos;s guide. </li>
 </ul>
 </html>"));
-end Mixer;
+end ThermostatMixer;

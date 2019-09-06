@@ -1,4 +1,5 @@
 BaseSupply
+ThermalElectricInterface
 ElectricHeatingRod
 BasePowerCharacteristic
 InputTypeSupplyTemp

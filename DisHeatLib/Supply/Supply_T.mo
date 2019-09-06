@@ -1,7 +1,7 @@
 within DisHeatLib.Supply;
 model Supply_T "Temperature controlled supply unit"
-  extends DisHeatLib.Supply.BaseClasses.BaseSupply(otherPowerUnits(y=0),      nPorts=
-        1);
+  extends DisHeatLib.Supply.BaseClasses.BaseSupply(nPorts=1);
+  extends DisHeatLib.Supply.BaseClasses.ThermalElectricInterface;
 
   // Supply temperature
   parameter Boolean use_T_in = false
@@ -31,7 +31,6 @@ protected
         rotation=0,
         origin={-26,26})));
 equation
-  Q_flow = heater.Q_flow;
   connect(TSupplySet.y, heater.TSet)
     annotation (Line(points={{-15,26},{-12,26},{-12,8}},
                                                       color={0,0,127}));
@@ -41,6 +40,8 @@ equation
     annotation (Line(points={{10,0},{100,0}}, color={0,127,255}));
   connect(port_a, heater.port_a)
     annotation (Line(points={{-100,0},{-10,0}}, color={0,127,255}));
+  connect(heater.Q_flow, powerCharacteristic.u) annotation (Line(points={{11,8},
+          {20,8},{20,-34},{-70,-34},{-70,-58},{-56,-58}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false),
         graphics={
         Line(

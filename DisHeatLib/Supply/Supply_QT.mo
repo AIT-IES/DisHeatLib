@@ -1,7 +1,7 @@
 within DisHeatLib.Supply;
 model Supply_QT "Heat flow and temperature controlled supply unit"
-  extends DisHeatLib.Supply.BaseClasses.BaseSupply(otherPowerUnits(y=pump.P), nPorts=
-        1);
+  extends DisHeatLib.Supply.BaseClasses.BaseSupply(nPorts=1);
+  extends DisHeatLib.Supply.BaseClasses.ThermalElectricInterface;
 
   parameter Modelica.SIunits.PressureDifference dp_nominal
     "Nominal pressure difference of pump"
@@ -86,7 +86,6 @@ public
     limit_m_flow=use_m_flow_limit,
     Ti=60) annotation (Placement(transformation(extent={{-60,60},{-40,80}})));
 equation
-  Q_flow = heater.Q_flow;
   connect(TSupplySet.y, heater.TSet)
     annotation (Line(points={{3,26},{6,26},{6,8}},    color={0,0,127}));
   connect(pump.port_b, heater.port_a) annotation (Line(
@@ -105,8 +104,10 @@ equation
     annotation (Line(points={{-77,70},{-62,70}}, color={0,0,127}));
   connect(QSet, q_flow_control.Q_flow_set) annotation (Line(points={{-60,120},{
           -60,90},{-68,90},{-68,70},{-62,70}}, color={0,0,127}));
-  connect(q_flow_control.Q_flow_measure, heater.Q_flow) annotation (Line(points
-        ={{-50,58},{-50,46},{34,46},{34,8},{29,8}}, color={0,0,127}));
+  connect(q_flow_control.Q_flow_measure, heater.Q_flow) annotation (Line(points=
+         {{-50,58},{-50,46},{34,46},{34,8},{29,8}}, color={0,0,127}));
+  connect(heater.Q_flow, powerCharacteristic.u) annotation (Line(points={{29,8},
+          {34,8},{34,-34},{-70,-34},{-70,-58},{-56,-58}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false),
         graphics={
         Line(

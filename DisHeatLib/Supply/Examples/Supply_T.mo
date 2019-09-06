@@ -14,11 +14,6 @@ model Supply_T
     use_T_in=true,
     nPorts=1)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-  IBPSA.Fluid.Sources.FixedBoundary bou(
-    redeclare package Medium = Medium,
-    use_T=false,
-    nPorts=1)
-    annotation (Placement(transformation(extent={{40,-10},{20,10}})));
   IBPSA.Fluid.Sources.MassFlowSource_T
                                     boundary(
     redeclare package Medium = Medium,
@@ -32,13 +27,15 @@ model Supply_T
     duration(displayUnit="h") = 72000,
     startTime(displayUnit="h") = 7200)
     annotation (Placement(transformation(extent={{-36,30},{-16,50}})));
+  IBPSA.Fluid.Sources.Boundary_pT bou(redeclare package Medium = Medium, nPorts
+      =1) annotation (Placement(transformation(extent={{40,-10},{20,10}})));
 equation
   connect(boundary.ports[1], supply_T.port_a)
     annotation (Line(points={{-20,0},{-10,0}}, color={0,127,255}));
-  connect(supply_T.ports_b[1], bou.ports[1])
-    annotation (Line(points={{10,0},{20,0}}, color={0,127,255}));
   connect(T_set.y, supply_T.TSet)
     annotation (Line(points={{-15,40},{0,40},{0,12}}, color={0,0,127}));
+  connect(supply_T.ports_b[1], bou.ports[1])
+    annotation (Line(points={{10,0},{20,0}}, color={0,127,255}));
   annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Supply/Examples/Supply_T.mos"
         "Simulate and plot"),
         Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(

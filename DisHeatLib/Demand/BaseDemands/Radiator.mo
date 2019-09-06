@@ -29,7 +29,7 @@ protected
     allowFlowReversal=allowFlowReversal)
     annotation (Placement(transformation(extent={{-10,10},{10,-10}})));
   Modelica.Thermal.HeatTransfer.Sources.FixedTemperature fixedTemperature(T=TemRoom)
-    annotation (Placement(transformation(extent={{44,-60},{24,-40}})));
+    annotation (Placement(transformation(extent={{80,-60},{60,-40}})));
 protected
   Modelica.Thermal.HeatTransfer.Sensors.HeatFlowSensor heatFlowSensor
     annotation (Placement(transformation(
@@ -37,18 +37,18 @@ protected
         rotation=90,
         origin={0,-30})));
 equation
-  connect(rad.heatPortRad,heatFlowSensor. port_b)
-    annotation (Line(points={{2,-7.2},{2,-20},{0,-20}},  color={191,0,0}));
-  connect(rad.heatPortCon,heatFlowSensor. port_b)
-    annotation (Line(points={{-2,-7.2},{-2,-20},{0,-20}},  color={191,0,0}));
-  connect(heatFlowSensor.port_a,fixedTemperature. port)
-    annotation (Line(points={{0,-40},{0,-50},{24,-50}}, color={191,0,0}));
-  connect(heatFlowSensor.Q_flow, Q_flow) annotation (Line(points={{10,-30},{14,-30},
-          {14,-94},{0,-94},{0,-110}}, color={0,0,127}));
+  connect(heatFlowSensor.port_a, fixedTemperature.port) annotation (Line(points=
+         {{-4.44089e-16,-40},{-4.44089e-16,-50},{60,-50}}, color={191,0,0}));
+  connect(heatFlowSensor.Q_flow, Q_flow) annotation (Line(points={{10,-30},{50,
+          -30},{50,-94},{0,-94},{0,-110}}, color={0,0,127}));
   connect(port_a, rad.port_a)
     annotation (Line(points={{-100,0},{-10,0}}, color={0,127,255}));
   connect(rad.port_b, port_b)
     annotation (Line(points={{10,0},{100,0}}, color={0,127,255}));
+  connect(rad.heatPortCon, heatFlowSensor.port_b) annotation (Line(points={{-2,
+          -7.2},{-2,-14},{-2,-20},{4.44089e-16,-20}}, color={191,0,0}));
+  connect(rad.heatPortRad, heatFlowSensor.port_b)
+    annotation (Line(points={{2,-7.2},{2,-20},{0,-20}}, color={191,0,0}));
   annotation (Icon(graphics={
         Ellipse(
           extent={{-20,22},{20,-20}},

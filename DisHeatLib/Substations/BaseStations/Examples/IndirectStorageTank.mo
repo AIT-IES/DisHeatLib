@@ -5,17 +5,19 @@ model IndirectStorageTank
                               indirectStorageTank(
     show_T=true,
     redeclare package Medium = Medium,
-    Q1_flow_nominal=100000,
+    Q1_flow_nominal=500000,
     TemSup1_nominal=353.15,
     dp1_nominal(displayUnit="bar") = 100000,
     Q2_flow_nominal=100000,
-    TemSup2_nominal=343.15,
+    TemSup2_nominal=333.15,
+    hex_efficiency=0.95,
+    TemSupTan_nominal=348.15,
     VTan=10,
     hTan=3,
     TemInit=333.15,
-    m_flow_charging=1,
-    T_top_set=333.15,
-    T_bot_set=323.15,
+    m_flow_charging=indirectStorageTank.m1_flow_nominal,
+    T_top_set=343.15,
+    T_bot_set=338.15,
     flowUnit(valve(riseTime=10)))
             annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
   package Medium = IBPSA.Media.Water;

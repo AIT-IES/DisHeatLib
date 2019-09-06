@@ -1,0 +1,5 @@
+removePlots();
+simulateModel("DisHeatLib.Substations.BaseStations.Examples.DirectStationMixer", startTime=0, tolerance=1e-6, stopTime=36000, outputInterval=900, method="dassl", resultFile="DirectStationMixer");
+createPlot(id = 1,
+ y = {"directBaseStation.sta_a1.T", "directBaseStation.sta_b1.T", "directBaseStation.sta_a2.T", "directBaseStation.sta_b2.T", "directBaseStation.TemSup2_nominal"},
+ grid = true);

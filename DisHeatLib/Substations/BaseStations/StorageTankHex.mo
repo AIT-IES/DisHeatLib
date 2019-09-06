@@ -104,9 +104,11 @@ public
     final linearizeFlowResistance=linearizeFlowResistance)
     annotation (Dialog(group="Parameters"), Placement(transformation(extent={{-82,50},{-62,70}})));
 
-  Storage.BaseClasses.Mixer mixer(
+  Storage.BaseClasses.ThermostatMixer thermostatMixer(
     redeclare package Medium = Medium,
+    FlowType=DisHeatLib.BaseClasses.FlowType.Valve,
     m_flow_nominal=m2_flow_nominal,
+    dp_nominal=100000,
     Tem_set=TemSup2_nominal)
     annotation (Placement(transformation(extent={{-60,-70},{-80,-50}})));
 equation
@@ -124,12 +126,12 @@ equation
           -62,60},{-40,60},{-40,6},{-10,6}}, color={0,127,255}));
   connect(storage_control.y, flowUnit.y)
     annotation (Line(points={{-51,86},{-72,86},{-72,72}}, color={0,0,127}));
-  connect(port_b2, mixer.port_2)
+  connect(port_b2, thermostatMixer.port_2)
     annotation (Line(points={{-100,-60},{-80,-60}}, color={0,127,255}));
-  connect(mixer.port_3, storageTankHex.port_a2) annotation (Line(points={{-70,
-          -70},{-70,-80},{10,-80},{10,-6}}, color={0,127,255}));
-  connect(storageTankHex.port_b2, mixer.port_1) annotation (Line(points={{-10,
-          -6},{-40,-6},{-40,-60},{-60,-60}}, color={0,127,255}));
+  connect(thermostatMixer.port_3, storageTankHex.port_a2) annotation (Line(
+        points={{-70,-70},{-70,-80},{10,-80},{10,-6}}, color={0,127,255}));
+  connect(storageTankHex.port_b2, thermostatMixer.port_1) annotation (Line(
+        points={{-10,-6},{-40,-6},{-40,-60},{-60,-60}}, color={0,127,255}));
   annotation (Icon(graphics={
         Ellipse(
           extent={{-46,68},{46,42}},

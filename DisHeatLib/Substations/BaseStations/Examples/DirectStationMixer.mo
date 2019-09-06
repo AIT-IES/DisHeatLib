@@ -21,7 +21,7 @@ model DirectStationMixer
     redeclare package Medium = Medium,
     use_p_in=false,
     use_T_in=true,
-    p=600000,
+    p=200000,
     T=353.15,
     nPorts=1)
     annotation (Placement(transformation(extent={{-56,24},{-36,44}})));
