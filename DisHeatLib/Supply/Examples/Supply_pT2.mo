@@ -1,5 +1,5 @@
 within DisHeatLib.Supply.Examples;
-model Supply_pT
+model Supply_pT2
   import DisHeatLib;
   extends Modelica.Icons.Example;
   package Medium = IBPSA.Media.Water;
@@ -11,6 +11,7 @@ model Supply_pT
     TemSup_nominal=353.15,
     TemRet_nominal=313.15,
     powerCha(Q_flow={0,1000}, P={0,-2000}),
+    SupplyTemperature=DisHeatLib.Supply.BaseClasses.InputTypeSupplyTemp.Input,
     dp_controller=false,
     dp_nominal=100000,
     nPorts=1)
@@ -27,6 +28,12 @@ model Supply_pT
     startTime(displayUnit="h") = 3600,
     duration(displayUnit="h") = 21600)
     annotation (Placement(transformation(extent={{48,54},{28,74}})));
+  Modelica.Blocks.Sources.Sine T1(
+    amplitude=40,
+    freqHz=1/7200,
+    offset=50 + 273.15,
+    startTime(displayUnit="h") = 3600)
+    annotation (Placement(transformation(extent={{78,-28},{58,-8}})));
 equation
   connect(T.y, coo.TSet)
     annotation (Line(points={{27,64},{14,64},{14,48}}, color={0,0,127}));
@@ -34,7 +41,10 @@ equation
           0},{20,40},{12,40}}, color={0,127,255}));
   connect(coo.port_b, supply_pT.port_a) annotation (Line(points={{-8,40},{-20,
           40},{-20,0},{-12,0}}, color={0,127,255}));
-  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Supply/Examples/Supply_pT.mos"
+  connect(T1.y, supply_pT.TSup_in) annotation (Line(points={{57,-18},{30,-18},{
+          30,12},{4,12}}, color={0,0,127}));
+  annotation (__Dymola_Commands(file=
+          "modelica://DisHeatLib/Resources/Scripts/Dymola/Supply/Examples/Supply_pT2.mos"
         "Simulate and plot"),
         Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),
@@ -44,6 +54,5 @@ equation
 </ul>
 </html>", info="<html>
 <p><span style=\"font-family: Arial,sans-serif;\">This example shows how the Supply_pT model fulfills the role of a pump with a fixed pressure drop and a heat supply with limited heat generation.</span></p>
-<p><span style=\"font-family: Arial,sans-serif;\">The plot shows that the heater will heat the medium while it is below a certain temperature by a fixed amount, as sson as the temperature of the medium gets close to the desired temperature it will only heat it up to that and after passing the demand temperature, the medium will just be pumped through without change in heat.</span></p>
 </html>"));
-end Supply_pT;
+end Supply_pT2;

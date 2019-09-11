@@ -1,5 +1,5 @@
 within DisHeatLib.Demand.Examples;
-model Radiator
+model Demand
   extends Modelica.Icons.Example;
   package Medium = IBPSA.Media.Water;
   Modelica.Fluid.Sources.FixedBoundary boundaryRL(          redeclare package
@@ -39,4 +39,4 @@ equation
 <li>Feburary 27, 2019, by Benedikt Leitner:<br>Implementation and added User&apos;s guide. </li>
 </ul>
 </html>"));
-end Radiator;
+end Demand;

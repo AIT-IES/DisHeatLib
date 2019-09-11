@@ -2,8 +2,8 @@ within DisHeatLib.Boundary.Examples;
 model OutsideTemperature
   extends Modelica.Icons.Example;
   DisHeatLib.Boundary.OutsideTemperature outsideTemperature_const(inputType=
-        DisHeatLib.Boundary.BaseClasses.InputTypeOutTemp.Constant, TemOut_const=
-       283.15) annotation (Placement(transformation(extent={{-10,30},{10,50}})));
+        DisHeatLib.Boundary.BaseClasses.InputTypeOutTemp.Constant, TemOut_const
+      =283.15) annotation (Placement(transformation(extent={{-10,30},{10,50}})));
   DisHeatLib.Boundary.OutsideTemperature outsideTemperature_file(
     inputType=DisHeatLib.Boundary.BaseClasses.InputTypeOutTemp.File,
     tableName="TempOut",
@@ -34,5 +34,7 @@ equation
 <ul>
 <li>Feburary 27, 2019, by Benedikt Leitner:<br>Implementation and added User&apos;s guide. </li>
 </ul>
+</html>", info="<html>
+<p><span style=\"font-family: Arial,sans-serif;\">The example shows how the model can use either a constant value or input in th form of a function or a file to describe the temperature on the outside using. The results are compared in the plot.</span></p>
 </html>"));
 end OutsideTemperature;

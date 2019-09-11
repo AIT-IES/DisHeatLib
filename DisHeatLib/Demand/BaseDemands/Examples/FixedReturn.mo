@@ -23,6 +23,7 @@ model FixedReturn
   BaseDemands.FixedReturn fixedReturn(
     redeclare package Medium = Medium,
     Q_flow_nominal(displayUnit="kW") = 10000,
+    TemRet_nominal=35 + 273.15,
     returnTemperature=DisHeatLib.Demand.BaseClasses.InputTypeTret.Constant)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
 equation
@@ -40,5 +41,9 @@ equation
 <ul>
 <li>Feburary 27, 2019, by Benedikt Leitner:<br>Implementation and added User&apos;s guide. </li>
 </ul>
-</html>"));
+</html>", info="<html>
+<p><span style=\"font-family: Arial,sans-serif;\">This example demonstrates how this model removes heat from a medium in order for that medium to go down to a specific temperature and then output this heat. If the temperature of the medium is already below this threshold then nothing happens. The absorbed heat is measured and can be accesed through the output node. Since the medium looses heat the value of the heat flow is negative.</span></p>
+<p><span style=\"font-family: Arial,sans-serif;\">The plot shows how the increase in temperature is followed by proportionally bigger negative heat flow as soon as the temperature is above the nominal return temperature.</span></p>
+</html>"),
+    experiment(StopTime=1036800));
 end FixedReturn;

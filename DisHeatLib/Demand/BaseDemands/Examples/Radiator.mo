@@ -38,5 +38,12 @@ equation
 <ul>
 <li>Feburary 27, 2019, by Benedikt Leitner:<br>Implementation and added User&apos;s guide. </li>
 </ul>
-</html>"));
+</html>", info="<html>
+<p><span style=\"font-family: Arial,sans-serif;\">This example demonstrates how this model transfers heat from a medium depending on the room temperature. If the temperature of the medium is above the room temperature the medium looses heat, if it is below it gains heat. The absorbed heat is measured and can be accesed through the output node. If the medium looses heat the value of the heat flow is negative.</span></p>
+<p><br><span style=\"font-family: Arial,sans-serif;\">The plot shows that the medium in the radiator gains heat while below the room temperature and later looses heat while above the room temperature, approximately proportional to the difference in temperature.</span></p>
+</html>"),
+    experiment(
+      StopTime=1036800,
+      Interval=900.00288,
+      Tolerance=1e-06));
 end Radiator;

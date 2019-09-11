@@ -33,8 +33,8 @@ model Supply_QT
     T=313.15,
     nPorts=1)
     annotation (Placement(transformation(extent={{-40,-10},{-20,10}})));
-  IBPSA.Fluid.Sources.Boundary_pT bou(redeclare package Medium = Medium, nPorts
-      =1) annotation (Placement(transformation(extent={{40,-10},{20,10}})));
+  IBPSA.Fluid.Sources.Boundary_pT bou(redeclare package Medium = Medium, nPorts=
+       1) annotation (Placement(transformation(extent={{40,-10},{20,10}})));
 equation
   connect(Q_flow_set.y, supply_QT.QSet)
     annotation (Line(points={{-15,40},{-6,40},{-6,12}}, color={0,0,127}));
@@ -52,5 +52,8 @@ equation
 <ul>
 <li>Feburary 27, 2019, by Benedikt Leitner:<br>Implementation and added User&apos;s guide. </li>
 </ul>
+</html>", info="<html>
+<p><span style=\"font-family: Arial,sans-serif;\">This example shows how the Supply_QT model fulfills the role of a pump with a given mass flow and a heat supply with limited mass flow.</span></p>
+<p><span style=\"font-family: Arial,sans-serif;\">The second plot shows, that even though the demand increases the supply is only able to provide a given amount and therfor limits the mass flow. The first plot shows that the supplied temperature is always constant, even though the demand is increasing and the mass flow can&apos;t keep up with the increasing demand.</span></p>
 </html>"));
 end Supply_QT;

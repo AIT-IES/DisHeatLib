@@ -108,5 +108,7 @@ equation
 <ul>
 <li>Feburary 27, 2019, by Benedikt Leitner:<br>Implementation and added User&apos;s guide. </li>
 </ul>
+</html>", info="<html>
+<p><span style=\"font-family: Arial,sans-serif;\">Similarly to the StorageTank example, this example shows how the storage tank with internal heat exchanger works, allowing to use separated supply and demand loops. This difference can be seen when comparing the graphs of the examples of StorageTank and StorageTankHex; the latter has smaller variations in the temperature of each layer but the heating of the layers occurs more slowly.</span></p>
 </html>"));
 end StorageTankHex;

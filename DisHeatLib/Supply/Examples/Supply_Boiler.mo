@@ -36,8 +36,8 @@ model Supply_Boiler
     T=313.15,
     nPorts=1)
     annotation (Placement(transformation(extent={{-76,-10},{-56,10}})));
-  IBPSA.Fluid.Sources.Boundary_pT bou(redeclare package Medium = Medium, nPorts
-      =1) annotation (Placement(transformation(extent={{76,-10},{56,10}})));
+  IBPSA.Fluid.Sources.Boundary_pT bou(redeclare package Medium = Medium, nPorts=
+       1) annotation (Placement(transformation(extent={{76,-10},{56,10}})));
   Modelica.Blocks.Sources.Pulse P_set(
     amplitude=1000,
     period(displayUnit="h") = 7200,
@@ -63,5 +63,7 @@ equation
 <ul>
 <li>Feburary 27, 2019, by Benedikt Leitner:<br>Implementation and added User&apos;s guide. </li>
 </ul>
+</html>", info="<html>
+<p>This example shows how the Supply_T model fulfills the role of a heat supply with given minimum supply temperature and a fixed maximum mass flow. The limited mass flow therefor limits the heat flow. This is possible due to an internal Supply_QT that heats the boiler&apos;s tank whenever the temperature is too low and a thermostat mixer that mixes hot water from the upper layers and cold water from the lower layers to provide the given mass flow and the heat demand.</p>
 </html>"));
 end Supply_Boiler;

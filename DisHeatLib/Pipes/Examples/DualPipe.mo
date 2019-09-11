@@ -54,5 +54,8 @@ equation
 <ul>
 <li>Feburary 27, 2019, by Benedikt Leitner:<br>Implementation and added User&apos;s guide. </li>
 </ul>
+</html>", info="<html>
+<p><span style=\"font-family: Arial,sans-serif;\">This example demonstrates the effect of outside temperature on a medium in a pipe depending on length of the pipe, outside temperature and the flow of the medium.</span></p>
+<p><span style=\"font-family: Arial,sans-serif;\">The plot shows two transportation effects, a delay in the supply and heat loss. </span></p>
 </html>"));
 end DualPipe;

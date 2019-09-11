@@ -14,5 +14,7 @@ model SoilTemperature
 <ul>
 <li>Feburary 27, 2019, by Benedikt Leitner:<br>Implementation and added User&apos;s guide. </li>
 </ul>
+</html>", info="<html>
+<p><span style=\"font-family: Arial,sans-serif;\">The example shows how the model uses depth z and time, as well as mean annual temperature (T_mean), annual temperature amplitude (T_amp) and ground thermal diffusivity alpha to describes the temperature using the Kusuda equations.</span></p>
 </html>"));
 end SoilTemperature;

@@ -130,5 +130,7 @@ equation
 <ul>
 <li>Feburary 27, 2019, by Benedikt Leitner:<br>Implementation and added User&apos;s guide. </li>
 </ul>
+</html>", info="<html>
+<p><span style=\"font-family: Arial,sans-serif;\">This example extends the StorageTank example to show how the thermostat mixer keeps the temperature of the water that reaches the demand almost perfectly constant.</span></p>
 </html>"));
 end ThermostatMixer;
