@@ -68,14 +68,14 @@ protected
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     T_start=TemSup_nominal,
     dp_nominal={0,0,0},
-    m_flow_nominal={m1_flow_nominal,m1_flow_nominal,m1_flow_nominal}) if
+    m_flow_nominal={m1_flow_nominal,bypass.m_flow_nominal,m1_flow_nominal}) if
                               use_bypass
     annotation (Placement(transformation(extent={{-46,54},{-34,66}})));
   IBPSA.Fluid.FixedResistances.Junction jun2(
     redeclare package Medium = Medium,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     dp_nominal={0,0,0},
-    m_flow_nominal={bypass.m1_flow_nominal,m1_flow_nominal,m1_flow_nominal}) if
+    m_flow_nominal={bypass.m_flow_nominal,m1_flow_nominal,m1_flow_nominal}) if
                               use_bypass
     annotation (Placement(transformation(
         extent={{-6,-6},{6,6}},
