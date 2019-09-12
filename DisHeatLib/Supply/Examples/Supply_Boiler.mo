@@ -26,7 +26,7 @@ model Supply_Boiler
     startTime(displayUnit="h") = 7200)
     annotation (Placement(transformation(extent={{-24,62},{-4,82}})));
   Modelica.Blocks.Sources.Ramp m_flow_limit(
-    height=-0.02,
+    height=-0.03,
     offset=0.03,
     duration(displayUnit="h") = 72000,
     startTime(displayUnit="h") = 7200)
@@ -55,7 +55,8 @@ equation
     annotation (Line(points={{17,40},{-2,40},{-2,12}}, color={0,0,127}));
   connect(P_set.y, supply_Boiler.PSet)
     annotation (Line(points={{-39,44},{-8,44},{-8,12}}, color={0,0,127}));
-  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Supply/Examples/Supply_QT.mos"
+  annotation (__Dymola_Commands(file=
+          "modelica://DisHeatLib/Resources/Scripts/Dymola/Supply/Examples/Supply_QT.mos"
         "Simulate and plot"),
         Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),
@@ -64,6 +65,10 @@ equation
 <li>Feburary 27, 2019, by Benedikt Leitner:<br>Implementation and added User&apos;s guide. </li>
 </ul>
 </html>", info="<html>
-<p>This example shows how the Supply_T model fulfills the role of a heat supply with given minimum supply temperature and a fixed maximum mass flow. The limited mass flow therefor limits the heat flow. This is possible due to an internal Supply_QT that heats the boiler&apos;s tank whenever the temperature is too low and a thermostat mixer that mixes hot water from the upper layers and cold water from the lower layers to provide the given mass flow and the heat demand.</p>
-</html>"));
+<p>This example shows how the Supply_Boiler model fulfills the role of a heat supply with given minimum supply temperature and a fixed maximum mass flow. The limited mass flow therefor limits the heat flow. This is possible due to an internal Supply_QT that heats the boiler&apos;s tank whenever the temperature is too low and a thermostat mixer that mixes hot water from the upper layers and cold water from the lower layers to provide the given mass flow and the heat demand.</p>
+</html>"),
+    experiment(
+      StopTime=86400,
+      Interval=900.00288,
+      Tolerance=1e-06));
 end Supply_Boiler;

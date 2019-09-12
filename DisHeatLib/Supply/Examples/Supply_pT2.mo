@@ -30,7 +30,7 @@ model Supply_pT2
     annotation (Placement(transformation(extent={{48,54},{28,74}})));
   Modelica.Blocks.Sources.Sine T1(
     amplitude=40,
-    freqHz=1/7200,
+    freqHz=1/2400,
     offset=50 + 273.15,
     startTime(displayUnit="h") = 3600)
     annotation (Placement(transformation(extent={{78,-28},{58,-8}})));

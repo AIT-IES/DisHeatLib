@@ -57,7 +57,7 @@ model Supply_Boiler
     allowFlowReversal=allowFlowReversal)
     annotation (Placement(transformation(extent={{-10,-4},{10,16}})));
   DisHeatLib.BaseClasses.FlowUnit flowUnit(redeclare package Medium = Medium,
-    m_flow_nominal=2*m_flow_nominal,
+    m_flow_nominal=m_flow_nominal,
       FlowType=DisHeatLib.BaseClasses.FlowType.Pump,
     dp_nominal(displayUnit="bar") = 100000)
     annotation (Placement(transformation(extent={{44,-10},{64,10}})));
