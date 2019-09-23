@@ -6,7 +6,7 @@ model StorageTankHexEBH
 
   parameter Modelica.SIunits.Power Q_flow_nominal_EBH = Q2_flow_nominal "Heat capacity of EBH"
     annotation(Dialog(group="Electric booster heater"));
-  parameter Modelica.SIunits.Temperature T_min_EBH = TemSup2_nominal "Reference temperature of EBH"
+  parameter Modelica.SIunits.Temperature T_min_EBH = TemSup2_nominal+T_bandwidth_EBH/2.0 "Reference temperature of EBH"
     annotation(Dialog(group="Electric booster heater"));
   parameter Modelica.SIunits.TemperatureDifference T_bandwidth_EBH = 4.0 "Temperature bandwidth of EBH"
     annotation(Dialog(group="Electric booster heater"));

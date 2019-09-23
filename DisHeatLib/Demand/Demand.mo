@@ -133,7 +133,7 @@ equation
   if heatLoad == DisHeatLib.Demand.BaseClasses.InputTypeDemand.ConstantQ or heatLoad == DisHeatLib.Demand.BaseClasses.InputTypeDemand.InputQ or heatLoad == DisHeatLib.Demand.BaseClasses.InputTypeDemand.FileQ then
     Q_flow_demand = gain_scaling.y;
   else
-    Q_flow_demand = 0.0;
+    Q_flow_demand = gain_scaling.y*(TemSup_nominal-TemRet_nominal)*cp_default;
   end if;
 
   connect(gain_scaling.y, PID.u_s)

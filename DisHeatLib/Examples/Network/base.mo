@@ -27,8 +27,8 @@ model base
     L=60,
     T_sl_init=TemSup_nominal,
     redeclare DisHeatLib.Pipes.Library.Isoplus.Isoplus_1IMP_DN100 pipeType,
-    nPorts2=1,
-    nPorts1=5)
+    nPorts1=5,
+    nPorts2=1)
           annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
@@ -343,6 +343,11 @@ model base
         Building14.substation.senRelPre.p_rel]))
     annotation (Placement(transformation(extent={{46,-84},{26,-64}})));
 
+  IBPSA.Fluid.Sensors.TemperatureTwoPort senTemRet_Supply(
+    redeclare package Medium = Medium,
+    m_flow_nominal=baseSupply.m_flow_nominal,
+    T_start=baseSupply.TemRet_nominal)
+    annotation (Placement(transformation(extent={{20,-102},{40,-82}})));
 equation
   // Soil connections
   connect(Soil.port, Pipe12.port_ht) annotation (Line(points={{-106,148},{-106,140},
@@ -374,10 +379,8 @@ equation
 
   // Pipes
 
-  connect(baseSupply.ports_b[1], Pipe1.port_a1) annotation (Line(points={{-6,
-          -92},{-10,-92},{-10,-76},{0,-76},{0,-70}}, color={0,127,255}));
-  connect(Pipe1.ports_b2[1], baseSupply.port_a) annotation (Line(points={{12,
-          -70},{12,-76},{20,-76},{20,-92},{14,-92}}, color={0,127,255}));
+  connect(baseSupply.ports_b[1], Pipe1.port_a1) annotation (Line(points={{-6,-92},
+          {-10,-92},{-10,-76},{0,-76},{0,-70}},      color={0,127,255}));
   connect(Pipe1.ports_b1[1], Pipe2.port_a1) annotation (Line(points={{3.2,-50},
           {3.2,-18},{26,-18}}, color={0,127,255}));
   connect(Pipe2.ports_b2[1], Pipe1.port_a2)
@@ -466,7 +469,7 @@ equation
   connect(Pipe10.ports_b1[2], Building11.port_a) annotation (Line(points={{-30,
           68},{-48,68},{-48,70},{-62,70},{-62,86}}, color={0,127,255}));
   connect(Building11.port_b, Pipe10.port_a2) annotation (Line(points={{-42,86},
-          {-42,82},{-30,82},{-30,54}}, color={0,127,255}));
+          {-42,58},{-30,58},{-30,54}}, color={0,127,255}));
   connect(Pipe11.ports_b1[1], Building12.port_a) annotation (Line(points={{2.66667,
           84},{2,84},{2,114},{16,114}},         color={0,127,255}));
   connect(Pipe12.ports_b2[1], Pipe11.port_a2)
@@ -498,10 +501,15 @@ equation
   //EBHPlus to FMIOutput connections
 
   // Building to FMIOutput connections
+  connect(baseSupply.port_a, senTemRet_Supply.port_a)
+    annotation (Line(points={{14,-92},{20,-92}}, color={0,127,255}));
+  connect(senTemRet_Supply.port_b, Pipe1.ports_b2[1]) annotation (Line(points={
+          {40,-92},{40,-80},{20,-80},{20,-76},{12,-76},{12,-70}}, color={0,127,
+          255}));
   annotation (Diagram(coordinateSystem(extent={{-180,-180},{200,180}})), Icon(
         coordinateSystem(extent={{-180,-180},{200,180}})),
     experiment(
-      StopTime=31536000,
+      StopTime=259200,
       Interval=900.00288,
       __Dymola_Algorithm="Cvode"),
     __Dymola_experimentFlags(
@@ -512,5 +520,43 @@ equation
       Evaluate=true,
       OutputCPUtime=true,
       OutputFlatModelica=true),
-    __Dymola_experimentSetupOutput);
+    __Dymola_experimentSetupOutput,
+    __Dymola_Commands(
+      file="Resources/Scripts/Dymola/Examples/BaseSimulateWeek.mos"
+        "Simulate 1 week",
+      file="Resources/Scripts/Dymola/Examples/BaseSimulateDay.mos"
+        "Simulate 1 day",
+      file=
+          "Resources/Scripts/Dymola/Examples/BaseSupplyAndDemandSpaceHeating.mos"
+        "1. Plot supply and demand space heating",
+      file=
+          "Resources/Scripts/Dymola/Examples/BaseSupplyAndDemandDomesticHotWater.mos"
+        "2. Plot supply and demand domestic hot water",
+      file=
+          "Resources/Scripts/Dymola/Examples/BaseBuildingSupplyAndReturnTemperature.mos"
+        "3. Plot incoming and outgoing temperature",
+      file="Resources/Scripts/Dymola/Examples/BaseDifferentialPressure.mos"
+        "4. Plot differential pressure",
+      file="Resources/Scripts/Dymola/Examples/BaseMassFlow.mos"
+        "5. Plot mass flow",
+      file="Resources/Scripts/Dymola/Examples/BaseLossAndReturnTemperature.mos"
+        "6. Plot heat loss and return temperature"),
+    Documentation(info="<html>
+<p>This example simulates a heat supply and consumer network made out of a base heating station, 14 buildings and 12 pipes.</p>
+<p>Before simulating it is recommended to type &quot;<span style=\"font-family: Courier New;\">Advanced.SparseActivate=true</span>&quot; into the commands to reduce computation time substantially.</p>
+<h4>Available commands:</h4>
+<ul>
+<li>Simulate 1 week: Simulates the model for a duration of 1 week after using the command &quot;Advanced.SparseActivate=true&quot;</li>
+<li>Simulate 1 day: Simulates the model for a duration of 1 day after using the command &quot;Advanced.SparseActivate=true&quot;</li>
+</ul>
+<p>After simulating there are 6 different plot commands available to better understand this example:</p>
+<ol>
+<li>This plot compares the demand to the actual supply of space heating each building is receiving by both overlapping the two curves and plotting their difference below. After a short starting period the difference is negligibly small, since space heating demand is quite smooth.</li>
+<li>This plot compares the demand to the actual supply of domestic hot water each building is receiving by both overlapping the two curves and plotting their difference below. The difference isn&apos;t negligible as domestic hot water demand can change rapidly and by great amounts, but still is rather small compared to the values of the demand. (To highlight the differences in the plot click on peaks dipping below the x-axis.)</li>
+<li>This plot compares the temperature of the water flowing in and out of the building therefor showing how the consumption affects the temperature in the supply.</li>
+<li>This plot shows the difference in pressure of the water in the buildings before and after consumption.</li>
+<li>This plot shows the mass flow of the water in the buildings before and after consumption.</li>
+<li>This plot shows the losses of heat through the pipes and the temperature of the water returning to the supply station, for reference the supply temperature is plotted aswell.</li>
+</ol>
+</html>"));
 end base;

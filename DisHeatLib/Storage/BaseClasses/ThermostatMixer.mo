@@ -106,7 +106,8 @@ public
     use_inputFilter=true,
     riseTime=10,
     final m_flow_nominal=m_flow_nominal,
-    final dpValve_nominal=dp_nominal) if FlowType == DisHeatLib.BaseClasses.FlowType.Valve
+    final dpValve_nominal=dp_nominal,
+    linearized={true,true}) if           FlowType == DisHeatLib.BaseClasses.FlowType.Valve
     constrainedby IBPSA.Fluid.Actuators.BaseClasses.PartialThreeWayValve
     annotation (Dialog(enable=FlowType == DisHeatLib.BaseClasses.FlowType.Valve), Placement(transformation(extent={{-10,10},{10,30}})),
       __Dymola_choicesAllMatching=true);

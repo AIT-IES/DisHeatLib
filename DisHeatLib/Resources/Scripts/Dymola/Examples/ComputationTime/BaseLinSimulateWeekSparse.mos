@@ -1,0 +1,2 @@
+Advanced.SparseActivate=true;
+simulateModel("DisHeatLib.Examples.ComputationTime.baseLin", startTime=0, tolerance=1e-6, stopTime=604800, outputInterval=900, method="Cvode", resultFile="baseLinSparse");

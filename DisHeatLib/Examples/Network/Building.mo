@@ -60,6 +60,16 @@ model Building
       hex_efficiency=0.95),
     bypass(m_flow_nominal=0.05*m_flow_nominal))
     annotation (Placement(transformation(extent={{-10,20},{10,0}})));
+  IBPSA.Fluid.Sensors.TemperatureTwoPort senTemAft(
+    redeclare package Medium = Medium,
+    m_flow_nominal=substation.m1_flow_nominal,
+    T_start=substation.TemSup_nominal)
+    annotation (Placement(transformation(extent={{40,-10},{60,10}})));
+  IBPSA.Fluid.Sensors.TemperatureTwoPort senTemBef(
+    redeclare package Medium = Medium,
+    m_flow_nominal=substation.m1_flow_nominal,
+    T_start=substation.TemSup_nominal)
+    annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));
 equation
   connect(substation.port_b2, demandDHW.port_a) annotation (Line(points={{-10,
           18},{-68,18},{-68,60},{-60,60}}, color={0,127,255}));
@@ -69,10 +79,14 @@ equation
           {70,14},{70,60},{60,60}}, color={0,127,255}));
   connect(substation.port_b3, demandSH.port_a) annotation (Line(points={{10,18},
           {32,18},{32,60},{40,60}}, color={0,127,255}));
-  connect(substation.port_b1, port_b) annotation (Line(points={{10,4},{20,4},{20,
-          0},{100,0}}, color={0,127,255}));
-  connect(port_a, substation.port_a1) annotation (Line(points={{-100,0},{-20,0},
-          {-20,4},{-10,4}}, color={0,127,255}));
+  connect(substation.port_b1, senTemAft.port_a)
+    annotation (Line(points={{10,4},{20,4},{20,0},{40,0}}, color={0,127,255}));
+  connect(senTemAft.port_b, port_b)
+    annotation (Line(points={{60,0},{100,0}}, color={0,127,255}));
+  connect(port_a, senTemBef.port_a)
+    annotation (Line(points={{-100,0},{-60,0}}, color={0,127,255}));
+  connect(senTemBef.port_b, substation.port_a1) annotation (Line(points={{-40,0},
+          {-20,0},{-20,4},{-10,4}}, color={0,127,255}));
   annotation (Icon(graphics={
         Rectangle(
           lineColor={200,200,200},
@@ -122,5 +136,7 @@ equation
         Line(
           points={{100,0},{98,0},{64,0}},
           color={28,108,200},
-          thickness=1)}));
+          thickness=1)}), Documentation(info="<html>
+<p>This is a model of a building using hot water supply to power space heating and domestic hot water, using an indirect station for the former and a storage Tank with internal heat exchanger for the latter. Additionally, there is a bypass.</p>
+</html>"));
 end Building;

@@ -1,0 +1,2 @@
+Advanced.SparseActivate=true;
+simulateModel("DisHeatLib.Examples.Network.base", startTime=0, tolerance=1e-6, stopTime=86400, outputInterval=900, method="dassl", resultFile="base");

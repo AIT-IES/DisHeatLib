@@ -189,7 +189,7 @@ equation
         coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
             100}})),
     Documentation(info="<html>
-<p>This is a model for a district heating substation with a <b>singel</b> subtation together with an optional bypass valve. The bypass valve can be used to ensure a minimum supply temperature at the connection point at the primary side. </p>
+<p>This is a model for a district heating substation with a <b>single</b> subtation together with an optional bypass valve. The bypass valve can be used to ensure a minimum supply temperature at the connection point at the primary side. </p>
 <p>Care must be taken when chosing the nominal values for differential presure, mass flow and/or heat load, as different issues might occure:</p>
 <ul>
 <li>In cases where the differential pressure is below its nominal value, the nominal mass flow is not reached. Thus, in times of high heat demand, not enough heat might be delivered to the individual stations.</li>
