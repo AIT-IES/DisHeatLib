@@ -188,8 +188,7 @@ model baseLowTem
     annotation (Placement(transformation(extent={{14,-102},{-6,-82}})));
 
   // Buildings
-  DisHeatLib.Examples.Network.BuildingLowTem
-                                       Building1(
+  DisHeatLib.Examples.Network.Buildings.BuildingLowTem Building1(
     redeclare package Medium = Medium,
     show_T=true,
     m_flow_nominal_DHW=0.45,
@@ -200,8 +199,7 @@ model baseLowTem
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{-52,-20},{-32,0}})));
 
-  DisHeatLib.Examples.Network.BuildingLowTem
-                                       Building2(
+  DisHeatLib.Examples.Network.Buildings.BuildingLowTem Building2(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.52,
     Q_flow_nominal_SH(displayUnit="kW") = 59000,
@@ -211,8 +209,7 @@ model baseLowTem
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{46,-2},{66,18}})));
 
-  DisHeatLib.Examples.Network.BuildingLowTem
-                                       Building3(
+  DisHeatLib.Examples.Network.Buildings.BuildingLowTem Building3(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.41,
     Q_flow_nominal_SH(displayUnit="kW") = 51000,
@@ -222,8 +219,7 @@ model baseLowTem
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{148,-14},{168,6}})));
 
-  DisHeatLib.Examples.Network.BuildingLowTem
-                                       Building4(
+  DisHeatLib.Examples.Network.Buildings.BuildingLowTem Building4(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.40,
     Q_flow_nominal_SH(displayUnit="kW") = 74000,
@@ -233,8 +229,7 @@ model baseLowTem
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{100,16},{120,36}})));
 
-  DisHeatLib.Examples.Network.BuildingLowTem
-                                       Building5(
+  DisHeatLib.Examples.Network.Buildings.BuildingLowTem Building5(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.43,
     Q_flow_nominal_SH(displayUnit="kW") = 43000,
@@ -244,8 +239,7 @@ model baseLowTem
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{-128,-68},{-108,-48}})));
 
-  DisHeatLib.Examples.Network.BuildingLowTem
-                                       Building6(
+  DisHeatLib.Examples.Network.Buildings.BuildingLowTem Building6(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.38,
     Q_flow_nominal_SH(displayUnit="kW") = 41000,
@@ -255,8 +249,7 @@ model baseLowTem
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{-128,-12},{-108,8}})));
 
-  DisHeatLib.Examples.Network.BuildingLowTem
-                                       Building7(
+  DisHeatLib.Examples.Network.Buildings.BuildingLowTem Building7(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.43,
     Q_flow_nominal_SH(displayUnit="kW") = 57000,
@@ -266,8 +259,7 @@ model baseLowTem
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{-174,-14},{-154,6}})));
 
-  DisHeatLib.Examples.Network.BuildingLowTem
-                                       Building8(
+  DisHeatLib.Examples.Network.Buildings.BuildingLowTem Building8(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.43,
     Q_flow_nominal_SH(displayUnit="kW") = 48000,
@@ -277,8 +269,7 @@ model baseLowTem
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{-94,-84},{-74,-64}})));
 
-  DisHeatLib.Examples.Network.BuildingLowTem
-                                       Building9(
+  DisHeatLib.Examples.Network.Buildings.BuildingLowTem Building9(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.53,
     Q_flow_nominal_SH(displayUnit="kW") = 27000,
@@ -288,8 +279,7 @@ model baseLowTem
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{-30,26},{-10,46}})));
 
-  DisHeatLib.Examples.Network.BuildingLowTem
-                                       Building10(
+  DisHeatLib.Examples.Network.Buildings.BuildingLowTem Building10(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.56,
     Q_flow_nominal_SH(displayUnit="kW") = 77000,
@@ -299,8 +289,7 @@ model baseLowTem
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{-60,36},{-40,56}})));
 
-  DisHeatLib.Examples.Network.BuildingLowTem
-                                       Building11(
+  DisHeatLib.Examples.Network.Buildings.BuildingLowTem Building11(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.66,
     Q_flow_nominal_SH(displayUnit="kW") = 91000,
@@ -310,8 +299,7 @@ model baseLowTem
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{-62,76},{-42,96}})));
 
-  DisHeatLib.Examples.Network.BuildingLowTem
-                                       Building12(
+  DisHeatLib.Examples.Network.Buildings.BuildingLowTem Building12(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.44,
     Q_flow_nominal_SH(displayUnit="kW") = 79000,
@@ -321,8 +309,7 @@ model baseLowTem
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{16,104},{36,124}})));
 
-  DisHeatLib.Examples.Network.BuildingLowTem
-                                       Building13(
+  DisHeatLib.Examples.Network.Buildings.BuildingLowTem Building13(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.58,
     Q_flow_nominal_SH(displayUnit="kW") = 78000,
@@ -332,8 +319,7 @@ model baseLowTem
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{32,62},{52,82}})));
 
-  DisHeatLib.Examples.Network.BuildingLowTem
-                                       Building14(
+  DisHeatLib.Examples.Network.Buildings.BuildingLowTem Building14(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.33,
     Q_flow_nominal_SH(displayUnit="kW") = 55000,
@@ -437,8 +423,8 @@ equation
           {-1.6,-20},{-70,-20}}, color={0,127,255}));
   connect(Pipe1.ports_b1[5], Building1.port_a) annotation (Line(points={{-3.2,-50},
           {0,-50},{0,-24},{-52,-24},{-52,-10}},      color={0,127,255}));
-  connect(Building1.port_b, Pipe1.port_a2) annotation (Line(points={{-32,-10},{-38,
-          -10},{-38,-12},{12,-12},{12,-50}},     color={0,127,255}));
+  connect(Building1.port_b, Pipe1.port_a2) annotation (Line(points={{-32,-10},{
+          -28,-10},{-28,-12},{12,-12},{12,-50}}, color={0,127,255}));
   connect(Pipe6.ports_b2[1], Pipe1.port_a2)
     annotation (Line(points={{-70,-32},{12,-32},{12,-50}}, color={0,127,255}));
   connect(Pipe8.ports_b1[1], Building8.port_a) annotation (Line(points={{-64,
@@ -479,12 +465,12 @@ equation
   connect(Pipe9.ports_b1[3], Pipe10.port_a1)
     annotation (Line(points={{14.6667,18},{14.6667,66},{-10,66}},
                                                         color={0,127,255}));
-  connect(Pipe10.ports_b1[1], Building10.port_a) annotation (Line(points={{-30,
-          64},{-46,64},{-46,64},{-64,64},{-64,46},{-60,46}}, color={0,127,255}));
+  connect(Pipe10.ports_b1[1], Building10.port_a) annotation (Line(points={{-30,64},
+          {-46,64},{-46,64},{-64,64},{-64,46},{-60,46}},     color={0,127,255}));
   connect(Building10.port_b, Pipe10.port_a2) annotation (Line(points={{-40,46},
           {-36,46},{-36,54},{-30,54}}, color={0,127,255}));
-  connect(Pipe10.ports_b1[2], Building11.port_a) annotation (Line(points={{-30,
-          68},{-48,68},{-48,70},{-62,70},{-62,86}}, color={0,127,255}));
+  connect(Pipe10.ports_b1[2], Building11.port_a) annotation (Line(points={{-30,68},
+          {-48,68},{-48,70},{-62,70},{-62,86}},     color={0,127,255}));
   connect(Building11.port_b, Pipe10.port_a2) annotation (Line(points={{-42,86},
           {-42,58},{-30,58},{-30,54}}, color={0,127,255}));
   connect(Pipe11.ports_b1[1], Building12.port_a) annotation (Line(points={{2.66667,
@@ -568,7 +554,7 @@ equation
           "Resources/Scripts/Dymola/Examples/Network/baseLowTem/BaseLowTemLossAndReturnTemperature.mos"
         "6. Plot heat loss and return temperature"),
     Documentation(info="<html>
-<p>This example simulates a heat supply and consumer network made out of a base heating station, 14 buildings and 12 pipes.</p>
+<p>This example simulates a heat supply and consumer network made out of a base heating station, 14 buildings and 12 pipes. The nominal supply temperature has been reduced to 50&deg;C and electric booster heater have been built into the building model &quot;BuildingLowTem&quot;, that is used for this example.</p>
 <p>Before simulating it is recommended to type &quot;<span style=\"font-family: Courier New;\">Advanced.SparseActivate=true</span>&quot; into the commands to reduce computation time substantially.</p>
 <h4>Available commands:</h4>
 <ul>

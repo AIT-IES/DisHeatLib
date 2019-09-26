@@ -528,7 +528,7 @@ equation
         "Simulate 1 week no sparse"),
     Documentation(info="<html>
 <p>This example is the least optimized one, valves are used, Flow reversal is allowed, the flow isn&apos;t linearized. It uses the building model BuildingFRVal.</p>
-<p>Typing the command &quot;Advanced.SparseActivate=true&quot; into the commands line before simulating the example changes how jacobian matrices are stored, see more detail on the following <a href=\"https://en.wikipedia.org/wiki/Sparse_matrix#Compressed_sparse_row_(CSR,_CRS_or_Yale_format)\">Wikipedia article</a>. This reduces computation time.</p>
+<p>Typing the command &quot;Advanced.SparseActivate=true&quot; into the commands line before simulating the example changes how jacobian matrices are stored, see the following <a href=\"https://en.wikipedia.org/wiki/Sparse_matrix#Compressed_sparse_row_(CSR,_CRS_or_Yale_format)\">Wikipedia article</a> for more details on this topic. This reduces computation time.</p>
 <p><br><b>Available commands:</b></p>
 <ul>
 <li>Simulate 1 week sparse: Simulates the model for a duration of 1 week after using the command &quot;Advanced.SparseActivate=true&quot;</li>

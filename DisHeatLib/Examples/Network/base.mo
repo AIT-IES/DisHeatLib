@@ -188,7 +188,7 @@ model base
     annotation (Placement(transformation(extent={{14,-102},{-6,-82}})));
 
   // Buildings
-  DisHeatLib.Examples.Network.Building Building1(
+  DisHeatLib.Examples.Network.Buildings.Building Building1(
     redeclare package Medium = Medium,
     show_T=true,
     m_flow_nominal_DHW=0.45,
@@ -199,7 +199,7 @@ model base
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{-52,-20},{-32,0}})));
 
-  DisHeatLib.Examples.Network.Building Building2(
+  DisHeatLib.Examples.Network.Buildings.Building Building2(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.52,
     Q_flow_nominal_SH(displayUnit="kW") = 59000,
@@ -209,7 +209,7 @@ model base
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{46,-2},{66,18}})));
 
-  DisHeatLib.Examples.Network.Building Building3(
+  DisHeatLib.Examples.Network.Buildings.Building Building3(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.41,
     Q_flow_nominal_SH(displayUnit="kW") = 51000,
@@ -219,7 +219,7 @@ model base
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{148,-14},{168,6}})));
 
-  DisHeatLib.Examples.Network.Building Building4(
+  DisHeatLib.Examples.Network.Buildings.Building Building4(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.40,
     Q_flow_nominal_SH(displayUnit="kW") = 74000,
@@ -229,7 +229,7 @@ model base
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{100,16},{120,36}})));
 
-  DisHeatLib.Examples.Network.Building Building5(
+  DisHeatLib.Examples.Network.Buildings.Building Building5(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.43,
     Q_flow_nominal_SH(displayUnit="kW") = 43000,
@@ -239,7 +239,7 @@ model base
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{-128,-68},{-108,-48}})));
 
-  DisHeatLib.Examples.Network.Building Building6(
+  DisHeatLib.Examples.Network.Buildings.Building Building6(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.38,
     Q_flow_nominal_SH(displayUnit="kW") = 41000,
@@ -249,7 +249,7 @@ model base
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{-128,-12},{-108,8}})));
 
-  DisHeatLib.Examples.Network.Building Building7(
+  DisHeatLib.Examples.Network.Buildings.Building Building7(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.43,
     Q_flow_nominal_SH(displayUnit="kW") = 57000,
@@ -259,7 +259,7 @@ model base
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{-174,-14},{-154,6}})));
 
-  DisHeatLib.Examples.Network.Building Building8(
+  DisHeatLib.Examples.Network.Buildings.Building Building8(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.43,
     Q_flow_nominal_SH(displayUnit="kW") = 48000,
@@ -269,7 +269,7 @@ model base
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{-94,-84},{-74,-64}})));
 
-  DisHeatLib.Examples.Network.Building Building9(
+  DisHeatLib.Examples.Network.Buildings.Building Building9(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.53,
     Q_flow_nominal_SH(displayUnit="kW") = 27000,
@@ -279,7 +279,7 @@ model base
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{-30,26},{-10,46}})));
 
-  DisHeatLib.Examples.Network.Building Building10(
+  DisHeatLib.Examples.Network.Buildings.Building Building10(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.56,
     Q_flow_nominal_SH(displayUnit="kW") = 77000,
@@ -289,7 +289,7 @@ model base
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{-60,36},{-40,56}})));
 
-  DisHeatLib.Examples.Network.Building Building11(
+  DisHeatLib.Examples.Network.Buildings.Building Building11(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.66,
     Q_flow_nominal_SH(displayUnit="kW") = 91000,
@@ -299,7 +299,7 @@ model base
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{-62,76},{-42,96}})));
 
-  DisHeatLib.Examples.Network.Building Building12(
+  DisHeatLib.Examples.Network.Buildings.Building Building12(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.44,
     Q_flow_nominal_SH(displayUnit="kW") = 79000,
@@ -309,7 +309,7 @@ model base
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{16,104},{36,124}})));
 
-  DisHeatLib.Examples.Network.Building Building13(
+  DisHeatLib.Examples.Network.Buildings.Building Building13(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.58,
     Q_flow_nominal_SH(displayUnit="kW") = 78000,
@@ -319,7 +319,7 @@ model base
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{32,62},{52,82}})));
 
-  DisHeatLib.Examples.Network.Building Building14(
+  DisHeatLib.Examples.Network.Buildings.Building Building14(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.33,
     Q_flow_nominal_SH(displayUnit="kW") = 55000,
@@ -522,27 +522,30 @@ equation
       OutputFlatModelica=true),
     __Dymola_experimentSetupOutput,
     __Dymola_Commands(
-      file="Resources/Scripts/Dymola/Examples/BaseSimulateWeek.mos"
+      file=
+          "Resources/Scripts/Dymola/Examples/Network/Base/BaseSimulateWeek.mos"
         "Simulate 1 week",
-      file="Resources/Scripts/Dymola/Examples/BaseSimulateDay.mos"
+      file="Resources/Scripts/Dymola/Examples/Network/Base/BaseSimulateDay.mos"
         "Simulate 1 day",
       file=
-          "Resources/Scripts/Dymola/Examples/BaseSupplyAndDemandSpaceHeating.mos"
+          "Resources/Scripts/Dymola/Examples/Network/Base/BaseSupplyAndDemandSpaceHeating.mos"
         "1. Plot supply and demand space heating",
       file=
-          "Resources/Scripts/Dymola/Examples/BaseSupplyAndDemandDomesticHotWater.mos"
+          "Resources/Scripts/Dymola/Examples/Network/Base/BaseSupplyAndDemandDomesticHotWater.mos"
         "2. Plot supply and demand domestic hot water",
       file=
-          "Resources/Scripts/Dymola/Examples/BaseBuildingSupplyAndReturnTemperature.mos"
+          "Resources/Scripts/Dymola/Examples/Network/Base/BaseBuildingSupplyAndReturnTemperature.mos"
         "3. Plot incoming and outgoing temperature",
-      file="Resources/Scripts/Dymola/Examples/BaseDifferentialPressure.mos"
+      file=
+          "Resources/Scripts/Dymola/Examples/Network/Base/BaseDifferentialPressure.mos"
         "4. Plot differential pressure",
-      file="Resources/Scripts/Dymola/Examples/BaseMassFlow.mos"
+      file="Resources/Scripts/Dymola/Examples/Network/Base/BaseMassFlow.mos"
         "5. Plot mass flow",
-      file="Resources/Scripts/Dymola/Examples/BaseLossAndReturnTemperature.mos"
+      file=
+          "Resources/Scripts/Dymola/Examples/Network/Base/BaseLossAndReturnTemperature.mos"
         "6. Plot heat loss and return temperature"),
     Documentation(info="<html>
-<p>This example simulates a heat supply and consumer network made out of a base heating station, 14 buildings and 12 pipes.</p>
+<p>This example simulates a heat supply and consumer network made out of a base heating station, 14 buildings and 12 pipes. The nominal supply temperature is 70&deg;C. The building model &quot;Building&quot; is used for this example.</p>
 <p>Before simulating it is recommended to type &quot;<span style=\"font-family: Courier New;\">Advanced.SparseActivate=true</span>&quot; into the commands to reduce computation time substantially.</p>
 <h4>Available commands:</h4>
 <ul>

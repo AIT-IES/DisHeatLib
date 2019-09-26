@@ -1,0 +1,8 @@
+createPlot(id = 7,
+ y = {"baseSupply.heater.Q_flow","baseSupply.port_a.m_flow"},
+ axes={1,2},
+ grid = true);
+createPlot(id = 8,
+ y = {"supply_QT.heater.Q_flow", "supply_QT.Q_flow_nominal"},
+ axes={1,2},
+ grid = true);

@@ -776,4 +776,7 @@ package Buildings
 <p>The flag allowFlowReversal has been set to false. Valves have been exchanged for pumps.</p>
 </html>"));
   end BuildingNoFRPum;
+  annotation (Documentation(info="<html>
+<p>This subpackage contains the building used in the examples of the parent folder.</p>
+</html>"));
 end Buildings;

@@ -141,8 +141,7 @@ model base
 
   // Buildings
 
-  DisHeatLib.Examples.Network2.BuildingLT
-                                       Building2(
+  DisHeatLib.Examples.Network2.Buildings.BuildingLT Building2(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.52,
     Q_flow_nominal_SH(displayUnit="kW") = 59000,
@@ -152,8 +151,7 @@ model base
     TemSup_nominal=323.15)
     annotation (Placement(transformation(extent={{162,66},{182,86}})));
 
-  DisHeatLib.Examples.Network2.BuildingLT
-                                       Building3(
+  DisHeatLib.Examples.Network2.Buildings.BuildingLT Building3(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.41,
     Q_flow_nominal_SH(displayUnit="kW") = 51000,
@@ -163,8 +161,7 @@ model base
     TemSup_nominal=323.15)
     annotation (Placement(transformation(extent={{264,54},{284,74}})));
 
-  DisHeatLib.Examples.Network2.BuildingLT
-                                       Building4(
+  DisHeatLib.Examples.Network2.Buildings.BuildingLT Building4(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.40,
     Q_flow_nominal_SH(displayUnit="kW") = 74000,
@@ -174,8 +171,7 @@ model base
     TemSup_nominal=323.15)
     annotation (Placement(transformation(extent={{216,84},{236,104}})));
 
-  DisHeatLib.Examples.Network2.BuildingHT
-                                       Building9(
+  DisHeatLib.Examples.Network2.Buildings.BuildingHT Building9(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.53,
     Q_flow_nominal_SH(displayUnit="kW") = 27000,
@@ -185,8 +181,7 @@ model base
     TemSup_nominal=343.15)
     annotation (Placement(transformation(extent={{-68,-26},{-48,-6}})));
 
-  DisHeatLib.Examples.Network2.BuildingHT
-                                       Building10(
+  DisHeatLib.Examples.Network2.Buildings.BuildingHT Building10(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.56,
     Q_flow_nominal_SH(displayUnit="kW") = 77000,
@@ -196,8 +191,7 @@ model base
     TemSup_nominal=343.15)
     annotation (Placement(transformation(extent={{-98,-16},{-78,4}})));
 
-  DisHeatLib.Examples.Network2.BuildingHT
-                                       Building11(
+  DisHeatLib.Examples.Network2.Buildings.BuildingHT Building11(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.66,
     Q_flow_nominal_SH(displayUnit="kW") = 91000,
@@ -207,8 +201,7 @@ model base
     TemSup_nominal=343.15)
     annotation (Placement(transformation(extent={{-100,24},{-80,44}})));
 
-  DisHeatLib.Examples.Network2.BuildingHT
-                                       Building12(
+  DisHeatLib.Examples.Network2.Buildings.BuildingHT Building12(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.44,
     Q_flow_nominal_SH(displayUnit="kW") = 79000,
@@ -218,8 +211,7 @@ model base
     TemSup_nominal=343.15)
     annotation (Placement(transformation(extent={{-22,52},{-2,72}})));
 
-  DisHeatLib.Examples.Network2.BuildingHT
-                                       Building13(
+  DisHeatLib.Examples.Network2.Buildings.BuildingHT Building13(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.58,
     Q_flow_nominal_SH(displayUnit="kW") = 78000,
@@ -229,8 +221,7 @@ model base
     TemSup_nominal=343.15)
     annotation (Placement(transformation(extent={{-6,10},{14,30}})));
 
-  DisHeatLib.Examples.Network2.BuildingHT
-                                       Building14(
+  DisHeatLib.Examples.Network2.Buildings.BuildingHT Building14(
     redeclare package Medium = Medium,
     m_flow_nominal_DHW=0.33,
     Q_flow_nominal_SH(displayUnit="kW") = 55000,
@@ -432,5 +423,8 @@ equation
       Evaluate=true,
       OutputCPUtime=true,
       OutputFlatModelica=true),
-    __Dymola_experimentSetupOutput);
+    __Dymola_experimentSetupOutput,
+    Documentation(info="<html>
+<p>In this example the heat supply needs a high supply temperature for the first group of buildings and the substation transfers the heat to a medium with lower supply temperature for the second group of buildings.</p>
+</html>"));
 end base;

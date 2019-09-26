@@ -14,14 +14,13 @@ annotation (Documentation(info="<html>
 </ul>
 <p><br>A test run of a few examples yielded the following computation times in min:</p>
 <ul>
-<li>None of the four optimizations: 		44 min</li>
-<li>Using Cvode instead of Dassl: </li>
-<li>Using Cvode and linearized flow resistance:</li>
-<li>Using Cvode and pumps instead of valves: </li>
-<li>Using Cvode and the sparse command:</li>
-<li>Using Cvode and forbidding flow reversal:</li>
-<li>All five optimizations: </li>
+<li>None of the four optimizations: 44 min</li>
+<li>Using Cvode instead of Dassl: 27 min</li>
+<li>Using Cvode and linearized flow resistance: 24 min</li>
+<li>Using Cvode and pumps instead of valves: 31 min</li>
+<li>Using Cvode and the sparse command: 9 min</li>
+<li>Using Cvode and forbidding flow reversal: tbd</li>
+<li>All five optimizations: tbd</li>
 </ul>
-<p><br>Unless specified otherwise all commands use the solver Cvode instead of the default solver dassl.</p>
 </html>"));
 end ComputationTime;

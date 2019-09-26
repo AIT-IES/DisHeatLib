@@ -1,3 +1,0 @@
-createPlot(id = 4,
- y = {"Building1.dp", "Building2.dp", "Building3.dp", "Building4.dp","Building5.dp", "Building6.dp","Building7.dp","Building8.dp","Building9.dp","Building10.dp","Building11.dp","Building12.dp","Building13.dp","Building14.dp"},
- grid = true);
