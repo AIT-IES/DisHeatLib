@@ -34,3 +34,9 @@ The [Buildings library user guide](https://simulationresearch.lbl.gov/modelica/u
 
 ## Examples
 Concrete examples on how to use models from the DisHeatLib library can be found in the respective example sub-packages. They include simple one component examples and more elaborate examples combining multiple models to larger district heating systems of varying complexity. Each example is explained in detail in the respective model documentation including example commands and plots.
+
+## Autoload package
+
+To automatically load packages open “dymola.mos” with editor/notepad++ in the folder “insert” in “Dymola” (probably in “program files”). Then add the following lines:
+openModel("[library path]/modelica-ibpsa-master/IBPSA/package.mo");
+openModel("[library path]/DisHeatLib-master/DisHeatLib/package.mo");
