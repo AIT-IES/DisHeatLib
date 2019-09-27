@@ -425,6 +425,20 @@ equation
       OutputFlatModelica=true),
     __Dymola_experimentSetupOutput,
     Documentation(info="<html>
-<p>In this example the heat supply needs a high supply temperature for the first group of buildings and the substation transfers the heat to a medium with lower supply temperature for the second group of buildings.</p>
-</html>"));
+<p>This example simulates a heat supply and consumer network made out of a base heating station, a substation, 14 buildings and 12 pipes. The building models &quot;BuildingHT&quot; and &quot;BuildingLT&quot; are used for this example. The heat supply needs a high supply temperature for the first group of buildings and the substation transfers the heat to a medium with lower supply temperature for the second group of buildings. Therefor there are two separated medium loops, which are connected in heat flow by the substation.</p>
+<p>Before simulating it is recommended to type &quot;Advanced.SparseActivate=true&quot; into the commands to reduce computation time substantially.</p>
+<h4>Available commands:</h4>
+<ul>
+<li>Simulate 1 week: Simulates the model for a duration of 1 week after using the command &quot;Advanced.SparseActivate=true&quot;</li>
+<li>Simulate 1 day: Simulates the model for a duration of 1 day after using the command &quot;Advanced.SparseActivate=true&quot;</li>
+<li>Plot heat flow of both stations: This plot compares the heat flow of the two stations. </li>
+</ul>
+</html>"),
+    __Dymola_Commands(
+      file="Resources/Scripts/Dymola/Examples/Network2/BaseSimulateWeek.mos"
+        "Simulate 1 week",
+      file="Resources/Scripts/Dymola/Examples/Network2/BaseSimulateDay.mos"
+        "Simulate 1 day",
+      file="Resources/Scripts/Dymola/Examples/Network2/BaseStationHeatFlow.mos"
+        "Plot heat flow of both stations"));
 end base;

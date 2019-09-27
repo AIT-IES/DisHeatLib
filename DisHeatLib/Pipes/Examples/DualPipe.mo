@@ -56,6 +56,7 @@ equation
 </ul>
 </html>", info="<html>
 <p><span style=\"font-family: Arial,sans-serif;\">This example demonstrates the effect of outside temperature on a medium in a pipe depending on length of the pipe, outside temperature and the flow of the medium.</span></p>
-<p><span style=\"font-family: Arial,sans-serif;\">The plot shows two transportation effects, a delay in the supply and heat loss. </span></p>
+<p><span style=\"font-family: Arial,sans-serif;\">The plot shows two transportation effects, a delay in the supply and heat loss.</span></p>
+<p><span style=\"font-family: Arial,sans-serif;\">Available commands: Simulate and plot: simulates the example and plots the results so that the example can be better understood.</span></p>
 </html>"));
 end DualPipe;

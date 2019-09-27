@@ -45,5 +45,6 @@ equation
 </html>", info="<html>
 <p><span style=\"font-family: Arial,sans-serif;\">This example shows how the Supply_pT model fulfills the role of a pump with a fixed pressure drop and a heat supply with limited heat generation.</span></p>
 <p><span style=\"font-family: Arial,sans-serif;\">The plot shows that the heater will heat the medium while it is below a certain temperature by a fixed amount, as sson as the temperature of the medium gets close to the desired temperature it will only heat it up to that and after passing the demand temperature, the medium will just be pumped through without change in heat.</span></p>
+<p><span style=\"font-family: Arial,sans-serif;\">Available commands: Simulate and plot: simulates the example and plots the results so that the example can be better understood.</span></p>
 </html>"));
 end Supply_pT;

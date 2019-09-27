@@ -79,5 +79,8 @@ equation
 <ul>
 <li>Feburary 27, 2019, by Benedikt Leitner:<br>Implementation and added User&apos;s guide. </li>
 </ul>
+</html>", info="<html>
+<p><span style=\"font-family: Arial,sans-serif;\">This example shows how the substation delivers hot water to a consumer, such as the cooler here. The plot shows how the indirect substation is able to deliver the supply temperature in the demand loop, until the supply temperature is above the nominal demand temperature, where the temperature supplied to the loop stays at its nominal condition.</span></p>
+<p><br><span style=\"font-family: Arial,sans-serif;\">Available commands: Simulate and plot: simulates the example and plots the results so that the example can be better understood.</span></p>
 </html>"));
 end SubstationSingle;

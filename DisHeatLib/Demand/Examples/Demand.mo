@@ -30,7 +30,8 @@ equation
     annotation (Line(points={{20,0},{10,0}}, color={0,127,255}));
   connect(boundarySL.ports[1], radiator.port_a)
     annotation (Line(points={{-20,0},{-10,0}}, color={0,127,255}));
-  annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Demand/Examples/Radiator.mos"
+  annotation (__Dymola_Commands(file=
+          "Resources/Scripts/Dymola/Demand/Examples/Demand1.mos"
         "Simulate and plot"),
         Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),
@@ -38,5 +39,10 @@ equation
 <ul>
 <li>Feburary 27, 2019, by Benedikt Leitner:<br>Implementation and added User&apos;s guide. </li>
 </ul>
-</html>"));
+</html>", info="<html>
+<p><span style=\"font-family: Arial,sans-serif;\">This example demonstrates how this model transfers heat from a medium depending on the room temperature. If the temperature of the medium is above the room temperature the medium looses heat, if it is below it gains heat. The absorbed heat is measured and can be accesed through the output node. If the medium looses heat the value of the heat flow is negative.</span></p>
+<p><br><span style=\"font-family: Arial,sans-serif;\">The plot shows that the medium in the radiator gains heat while below the room temperature and later looses heat while above the room temperature, approximately proportional to the difference in temperature.</span></p>
+<p><span style=\"font-family: Arial,sans-serif;\">Available commands: Simulate and plot: simulates the example and plots the results so that the example can be better understood.</span></p>
+</html>"),
+    experiment(StopTime=864000));
 end Demand;

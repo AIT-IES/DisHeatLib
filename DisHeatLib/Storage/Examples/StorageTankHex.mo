@@ -110,5 +110,6 @@ equation
 </ul>
 </html>", info="<html>
 <p><span style=\"font-family: Arial,sans-serif;\">Similarly to the StorageTank example, this example shows how the storage tank with internal heat exchanger works, allowing to use separated supply and demand loops. This difference can be seen when comparing the graphs of the examples of StorageTank and StorageTankHex; the latter has smaller variations in the temperature of each layer but the heating of the layers occurs more slowly.</span></p>
+<p><span style=\"font-family: Arial,sans-serif;\">Available commands: Simulate and plot: simulates the example and plots the results so that the example can be better understood.</span></p>
 </html>"));
 end StorageTankHex;

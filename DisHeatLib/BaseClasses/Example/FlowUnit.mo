@@ -77,5 +77,8 @@ equation
         experiment(
       StopTime=500,
       Interval=1,
-      __Dymola_Algorithm="Cvode"));
+      __Dymola_Algorithm="Cvode"),
+    Documentation(info="<html>
+<p><span style=\"font-family: Arial,sans-serif;\">Available commands: Simulate and plot: simulates the example and plots the results so that the example can be better understood.</span></p>
+</html>"));
 end FlowUnit;

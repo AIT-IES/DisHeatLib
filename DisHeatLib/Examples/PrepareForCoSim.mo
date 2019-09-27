@@ -67,6 +67,53 @@ equation
   connect(PQT.y, fMIhelper1.u)
     annotation (Line(points={{-1,-142},{12,-142}}, color={0,0,127}));
   annotation (Documentation(info="<html>
-<p>This example extendends baseLowTemQT such that it can be linked to an electric simulation by using the model &quot;FMIhelper&quot; which takes averages of  power consumption values over 15 minutes, to communicate those with an electric steady-state simulation.</p>
-</html>"));
+<p>This example extendends baseLowTemQT such that it can be linked to an electric simulation by using the model &quot;FMIhelper&quot; which takes averages of power consumption values over 15 minutes, to communicate those with an electric steady-state simulation.</p>
+<p>Before simulating it is recommended to type &quot;Advanced.SparseActivate=true&quot; into the commands to reduce computation time substantially.</p>
+<h4>Available commands:</h4>
+<ul>
+<li>Simulate 1 week: Simulates the model for a duration of 1 week after using the command &quot;Advanced.SparseActivate=true&quot;</li>
+<li>Simulate 1 day: Simulates the model for a duration of 1 day after using the command &quot;Advanced.SparseActivate=true&quot;</li>
+</ul>
+<p><br>After simulating there are 8 different plot commands available to better understand this example:</p>
+<ol>
+<li>This plot compares the demand to the actual supply of space heating each building is receiving by both overlapping the two curves and plotting their difference below. After a short starting period the difference is negligibly small, since space heating demand is quite smooth.</li>
+<li>This plot compares the demand to the actual supply of domestic hot water each building is receiving by both overlapping the two curves and plotting their difference below. The difference isn&apos;t negligible as domestic hot water demand can change rapidly and by great amounts, but still is rather small compared to the values of the demand. (To highlight the differences in the plot click on peaks dipping below the x-axis.)</li>
+<li>This plot compares the temperature of the water flowing in and out of the building therefor showing how the consumption affects the temperature in the supply.</li>
+<li>This plot shows the difference in pressure of the water in the buildings before and after consumption.</li>
+<li>This plot shows the mass flow of the water in the buildings before and after consumption.</li>
+<li>This plot shows the losses of heat through the pipes and the temperature of the water returning to the supply station, for reference the supply temperature is plotted aswell.</li>
+<li>This plot compares the mass flow and the heat flow of the two different supplies.</li>
+<li>This plot shows how the FMIHelper takes the average of the power concumption of a building in short time windows to allow a co-simulation with an electric simulation.</li>
+</ol>
+</html>"), __Dymola_Commands(
+      file=
+          "Resources/Scripts/Dymola/Examples/PrepareForCoSim/PrepareForCoSimSimulateWeek.mos"
+        "Simulate 1 week",
+      file=
+          "Resources/Scripts/Dymola/Examples/PrepareForCoSim/PrepareForCoSimSimulateDay.mos"
+        "Simulate 1 day",
+      file=
+          "Resources/Scripts/Dymola/Examples/PrepareForCoSim/PrepareForCoSimSupplyAndDemandSpaceHeating.mos"
+        "1. Plot supply and demand space heating",
+      file=
+          "Resources/Scripts/Dymola/Examples/PrepareForCoSim/PrepareForCoSimSupplyAndDemandDomesticHotWater.mos"
+        "2. Plot supply and demand domestic hot water",
+      file=
+          "Resources/Scripts/Dymola/Examples/PrepareForCoSim/PrepareForCoSimBuildingSupplyAndReturnTemperature.mos"
+        "3. Plot incoming and outgoing temperature",
+      file=
+          "Resources/Scripts/Dymola/Examples/PrepareForCoSim/PrepareForCoSimDifferentialPressure.mos"
+        "4. Plot differential pressure",
+      file=
+          "Resources/Scripts/Dymola/Examples/PrepareForCoSim/PrepareForCoSimMassFlow.mos"
+        "5. Plot mass flow",
+      file=
+          "Resources/Scripts/Dymola/Examples/PrepareForCoSim/PrepareForCoSimLossAndReturnTemperature.mos"
+        "6. Plot heat loss and return temperature",
+      file=
+          "Resources/Scripts/Dymola/Examples/PrepareForCoSim/PrepareForCoSimSupplyHeatAndMassFlow.mos"
+        "7. Plot heat and mass flow of both supplies",
+      file=
+          "Resources/Scripts/Dymola/Examples/PrepareForCoSim/PrepareForCoSimFMIHelper.mos"
+        "8. Plot power consumption of a building and the corresponding FMIHelper function"));
 end PrepareForCoSim;

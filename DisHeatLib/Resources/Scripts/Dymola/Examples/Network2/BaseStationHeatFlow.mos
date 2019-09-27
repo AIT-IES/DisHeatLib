@@ -1,0 +1,3 @@
+createPlot(id = 1,
+ y = {"baseSupply.heater.Q_flow", "substationSingle.baseStation.hex.Q2_flow"},
+ grid = true);

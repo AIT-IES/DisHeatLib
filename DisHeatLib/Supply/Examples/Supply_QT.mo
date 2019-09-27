@@ -55,6 +55,7 @@ equation
 </html>", info="<html>
 <p><span style=\"font-family: Arial,sans-serif;\">This example shows how the Supply_QT model fulfills the role of a pump with a given mass flow and a heat supply with limited mass flow.</span></p>
 <p><span style=\"font-family: Arial,sans-serif;\">The second plot shows, that even though the demand increases the supply is only able to provide a given amount and therfor limits the mass flow. The first plot shows that the supplied temperature is always constant, even though the demand is increasing and the mass flow and therefor the heat flow can&apos;t keep up with the increasing demand.</span></p>
+<p><span style=\"font-family: Arial,sans-serif;\">Available commands: Simulate and plot: simulates the example and plots the results so that the example can be better understood.</span></p>
 </html>"),
     experiment(StopTime=86400, Tolerance=1e-06));
 end Supply_QT;

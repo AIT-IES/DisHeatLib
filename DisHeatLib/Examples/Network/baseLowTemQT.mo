@@ -557,7 +557,7 @@ equation
       file=
           "Resources/Scripts/Dymola/Examples/Network/baseLowTemQT/BaseLowTemQTSimulateDay.mos"
         "Simulate 1 day",
-      file(ensureSimulated=true) =
+      file(ensureSimulated=true)=
         "Resources/Scripts/Dymola/Examples/Network/baseLowTemQT/BaseLowTemQTSupplyAndDemandSpaceHeating.mos"
         "1. Plot supply and demand space heating",
       file=
@@ -586,7 +586,7 @@ equation
 <li>Simulate 1 week: Simulates the model for a duration of 1 week after using the command &quot;Advanced.SparseActivate=true&quot;</li>
 <li>Simulate 1 day: Simulates the model for a duration of 1 day after using the command &quot;Advanced.SparseActivate=true&quot;</li>
 </ul>
-<p>After simulating there are 6 different plot commands available to better understand this example:</p>
+<p>After simulating there are 7 different plot commands available to better understand this example:</p>
 <ol>
 <li>This plot compares the demand to the actual supply of space heating each building is receiving by both overlapping the two curves and plotting their difference below. After a short starting period the difference is negligibly small, since space heating demand is quite smooth.</li>
 <li>This plot compares the demand to the actual supply of domestic hot water each building is receiving by both overlapping the two curves and plotting their difference below. The difference isn&apos;t negligible as domestic hot water demand can change rapidly and by great amounts, but still is rather small compared to the values of the demand. (To highlight the differences in the plot click on peaks dipping below the x-axis.)</li>
@@ -594,6 +594,7 @@ equation
 <li>This plot shows the difference in pressure of the water in the buildings before and after consumption.</li>
 <li>This plot shows the mass flow of the water in the buildings before and after consumption.</li>
 <li>This plot shows the losses of heat through the pipes and the temperature of the water returning to the supply station, for reference the supply temperature is plotted aswell.</li>
+<li>This plot compares the mass flow and the heat flow of the two different supplies.</li>
 </ol>
 </html>"));
 end baseLowTemQT;

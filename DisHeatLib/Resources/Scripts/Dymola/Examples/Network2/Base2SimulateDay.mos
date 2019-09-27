@@ -1,0 +1,2 @@
+Advanced.SparseActivate=true;
+simulateModel("DisHeatLib.Examples.Network2.base2", startTime=0, tolerance=1e-6, stopTime=86400, outputInterval=900, method="Cvode", resultFile="base2");

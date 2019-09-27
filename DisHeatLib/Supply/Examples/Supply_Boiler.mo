@@ -66,6 +66,7 @@ equation
 </ul>
 </html>", info="<html>
 <p>This example shows how the Supply_Boiler model fulfills the role of a heat supply with given minimum supply temperature and a fixed maximum mass flow. The limited mass flow therefor limits the heat flow. This is possible due to an internal Supply_QT that heats the boiler&apos;s tank whenever the temperature is too low and a thermostat mixer that mixes hot water from the upper layers and cold water from the lower layers to provide the given mass flow and the heat demand.</p>
+<p>Available commands: Simulate and plot: simulates the example and plots the results so that the example can be better understood.</p>
 </html>"),
     experiment(
       StopTime=86400,

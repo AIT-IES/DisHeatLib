@@ -47,5 +47,6 @@ equation
 </html>", info="<html>
 <p><span style=\"font-family: Arial,sans-serif;\">This example shows how the Supply_T model fulfills the role of a heat supply with given supply temperature using a PI-controller, and fixed maximum heat flow generation.</span></p>
 <p><span style=\"font-family: Arial,sans-serif;\">The plots shows that even thought the temperature is supposed to go up to a higher temperature, the heat generation is to weak to reach that and stops increaseing the temperature further after reaching its maximum heat flow generation.</span></p>
+<p><span style=\"font-family: Arial,sans-serif;\">Available commands: Simulate and plot: simulates the example and plots the results so that the example can be better understood.</span></p>
 </html>"));
 end Supply_T;

@@ -104,5 +104,6 @@ equation
 </html>", info="<html>
 <p><span style=\"font-family: Arial,sans-serif;\">This example demonstrates how the multilayer storage tank works. It has distinct ports for a supply and a demand loop, an ambient temperature leading to losses and built in sensors for the tempreature of the top and bottom layer, allowing to control the supply loop and therefor the temperature inside the tank quite precisely.</span></p>
 <p><span style=\"font-family: Arial,sans-serif;\">The graph shows hot the tank repeadetly gets drained until the upper layer reaches a given value then it gets filled with hot water again until the upper and the lower layer reach a given higher temperature.</span></p>
+<p><span style=\"font-family: Arial,sans-serif;\">Available commands: Simulate and plot: simulates the example and plots the results so that the example can be better understood.</span></p>
 </html>"));
 end StorageTank;

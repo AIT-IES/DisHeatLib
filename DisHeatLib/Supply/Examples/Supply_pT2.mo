@@ -54,5 +54,6 @@ equation
 </ul>
 </html>", info="<html>
 <p><span style=\"font-family: Arial,sans-serif;\">This example shows how the Supply_pT model fulfills the role of a pump with a fixed pressure drop and a heat supply with limited heat generation.</span></p>
+<p><span style=\"font-family: Arial,sans-serif;\">Available commands: Simulate and plot: simulates the example and plots the results so that the example can be better understood.</span></p>
 </html>"));
 end Supply_pT2;
