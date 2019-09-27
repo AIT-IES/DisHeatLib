@@ -40,6 +40,6 @@ Concrete examples on how to use models from the DisHeatLib library can be found 
 To automatically load package IBPSA and DisHeatLib each time you start Dymola open "<Dymola path>\insert\dymola.mos" and add the following lines:
 
 ```
-openModel("[library path]/modelica-ibpsa-master/IBPSA/package.mo");
-openModel("[library path]/DisHeatLib-master/DisHeatLib/package.mo");
+openModel("[library path]/IBPSA/package.mo");
+openModel("[library path]/DisHeatLib/package.mo");
 ```
