@@ -1,5 +1,5 @@
 removePlots();
-simulateModel("DisHeatLib.Examples.TwoSuppliesOneBuilding", startTime=0, tolerance=1e-4, stopTime=604800, outputInterval=900, method="Cvode", resultFile="TwoSuppliesOneBuilding");
+simulateModel("DisHeatLib.Examples.SimpleNetwork.TwoSuppliesOneBuilding", startTime=0, tolerance=1e-4, stopTime=604800, outputInterval=900, method="Cvode", resultFile="TwoSuppliesOneBuilding");
 createPlot(id = 1,
  y = {"substation.sta_a.T", "substation.sta_b.T", "substation.TemSup_nominal"},
  grid = true);
