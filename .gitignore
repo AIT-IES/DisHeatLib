@@ -1,0 +1,9 @@
+*.mof
+*.c
+*.obj
+*.mat
+/DisHeatLib/buildlog.txt
+/DisHeatLib/dsfinal.txt
+/DisHeatLib/dsin.txt
+/DisHeatLib/dslog.txt
+/DisHeatLib/dymosim.exe

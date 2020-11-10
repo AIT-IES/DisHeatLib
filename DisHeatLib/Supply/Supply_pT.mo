@@ -113,12 +113,6 @@ public
     T_start=TemRet_nominal)
     annotation (Placement(transformation(extent={{-46,14},{-26,34}})));
 public
-  Modelica.Blocks.Interfaces.RealOutput P                 "Active power consumption/generation"
-    annotation (Placement(transformation(
-        extent={{-10,-10},{10,10}},
-        rotation=-90,
-        origin={0,-110})));
-public
   Modelica.Blocks.Interfaces.RealInput TSup_in(unit="K", displayUnit="degC") if
        SupplyTemperature == DisHeatLib.Supply.BaseClasses.InputTypeSupplyTemp.Input
     annotation (Placement(transformation(

@@ -117,7 +117,7 @@ package SimpleNetwork
     connect(baseSupply.dp_measure, dp_measure_min.y)
       annotation (Line(points={{6,-52},{14,-52},{14,-76},{21,-76}},
                                                   color={0,0,127}));
-    annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Examples/OneSupplyOneBuilding.mos"
+    annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Examples/SimpleNetwork/OneSupplyOneBuilding.mos"
           "Simulate and plot"), experiment(
         StopTime=604800,
         Interval=900.00288,
@@ -315,7 +315,7 @@ package SimpleNetwork
     connect(baseSupply.dp_measure,dp_measure_min. y)
       annotation (Line(points={{-26,-50},{-18,-50},{-18,-74},{-9,-74}},
                                                   color={0,0,127}));
-    annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Examples/TwoSuppliesOneBuilding.mos"
+    annotation (__Dymola_Commands(file="modelica://DisHeatLib/Resources/Scripts/Dymola/Examples/SimpleNetwork/TwoSuppliesOneBuilding.mos"
           "Simulate and plot"), experiment(
         StopTime=604800,
         Interval=900.003,
