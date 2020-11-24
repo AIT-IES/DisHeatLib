@@ -24,7 +24,7 @@ the [IBPSA style guide and coding conventions](https://github.com/ibpsa/modelica
 
 ## Prerequisites
 
-[Dymola](https://www.3ds.com/products-services/catia/products/dymola/) is needed including a supported C++ compiler such as [Visual Studio](https://visualstudio.microsoft.com/de/?rr=https%3A%2F%2Fwww.google.com%2F). Newer versions of Visual Studio might not be supported. For Dymola 2020 Visual Studio 2017 is supported and can be found, e.g., [here](https://www.kunal-chowdhury.com/p/download-visual-studio-2017.html). The IBPSA library must be loaded before the DisHeatLib.
+[Dymola](https://www.3ds.com/products-services/catia/products/dymola/) is needed including a supported C++ compiler such as [Visual Studio](https://visualstudio.microsoft.com/de/?rr=https%3A%2F%2Fwww.google.com%2F). Newer versions of Visual Studio might not be supported. For Dymola 2020 Visual Studio 2017 is supported and can be found, e.g., [here](https://www.kunal-chowdhury.com/p/download-visual-studio-2017.html). The IBPSA library must be loaded before the DisHeatLib. OpenModelica is currently not supported (see [this issue](https://github.com/AIT-IES/DisHeatLib/issues/1)).
 
 ## Tutorials
 
