@@ -218,8 +218,8 @@ model baseNoFR
     m_flow_nominal_DHW=0.45,
     Q_flow_nominal_SH(displayUnit="kW") = 96000,
     VTan=3.01,
-    fileNameSH="modelica://DisHeatLib/Resources/Data/network/bld1SH.txt",
-    fileNameDHW="modelica://DisHeatLib/Resources/Data/network/bld1DHW.txt",
+    fileNameSH="Resources/Data/network/bld1SH.txt",
+    fileNameDHW="Resources/Data/network/bld1DHW.txt",
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{-52,-20},{-32,0}})));
 
@@ -228,8 +228,8 @@ model baseNoFR
     m_flow_nominal_DHW=0.52,
     Q_flow_nominal_SH(displayUnit="kW") = 59000,
     VTan=2.618,
-    fileNameSH="modelica://DisHeatLib/Resources/Data/network/bld2SH.txt",
-    fileNameDHW="modelica://DisHeatLib/Resources/Data/network/bld1DHW.txt",
+    fileNameSH="Resources/Data/network/bld2SH.txt",
+    fileNameDHW="Resources/Data/network/bld1DHW.txt",
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{46,-2},{66,18}})));
 
@@ -238,8 +238,8 @@ model baseNoFR
     m_flow_nominal_DHW=0.41,
     Q_flow_nominal_SH(displayUnit="kW") = 51000,
     VTan=1.795,
-    fileNameSH="modelica://DisHeatLib/Resources/Data/network/bld3SH.txt",
-    fileNameDHW="modelica://DisHeatLib/Resources/Data/network/bld3DHW.txt",
+    fileNameSH="Resources/Data/network/bld3SH.txt",
+    fileNameDHW="Resources/Data/network/bld3DHW.txt",
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{148,-14},{168,6}})));
 
@@ -248,8 +248,8 @@ model baseNoFR
     m_flow_nominal_DHW=0.40,
     Q_flow_nominal_SH(displayUnit="kW") = 74000,
     VTan=2.282,
-    fileNameSH="modelica://DisHeatLib/Resources/Data/network/bld4SH.txt",
-    fileNameDHW="modelica://DisHeatLib/Resources/Data/network/bld4DHW.txt",
+    fileNameSH="Resources/Data/network/bld4SH.txt",
+    fileNameDHW="Resources/Data/network/bld4DHW.txt",
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{100,16},{120,36}})));
 
@@ -258,8 +258,8 @@ model baseNoFR
     m_flow_nominal_DHW=0.43,
     Q_flow_nominal_SH(displayUnit="kW") = 43000,
     VTan=2.556,
-    fileNameSH="modelica://DisHeatLib/Resources/Data/network/bld5SH.txt",
-    fileNameDHW="modelica://DisHeatLib/Resources/Data/network/bld5DHW.txt",
+    fileNameSH="Resources/Data/network/bld5SH.txt",
+    fileNameDHW="Resources/Data/network/bld5DHW.txt",
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{-128,-68},{-108,-48}})));
 
@@ -268,8 +268,8 @@ model baseNoFR
     m_flow_nominal_DHW=0.38,
     Q_flow_nominal_SH(displayUnit="kW") = 41000,
     VTan=1.436,
-    fileNameSH="modelica://DisHeatLib/Resources/Data/network/bld6SH.txt",
-    fileNameDHW="modelica://DisHeatLib/Resources/Data/network/bld6DHW.txt",
+    fileNameSH="Resources/Data/network/bld6SH.txt",
+    fileNameDHW="Resources/Data/network/bld6DHW.txt",
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{-128,-12},{-108,8}})));
 
@@ -278,8 +278,8 @@ model baseNoFR
     m_flow_nominal_DHW=0.43,
     Q_flow_nominal_SH(displayUnit="kW") = 57000,
     VTan=1.896,
-    fileNameSH="modelica://DisHeatLib/Resources/Data/network/bld7SH.txt",
-    fileNameDHW="modelica://DisHeatLib/Resources/Data/network/bld7DHW.txt",
+    fileNameSH="Resources/Data/network/bld7SH.txt",
+    fileNameDHW="Resources/Data/network/bld7DHW.txt",
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{-174,-14},{-154,6}})));
 
@@ -288,8 +288,8 @@ model baseNoFR
     m_flow_nominal_DHW=0.43,
     Q_flow_nominal_SH(displayUnit="kW") = 48000,
     VTan=1.208,
-    fileNameSH="modelica://DisHeatLib/Resources/Data/network/bld8SH.txt",
-    fileNameDHW="modelica://DisHeatLib/Resources/Data/network/bld8DHW.txt",
+    fileNameSH="Resources/Data/network/bld8SH.txt",
+    fileNameDHW="Resources/Data/network/bld8DHW.txt",
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{-94,-84},{-74,-64}})));
 
@@ -298,8 +298,8 @@ model baseNoFR
     m_flow_nominal_DHW=0.53,
     Q_flow_nominal_SH(displayUnit="kW") = 27000,
     VTan=3.449,
-    fileNameSH="modelica://DisHeatLib/Resources/Data/network/bld9SH.txt",
-    fileNameDHW="modelica://DisHeatLib/Resources/Data/network/bld9DHW.txt",
+    fileNameSH="Resources/Data/network/bld9SH.txt",
+    fileNameDHW="Resources/Data/network/bld9DHW.txt",
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{-30,26},{-10,46}})));
 
@@ -308,8 +308,8 @@ model baseNoFR
     m_flow_nominal_DHW=0.56,
     Q_flow_nominal_SH(displayUnit="kW") = 77000,
     VTan=2.627,
-    fileNameSH="modelica://DisHeatLib/Resources/Data/network/bld10SH.txt",
-    fileNameDHW="modelica://DisHeatLib/Resources/Data/network/bld10DHW.txt",
+    fileNameSH="Resources/Data/network/bld10SH.txt",
+    fileNameDHW="Resources/Data/network/bld10DHW.txt",
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{-60,36},{-40,56}})));
 
@@ -318,8 +318,8 @@ model baseNoFR
     m_flow_nominal_DHW=0.66,
     Q_flow_nominal_SH(displayUnit="kW") = 91000,
     VTan=3.45,
-    fileNameSH="modelica://DisHeatLib/Resources/Data/network/bld11SH.txt",
-    fileNameDHW="modelica://DisHeatLib/Resources/Data/network/bld11DHW.txt",
+    fileNameSH="Resources/Data/network/bld11SH.txt",
+    fileNameDHW="Resources/Data/network/bld11DHW.txt",
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{-62,76},{-42,96}})));
 
@@ -328,8 +328,8 @@ model baseNoFR
     m_flow_nominal_DHW=0.44,
     Q_flow_nominal_SH(displayUnit="kW") = 79000,
     VTan=2.694,
-    fileNameSH="modelica://DisHeatLib/Resources/Data/network/bld12SH.txt",
-    fileNameDHW="modelica://DisHeatLib/Resources/Data/network/bld12DHW.txt",
+    fileNameSH="Resources/Data/network/bld12SH.txt",
+    fileNameDHW="Resources/Data/network/bld12DHW.txt",
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{16,104},{36,124}})));
 
@@ -338,8 +338,8 @@ model baseNoFR
     m_flow_nominal_DHW=0.58,
     Q_flow_nominal_SH(displayUnit="kW") = 78000,
     VTan=3.909,
-    fileNameSH="modelica://DisHeatLib/Resources/Data/network/bld13SH.txt",
-    fileNameDHW="modelica://DisHeatLib/Resources/Data/network/bld13DHW.txt",
+    fileNameSH="Resources/Data/network/bld13SH.txt",
+    fileNameDHW="Resources/Data/network/bld13DHW.txt",
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{32,62},{52,82}})));
 
@@ -348,8 +348,8 @@ model baseNoFR
     m_flow_nominal_DHW=0.33,
     Q_flow_nominal_SH(displayUnit="kW") = 55000,
     VTan=1.748,
-    fileNameSH="modelica://DisHeatLib/Resources/Data/network/bld14SH.txt",
-    fileNameDHW="modelica://DisHeatLib/Resources/Data/network/bld14DHW.txt",
+    fileNameSH="Resources/Data/network/bld14SH.txt",
+    fileNameDHW="Resources/Data/network/bld14DHW.txt",
     TemSup_nominal=TemSup_nominal)
     annotation (Placement(transformation(extent={{70,112},{90,132}})));
 

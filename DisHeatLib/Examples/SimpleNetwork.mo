@@ -12,7 +12,7 @@ package SimpleNetwork
       flowUnit(FlowType=DisHeatLib.BaseClasses.FlowType.Valve),
       dp_nominal=100000,
       tableName="SHprofile",
-      fileName="modelica://DisHeatLib/Resources/Data/SHprofile.txt",
+      fileName="Resources/Data/SHprofile.txt",
       redeclare DisHeatLib.Demand.BaseDemands.Radiator demandType,
       Q_constant(displayUnit="kW") = 100000,
       heatLoad=DisHeatLib.Demand.BaseClasses.InputTypeDemand.FileQ,
@@ -63,9 +63,9 @@ package SimpleNetwork
     DisHeatLib.Demand.Demand demandDHW(
       redeclare package Medium = Medium,
       show_T=true,
-      dp_nominal=100000,
+      dp_nominal(displayUnit="bar") = 400000,
       tableName="Table",
-      fileName="modelica://DisHeatLib/Resources/Data/DHWprofile_E2340_P40.txt",
+      fileName="Resources/Data/DHWprofile_E2340_P40.txt",
       redeclare DisHeatLib.Demand.BaseDemands.FixedReturn demandType,
       Q_constant(displayUnit="kW") = 100000,
       heatLoad=DisHeatLib.Demand.BaseClasses.InputTypeDemand.FileQ,
@@ -148,7 +148,7 @@ package SimpleNetwork
       redeclare package Medium = Medium,
       dp_nominal(displayUnit="bar") = 100000,
       tableName="SHprofile",
-      fileName="modelica://DisHeatLib/Resources/Data/SHprofile.txt",
+      fileName="Resources/Data/SHprofile.txt",
       redeclare DisHeatLib.Demand.BaseDemands.Radiator demandType,
       Q_constant(displayUnit="kW") = 100000,
       heatLoad=DisHeatLib.Demand.BaseClasses.InputTypeDemand.FileQ,
@@ -198,8 +198,7 @@ package SimpleNetwork
     DisHeatLib.Boundary.OutsideTemperature outsideTemperature(
       inputType=DisHeatLib.Boundary.BaseClasses.InputTypeOutTemp.File,
       tableName="TempOut",
-      fileName=Modelica.Utilities.Files.loadResource(
-          "modelica://DisHeatLib/Resources/Data/TempOut.txt")) annotation (
+      fileName="Resources/Data/TempOut.txt")                   annotation (
         Placement(transformation(
           extent={{-10,-10},{10,10}},
           rotation=-90,
@@ -208,7 +207,7 @@ package SimpleNetwork
       redeclare package Medium = Medium,
       dp_nominal(displayUnit="bar") = 100000,
       tableName="Table",
-      fileName="modelica://DisHeatLib/Resources/Data/DHWprofile_E2340_P40.txt",
+      fileName="Resources/Data/DHWprofile_E2340_P40.txt",
       redeclare DisHeatLib.Demand.BaseDemands.FixedReturn demandType,
       Q_constant(displayUnit="kW") = 100000,
       heatLoad=DisHeatLib.Demand.BaseClasses.InputTypeDemand.FileQ,
