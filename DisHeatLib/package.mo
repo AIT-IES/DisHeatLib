@@ -36,8 +36,7 @@ versionDate="2019-09-06",
 dateModified="2019-09-06",
 uses(
     Modelica(version="3.2.3"),
-    IBPSA(version="3.0.0"),
-    Buildings(version="8.0.0")),
+    IBPSA(version="4.0.0")),
 Documentation(info="<html>
 <p><img src=\"modelica://DisHeatLib/Resources/Images/DisHeatLib_logo.png\" width=\"250\" align=\"right\" border=1\" /> </p>
 <p>The <span style=\"font-family: Courier New;\">DisHeatLib</span> library is a library for dynamic modeling of district heating networks including corresponding control systems. Many models are based on the excellent Modelica library <span style=\"font-family: Courier New;\"><a href=\"https://github.com/ibpsa/modelica-ibpsa\">IBPSA</a></span>. </p>
