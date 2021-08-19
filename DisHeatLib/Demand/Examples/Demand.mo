@@ -20,16 +20,15 @@ model Demand
     startTime(displayUnit="d") = 86400)
     annotation (Placement(transformation(extent={{-74,-6},{-54,14}})));
 
-  BaseDemands.Radiator radiator(redeclare package Medium = Medium,
-      Q_flow_nominal(displayUnit="kW") = 10000)
-    annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
+  DisHeatLib.Demand.Demand demand(heatLoad=DisHeatLib.Demand.BaseClasses.InputTypeDemand.InputQ)
+    annotation (Placement(transformation(extent={{-12,-10},{8,10}})));
 equation
   connect(T.y, boundarySL.T_in)
     annotation (Line(points={{-53,4},{-42,4}},   color={0,0,127}));
-  connect(boundaryRL.ports[1], radiator.port_b)
-    annotation (Line(points={{20,0},{10,0}}, color={0,127,255}));
-  connect(boundarySL.ports[1], radiator.port_a)
-    annotation (Line(points={{-20,0},{-10,0}}, color={0,127,255}));
+  connect(boundarySL.ports[1], demand.port_a)
+    annotation (Line(points={{-20,0},{-12,0}}, color={0,127,255}));
+  connect(demand.port_b, boundaryRL.ports[1])
+    annotation (Line(points={{8,0},{20,0}}, color={0,127,255}));
   annotation (__Dymola_Commands(file=
           "Resources/Scripts/Dymola/Demand/Examples/Demand1.mos"
         "Simulate and plot"),
