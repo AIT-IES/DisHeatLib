@@ -1,0 +1,8 @@
+removePlots();
+simulateModel("DisHeatLib.Examples.Cascade.varyingReturnTemperature", startTime=0, tolerance=1e-6, stopTime=360000, outputInterval=900, method="dassl", resultFile="varyingReturnTemperature");
+createPlot(id = 1,
+ y = {"senTem_a1.T", "senTem_b1.T", "senTem_a2.T", "senTem_b2.T", "senTem_c1.T", "senTem_sl.T", "senTemp_rl.T"},
+ grid = true);
+createPlot(id = 2,
+ y = {"senMasFlo_a1.m_flow", "senMasFlo_c1.m_flow"},
+ grid = true);
