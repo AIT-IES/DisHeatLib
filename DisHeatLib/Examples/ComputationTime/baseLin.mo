@@ -180,7 +180,6 @@ model baseLin
   // Main supply
   DisHeatLib.Supply.Supply_pT     baseSupply(
     redeclare package Medium = Medium,
-    show_T=true,
     powerCha(Q_flow={0}, P={0}),
     SupplyTemperature=DisHeatLib.Supply.BaseClasses.InputTypeSupplyTemp.Constant,
     dp_controller=true,
@@ -202,7 +201,6 @@ model baseLin
   // Buildings
   DisHeatLib.Examples.ComputationTime.Buildings.BuildingFRValLin Building1(
     redeclare package Medium = Medium,
-    show_T=true,
     m_flow_nominal_DHW=0.45,
     Q_flow_nominal_SH(displayUnit="kW") = 96000,
     VTan=3.01,

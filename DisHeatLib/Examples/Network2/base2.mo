@@ -120,7 +120,6 @@ model base2
   // Main supply
   DisHeatLib.Supply.Supply_pT     baseSupply(
     redeclare package Medium = Medium,
-    show_T=true,
     powerCha(Q_flow={0}, P={0}),
     SupplyTemperature=DisHeatLib.Supply.BaseClasses.InputTypeSupplyTemp.Constant,
     dp_controller=true,
@@ -242,7 +241,6 @@ model base2
     annotation (Placement(transformation(extent={{46,-84},{26,-64}})));
 
   DisHeatLib.Substations.SubstationSingle substationSingle(
-    show_T=true,
     redeclare package Medium = Medium,
     dp1_nominal=100000,
     TemSup_nominal=323.15,

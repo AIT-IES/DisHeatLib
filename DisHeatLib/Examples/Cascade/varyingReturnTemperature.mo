@@ -5,7 +5,6 @@ model varyingReturnTemperature
   DisHeatLib.Boundary.SoilTemperature soilTemperature(T_const=278.15)
     annotation (Placement(transformation(extent={{-20,60},{0,40}})));
   DisHeatLib.Pipes.DualPipe dualPipe1(
-    show_T=true,
     redeclare package Medium = Medium,
     redeclare DisHeatLib.Pipes.Library.Isoplus.Isoplus_2IMP_DN80 pipeType,
     L(displayUnit="km") = 500,
@@ -15,7 +14,6 @@ model varyingReturnTemperature
     nPorts2=1)
     annotation (Placement(transformation(extent={{-46,-18},{-26,2}})));
   DisHeatLib.Pipes.DualPipe dualPipe2(
-    show_T=true,
     redeclare package Medium = Medium,
     redeclare DisHeatLib.Pipes.Library.Isoplus.Isoplus_2IMP_DN80 pipeType,
     L(displayUnit="m") = 500,
@@ -53,7 +51,6 @@ model varyingReturnTemperature
     annotation (Placement(transformation(extent={{72,-12},{92,8}})));
   DisHeatLib.Substations.SubstationCascade substationCascade(
     allowFlowReversal1=true,
-    show_T=true,
     redeclare package Medium = Medium,
     Q1_flow_nominal(displayUnit="kW") = 100000,
     Q1_flow_nominal_supply(displayUnit="kW") = 200000,

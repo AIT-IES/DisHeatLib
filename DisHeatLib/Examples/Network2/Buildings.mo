@@ -14,7 +14,6 @@ package Buildings
                 DisHeatLib.Demand.Demand demandDHW(
       redeclare final package Medium = Medium,
       m_flow_nominal=m_flow_nominal_DHW,
-      show_T=true,
       dp_nominal=1,
       Q_flow_nominal=m_flow_nominal_DHW*4186*(55 - 10),
       TemSup_nominal=328.15,
@@ -29,7 +28,6 @@ package Buildings
 
                 DisHeatLib.Demand.Demand demandSH(
       redeclare final package Medium = Medium,
-      show_T=true,
       dp_nominal=10,
       Q_flow_nominal=Q_flow_nominal_SH,
       TemSup_nominal=318.15,
@@ -140,7 +138,6 @@ package Buildings
                 DisHeatLib.Demand.Demand demandDHW(
       redeclare final package Medium = Medium,
       m_flow_nominal=m_flow_nominal_DHW,
-      show_T=true,
       dp_nominal=1,
       Q_flow_nominal=m_flow_nominal_DHW*4186*(55 - 10),
       TemSup_nominal=328.15,
@@ -155,7 +152,6 @@ package Buildings
 
                 DisHeatLib.Demand.Demand demandSH(
       redeclare final package Medium = Medium,
-      show_T=true,
       dp_nominal=10,
       Q_flow_nominal=Q_flow_nominal_SH,
       TemSup_nominal=318.15,

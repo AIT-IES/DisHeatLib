@@ -120,7 +120,6 @@ model base
   // Main supply
   DisHeatLib.Supply.Supply_pT     baseSupply(
     redeclare package Medium = Medium,
-    show_T=true,
     powerCha(Q_flow={0}, P={0}),
     SupplyTemperature=DisHeatLib.Supply.BaseClasses.InputTypeSupplyTemp.Constant,
     dp_controller=true,

@@ -8,7 +8,6 @@ package SimpleNetwork
 
     DisHeatLib.Demand.Demand demandSH(
       redeclare package Medium = Medium,
-      show_T=true,
       flowUnit(FlowType=DisHeatLib.BaseClasses.FlowType.Valve),
       dp_nominal=100000,
       tableName="SHprofile",
@@ -62,7 +61,6 @@ package SimpleNetwork
 
     DisHeatLib.Demand.Demand demandDHW(
       redeclare package Medium = Medium,
-      show_T=true,
       dp_nominal(displayUnit="bar") = 400000,
       tableName="Table",
       fileName="Resources/Data/DHWprofile_E2340_P40.txt",
@@ -88,7 +86,6 @@ package SimpleNetwork
         T_min_EBH=333.15,
         T_bandwidth_EBH=4,
         eff_EBH=1),
-      show_T=true,
       use_bypass=false,
       redeclare package Medium = Medium,
       TemSup_nominal=323.15)
@@ -179,7 +176,6 @@ package SimpleNetwork
           origin={-78,-14})));
     DisHeatLib.Supply.Supply_pT baseSupply(
       redeclare package Medium = Medium,
-      show_T=true,
       Q_flow_nominal(displayUnit="kW") = 20000,
       powerCha(Q_flow={0,1}, P={0,1}),
       dp_set=500000,
@@ -218,7 +214,6 @@ package SimpleNetwork
 
     DisHeatLib.Supply.Supply_QT supply_QT(
       redeclare package Medium = Medium,
-      show_T=true,
       Q_flow_nominal(displayUnit="kW") = 50000,
       TemSup_nominal=393.15,
       TemRet_nominal=323.15,
@@ -265,7 +260,6 @@ package SimpleNetwork
         TemSup2_nominal=333.15,
         TemRet2_nominal=283.15,
         OutsideDependent=false),
-      show_T=true,
       use_bypass=false,
       redeclare package Medium = Medium,
       TemSup_nominal=343.15)

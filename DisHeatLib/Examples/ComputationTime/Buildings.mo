@@ -14,7 +14,6 @@ package Buildings
                 DisHeatLib.Demand.Demand demandDHW(
       redeclare final package Medium = Medium,
       m_flow_nominal=m_flow_nominal_DHW,
-      show_T=true,
       dp_nominal=1,
       Q_flow_nominal=m_flow_nominal_DHW*4186*(55 - 10),
       TemSup_nominal=328.15,
@@ -29,7 +28,6 @@ package Buildings
 
                 DisHeatLib.Demand.Demand demandSH(
       redeclare final package Medium = Medium,
-      show_T=true,
       dp_nominal=10,
       Q_flow_nominal=Q_flow_nominal_SH,
       TemSup_nominal=318.15,
@@ -162,7 +160,6 @@ package Buildings
                 DisHeatLib.Demand.Demand demandDHW(
       redeclare final package Medium = Medium,
       m_flow_nominal=m_flow_nominal_DHW,
-      show_T=true,
       dp_nominal=1,
       linearizeFlowResistance=true,
       Q_flow_nominal=m_flow_nominal_DHW*4186*(55 - 10),
@@ -178,7 +175,6 @@ package Buildings
 
                 DisHeatLib.Demand.Demand demandSH(
       redeclare final package Medium = Medium,
-      show_T=true,
       dp_nominal=10,
       linearizeFlowResistance=true,
       Q_flow_nominal=Q_flow_nominal_SH,
@@ -314,7 +310,6 @@ package Buildings
                 DisHeatLib.Demand.Demand demandDHW(
       redeclare final package Medium = Medium,
       m_flow_nominal=m_flow_nominal_DHW,
-      show_T=true,
       dp_nominal=1,
       Q_flow_nominal=m_flow_nominal_DHW*4186*(55 - 10),
       TemSup_nominal=328.15,
@@ -329,7 +324,6 @@ package Buildings
 
                 DisHeatLib.Demand.Demand demandSH(
       redeclare final package Medium = Medium,
-      show_T=true,
       dp_nominal=10,
       Q_flow_nominal=Q_flow_nominal_SH,
       TemSup_nominal=318.15,
@@ -466,7 +460,6 @@ package Buildings
       allowFlowReversal=false,
       m_flow_nominal=m_flow_nominal_DHW,
       m_flow_small=1E-3*abs(demandDHW.m_flow_nominal),
-      show_T=true,
       dp_nominal=1,
       Q_flow_nominal=m_flow_nominal_DHW*4186*(55 - 10),
       TemSup_nominal=328.15,
@@ -483,7 +476,6 @@ package Buildings
       redeclare final package Medium = Medium,
       allowFlowReversal=false,
       m_flow_small=1E-3*abs(demandSH.m_flow_nominal),
-      show_T=true,
       dp_nominal=10,
       Q_flow_nominal=Q_flow_nominal_SH,
       TemSup_nominal=318.15,
@@ -629,7 +621,6 @@ package Buildings
       allowFlowReversal=false,
       m_flow_nominal=m_flow_nominal_DHW,
       m_flow_small=1E-3*abs(demandDHW.m_flow_nominal),
-      show_T=true,
       dp_nominal=1,
       Q_flow_nominal=m_flow_nominal_DHW*4186*(55 - 10),
       TemSup_nominal=328.15,
@@ -679,7 +670,6 @@ package Buildings
       redeclare final package Medium = Medium,
       allowFlowReversal=false,
       m_flow_small=1E-3*abs(demandSH.m_flow_nominal),
-      show_T=true,
       dp_nominal=10,
       Q_flow_nominal=Q_flow_nominal_SH,
       TemSup_nominal=318.15,
